@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+
+@layer base {
+  body {
+    @apply font-barlow bg-white dark:bg-dark-color-1 dark:text-dark-text-color-1;
+  }
+  h1 {
+    @apply text-5xl;
+  }
+  h2 {
+    @apply text-4xl;
+  }
+  h3 {
+    @apply text-3xl;
+  }
+  h4 {
+    @apply text-2xl;
+  }
+  h5 {
+    @apply text-xl;
+  }
+  input {
+    @apply w-full focus:outline-none text-base leading-6 text-slate-400  dark:bg-slate-800;
+  }
+}
+
+@layer components {
+}
