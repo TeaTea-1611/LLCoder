@@ -1,22 +1,31 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import DefaultLayout from "./Components/Layouts";
+import DefaultLayout from "./components/Layouts";
 import { publicRoutes } from "./routes";
+import { useAppSelector } from "./store/hook";
+import { selectTheme } from "./store/reducers/appReducer";
 
 function App() {
+  const theme = useAppSelector(selectTheme);
+  useEffect(() => {
+    document.documentElement.classList.remove("dark", "light");
+    document.documentElement.classList.add(theme);
+  }, [theme]);
+
   return (
     <>
       <Router>
         <Routes>
           {publicRoutes.map((route) => {
-            const Pages = route.component;
+            const Page = route.component;
             return (
               <Route
                 key={route.path}
                 path={route.path}
                 element={
                   <DefaultLayout>
-                    <Pages />
+                    <Page />
                   </DefaultLayout>
                 }
               />

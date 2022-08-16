@@ -22,7 +22,7 @@ function Button({ children, className, onClick, to, type }: ButtonProps) {
         }}
         type={type}
       >
-        <span className="text-sm">{children}</span>
+        <span className="text-sm flex items-center">{children}</span>
       </button>
     </>
   );

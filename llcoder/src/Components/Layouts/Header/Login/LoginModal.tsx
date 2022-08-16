@@ -28,7 +28,7 @@ function LoginModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
   };
 
   return (
-    <ModalForm isOpen={isOpen} onClose={onClose} title="Login" className="w-88">
+    <ModalForm isOpen={isOpen} onClose={onClose} title="Login">
       <Formik
         initialValues={{
           usernameOrEmail: "",
@@ -37,7 +37,7 @@ function LoginModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
         onSubmit={handleSubmit}
       >
         {({ setFieldValue }) => (
-          <Form className="space-y-6 mt-8">
+          <Form className="space-y-6 mt-8 w-100">
             <InputField label="Username or Email" name="usernameOrEmail" />
             <InputField label="Password" name="password" isPassword />
             <div className="flex">

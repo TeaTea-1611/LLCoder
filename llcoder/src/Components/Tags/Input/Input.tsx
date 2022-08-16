@@ -6,9 +6,9 @@ export interface InputFieldProps {
   value?: string;
   onChange?: (value: string) => void;
   label?: string;
-  placeholder?: string;
   name: string;
   isPassword?: boolean;
+  className?: string;
 }
 
 export function InputField({
@@ -16,6 +16,7 @@ export function InputField({
   label,
   onChange,
   isPassword,
+  className,
   ...props
 }: InputFieldProps) {
   const id = useId();
@@ -24,11 +25,15 @@ export function InputField({
 
   return (
     <>
-      <div className="relative z-0 w-full my-2">
+      <div
+        className={`relative z-0 w-full my-2${
+          className ? ` ${className}` : ""
+        }`}
+      >
         <input
           {...field}
           id={id}
-          className={`block py-2 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+          className={`block py-2 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 dark:bg-transparent peer`}
           type={isPassword && !showPassword ? "password" : "text"}
           {...props}
         />
@@ -67,22 +72,26 @@ interface InputSearchProps {
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
+  className?: string;
 }
 
 export function InputSearch({
   onChange,
   value,
+  className,
   placeholder = "Search",
 }: InputSearchProps) {
   return (
-    <div className="relative my-2">
+    <div className={`relative my-2${className ? ` ${className}` : ""}`}>
       <span className="absolute top-1/2 -translate-y-1/2 left-2 cursor-pointer">
         <BsSearch size={18} />
       </span>
       <input
-        className="pl-10 py-1.5 pr-3 ring-1 ring-slate-900/10 shadow-sm rounded-md"
+        className="pl-10 py-1.5 pr-3 ring-1 ring-slate-900/10 shadow-sm rounded-md dark:border-slate-700 dark:border"
         type="text"
         placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange && onChange(e.target.value)}
       />
     </div>
   );

@@ -27,7 +27,7 @@ export const NavItems = [
     icon: <FiUsers size={18} />,
   },
   {
-    path: "exams",
+    path: "/exams",
     label: "Exams",
     icon: <FaGraduationCap size={18} />,
   },

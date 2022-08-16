@@ -3,7 +3,7 @@
 
 @layer base {
   body {
-    @apply font-barlow bg-white dark:bg-dark-color-1 dark:text-dark-text-color-1;
+    @apply font-barlow bg-white dark:bg-slate-900 dark:text-dark-text-color-1;
   }
   h1 {
     @apply text-5xl;

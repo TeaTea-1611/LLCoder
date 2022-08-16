@@ -26,12 +26,7 @@ function ForgotPasswordModal({
   };
 
   return (
-    <ModalForm
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Forgot Password"
-      className="w-88"
-    >
+    <ModalForm isOpen={isOpen} onClose={onClose} title="Forgot Password">
       <Formik
         initialValues={{
           email: "",
@@ -39,7 +34,7 @@ function ForgotPasswordModal({
         onSubmit={handleSubmit}
       >
         {({ setFieldValue }) => (
-          <Form className="space-y-6 mt-8">
+          <Form className="space-y-6 mt-8 w-100">
             <InputField label="Email" name="email" />
             <div className="flex">
               <button

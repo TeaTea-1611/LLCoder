@@ -25,12 +25,7 @@ function RegisterModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
   };
 
   return (
-    <ModalForm
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Register"
-      className="w-88"
-    >
+    <ModalForm isOpen={isOpen} onClose={onClose} title="Register">
       <Formik
         initialValues={{
           username: "",
@@ -41,7 +36,7 @@ function RegisterModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
         onSubmit={handleSubmit}
       >
         {({ setFieldValue }) => (
-          <Form className="space-y-6 mt-8">
+          <Form className="space-y-6 mt-8 w-100">
             <InputField label="Username" name="username" />
             <InputField label="Email" name="email" />
             <InputField label="Password" name="password" isPassword />

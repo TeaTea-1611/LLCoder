@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
-import { Button } from "../../../Components/Tags";
+import { Button } from "../../../components/Tags";
 import SearchExrcises from "../SearchExrcises";
 
 function HeaderExercisesPage() {
@@ -17,8 +17,9 @@ function HeaderExercisesPage() {
           isOpen={isOpenSearch}
           onClose={() => setIsOpenSearch(false)}
         />
-        <Button>
-          <BsPlusLg size={16} />
+        <Button to="create">
+          <BsPlusLg size={14} />
+          <span className="ml-2">Add Exercise</span>
         </Button>
       </div>
     </header>

@@ -1,5 +1,5 @@
-import { Button } from "../../Components/Tags";
-import { Table, Td } from "../../Components/Tags";
+import { Button } from "../../components/Tags";
+import { Table, Td } from "../../components/Tags";
 import HeaderExercisesPage from "./HeaderExercisesPage";
 
 const data = [
@@ -21,30 +21,27 @@ function Exercises() {
   return (
     <>
       <HeaderExercisesPage />
-      <div>
-        <div className="my-6">
-          <Table
-            thead={["Exercise", "Difficulty", "Category", "Exp", "Action"]}
-          >
-            <tbody>
-              {data.map((item) => (
-                <tr key={item.exercise}>
-                  <Td>{item.exercise}</Td>
-                  <Td>{item.difficulty}</Td>
-                  <Td>{item.category}</Td>
-                  <Td>{item.exp}</Td>
-                  <Td className="space-x-1">
-                    <Button>Đúng</Button>
-                    <Button>Sai</Button>
-                  </Td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+      <div className="my-6">
+        <Table thead={["Exercise", "Difficulty", "Category", "Exp", "Action"]}>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.exercise}>
+                <Td>{item.exercise}</Td>
+                <Td>{item.difficulty}</Td>
+                <Td>{item.category}</Td>
+                <Td>{item.exp}</Td>
+                <Td className="space-x-1">
+                  <Button>Đúng</Button>
+                  <Button>Sai</Button>
+                </Td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     </>
   );
 }
 
 export default Exercises;
+export { default as CreateExercisePage } from "./CreateExercise";

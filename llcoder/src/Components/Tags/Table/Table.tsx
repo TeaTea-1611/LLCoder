@@ -7,7 +7,7 @@ interface TableProps {
 function Table({ children, thead, className }: TableProps) {
   return (
     <table
-      className={`min-w-full leading-normal overflow-hidden shadow${
+      className={`table-auto min-w-full leading-normal overflow-hidden shadow${
         className ? ` ${className}` : ""
       }`}
     >
