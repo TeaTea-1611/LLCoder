@@ -1,1 +1,1 @@
-export { InputField, InputSearch } from "./Input";
+export { InputField, InputSearch, Input } from "./Input";

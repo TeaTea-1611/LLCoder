@@ -49,7 +49,7 @@ function Menu({ children, data, onChange, className }: MenuProps) {
       </button>
       {isOpen && (
         <ul
-          className={`absolute z-50 top-2 left-1/2 -translate-x-1/2 bg-white rounded-lg ring-1 ring-slate-900/10 shadow-lg overflow-hidden py-1 text-sm text-slate-700 font-semibold dark:bg-slate-900 dark:ring-0 dark:highlight-white/5 dark:text-slate-300 mt-8${
+          className={`absolute z-50 top-2 left-1/2 -translate-x-1/2 bg-white rounded-lg ring-1 ring-slate-900/10 shadow-lg overflow-hidden py-1 text-sm text-slate-700 font-semibold dark:bg-dark-color-3 dark:ring-0 dark:highlight-white/5 dark:text-slate-300 mt-8${
             className ? ` ${className}` : ""
           }`}
           ref={menuRef}

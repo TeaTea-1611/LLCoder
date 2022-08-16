@@ -1,6 +1,5 @@
 import { Form, Formik } from "formik";
 import { EditText } from "../../../components/EditText";
-import { Selection } from "../../../components/Selection";
 import { Button, InputField } from "../../../components/Tags";
 
 interface FormValues {
@@ -41,8 +40,8 @@ function CreateExercisePage() {
               </div>
               <EditText
                 value={values.description}
-                onChange={(evt) => {
-                  setValues({ ...values, description: evt.target.value });
+                onChange={(value) => {
+                  setValues({ ...values, description: value });
                 }}
               />
               <div className="flex">

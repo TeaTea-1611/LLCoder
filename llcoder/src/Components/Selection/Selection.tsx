@@ -44,14 +44,14 @@ function Selection({
   return (
     <>
       <div
-        className={`relative shadow border dark:border-slate-700 h-8 w-full ${className} rounded flex items-center`}
+        className={`relative shadow border dark:border-slate-700 h-8 w-full ${className} rounded flex items-center cursor-pointer`}
         onClick={() => setIsOpen(!isOpen)}
         ref={selectRef}
       >
         <span className="text-sm pl-2">{label}</span>
         <MdArrowDropDown className="absolute top-1/2 -translate-y-1/2 right-1" />
         {isOpen && (
-          <ul className="absolute w-full py-1 rounded top-9 bg-white shadow-lg dark:bg-dark-color-4">
+          <ul className="absolute w-full py-1 rounded top-9 ring-1 ring-slate-300 dark:ring-0 bg-white shadow-lg dark:bg-dark-color-4">
             {options.length > 0 ? (
               options.map((item) => (
                 <li
