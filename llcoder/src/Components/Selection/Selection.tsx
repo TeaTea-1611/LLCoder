@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MdArrowDropDown } from "react-icons/md";
 
-interface Option {
+export interface Option {
   value: string;
   label: string;
 }

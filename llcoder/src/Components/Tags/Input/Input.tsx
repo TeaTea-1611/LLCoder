@@ -113,7 +113,7 @@ export function InputSearch({
         <BsSearch size={18} />
       </span>
       <input
-        className="pl-10 py-1.5 pr-3 ring-1 ring-slate-900/10 shadow-sm rounded-md dark:border-slate-700 dark:border"
+        className="w-full pl-10 py-1.5 pr-3 ring-1 ring-slate-900/10 shadow-sm rounded-md dark:border-slate-700 dark:border"
         type="text"
         placeholder={placeholder}
         value={value}

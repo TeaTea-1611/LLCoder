@@ -80,7 +80,6 @@ const ITEMS_PALETTE = [
 export function EditTextItem({ children, cmd, arg }: EditTextItemProps) {
   return (
     <li
-      className="flex items-center justify-center"
       onMouseDown={(evt) => {
         evt.preventDefault();
         document.execCommand(cmd, false, arg);
@@ -88,7 +87,7 @@ export function EditTextItem({ children, cmd, arg }: EditTextItemProps) {
     >
       <button
         type="button"
-        className="w-full h-full hover:text-primary duration-100 rounded cursor-pointer"
+        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
       >
         {children || cmd}
       </button>
@@ -113,19 +112,15 @@ export function EditTextItemFormatBlock() {
   }, [ref]);
 
   return (
-    <li
-      ref={ref}
-      className="relative flex z-10 items-center"
-      onClick={() => setIsOpen(!isOpen)}
-    >
+    <li ref={ref} className="relative" onClick={() => setIsOpen(!isOpen)}>
       <button
         type="button"
-        className="hover:text-primary duration-100 rounded cursor-pointer"
+        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
       >
         <BsCardHeading />
       </button>
       {isOpen && (
-        <ul className="absolute left-1/2 -translate-x-1/2 w-36 max-h-48 top-8 overflow-y-auto shadow bg-white rounded py-1 dark:bg-dark-color-3">
+        <ul className="absolute z-10 left-1/2 -translate-x-1/2 w-36 max-h-48 top-12 overflow-y-auto shadow bg-white rounded py-1 dark:bg-dark-color-3">
           {ITEMS_FORMAT.map((item) => (
             <EditTextItem key={uuidv4()} cmd={item.cmd} arg={item?.arg}>
               {item?.children}
@@ -158,19 +153,15 @@ export function EditTextPalette({
   }, [ref]);
 
   return (
-    <li
-      ref={ref}
-      className="relative flex z-10 items-center"
-      onClick={() => setIsOpen(!isOpen)}
-    >
+    <li ref={ref} className="relative" onClick={() => setIsOpen(!isOpen)}>
       <button
         type="button"
-        className="hover:text-primary duration-100 rounded cursor-pointer"
+        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
       >
         {backgroundColor ? <BsPaintBucket /> : <BsPalette />}
       </button>
       {isOpen && (
-        <ul className="absolute grid grid-cols-5 gap-2 w-40 left-1/2 -translate-x-1/2 max-h-48 top-8 overflow-y-auto shadow bg-white rounded p-2 dark:bg-dark-color-3">
+        <ul className="absolute z-10 grid grid-cols-5 gap-2 w-40 left-1/2 -translate-x-1/2 max-h-48 top-12 overflow-y-auto shadow bg-white rounded p-2 dark:bg-dark-color-3">
           {ITEMS_PALETTE.map((color) => (
             <li
               key={uuidv4()}
@@ -224,19 +215,16 @@ export function EditTextItemLink({
   };
 
   return (
-    <li
-      ref={ref}
-      className="relative flex z-10 items-center"
-      onClick={() => setIsOpen(true)}
-    >
+    <li ref={ref} className="relative">
       <button
         type="button"
-        className="hover:text-primary duration-100 rounded cursor-pointer"
+        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+        onClick={() => setIsOpen(true)}
       >
         <BsLink />
       </button>
       {isOpen && (
-        <div className="absolute left-1/2 -translate-x-1/2 w-72 px-6 top-8 overflow-y-auto shadow bg-white rounded py-1 dark:bg-dark-color-3">
+        <div className="absolute z-10 left-1/2 -translate-x-1/2 w-72 px-6 top-12 overflow-y-auto shadow bg-white rounded py-1 dark:bg-dark-color-3">
           <div className="mt-6 space-y-6">
             <Input
               label="URL"
@@ -288,7 +276,7 @@ export function EditTextItemImage({
       <li className="flex items-center">
         <label
           htmlFor={id}
-          className="hover:text-primary duration-100 rounded cursor-pointer"
+          className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
         >
           <BsImage className="cursor-pointer" />
         </label>

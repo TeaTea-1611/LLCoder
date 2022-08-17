@@ -13,7 +13,7 @@ function Nav() {
                 className={(nav) =>
                   `flex items-center lg:text-sm lg:leading-6 mb-4 font-semibold space-x-3${
                     nav.isActive ? " text-primary" : ""
-                  }`
+                  } hover:text-primary`
                 }
               >
                 {item.icon}

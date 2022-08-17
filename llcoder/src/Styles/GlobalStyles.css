@@ -41,7 +41,15 @@
     @apply text-xl;
   }
   input {
-    @apply w-full focus:outline-none text-base leading-6 text-slate-400  dark:bg-slate-800;
+    @apply focus:outline-none text-base leading-6 text-slate-400  dark:bg-slate-800;
+  }
+  textarea {
+    @apply focus:outline-none text-base leading-6 text-slate-400  bg-transparent;
+  }
+  ol {
+    list-style: decimal;
+    padding-left: 24px;
+    margin-bottom: 8px;
   }
 }
 

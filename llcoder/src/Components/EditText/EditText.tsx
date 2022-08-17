@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import ContentEditable from "react-contenteditable";
-import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { BsEye, BsEyeSlash, BsTable } from "react-icons/bs";
 import { MdZoomOutMap } from "react-icons/md";
 import { Modal } from "../Modal";
 import {
@@ -47,14 +47,14 @@ function EditText({ value, onChange, tagName = "div" }: EditTextProps) {
     }
   };
 
-  const body = (
+  let body = (
     <div
       className={`border-2 border-primary caret-primary focus-within:outline focus-within:outline-1 focus-within:outline-primary
     ${!isZoomed ? "" : "h-full"}
     `}
     >
       <div className="flex border-b-primary border-b p-1">
-        <ul className="flex space-x-2">
+        <ul className="flex flex-1 flex-wrap mr-4">
           {ITEMS.map((item) => (
             <EditTextItem key={item.cmd} cmd={item.cmd} arg={item?.arg}>
               {item?.children}
@@ -66,7 +66,7 @@ function EditText({ value, onChange, tagName = "div" }: EditTextProps) {
           <EditTextItem
             cmd="insertHTML"
             arg={`
-            <table class="border-collapse border border-slate-500">
+            <table class="table-auto border-collapse border border-slate-500">
               <thead>
               <tr>
                 <th class="py-2 px-4 border border-slate-600">Input</th>
@@ -75,31 +75,45 @@ function EditText({ value, onChange, tagName = "div" }: EditTextProps) {
               </thead>
               <tbody>
                 <tr>
-                  <td class="py-2 px-4 border border-slate-700">...</td>
-                  <td class="py-2 px-4 border border-slate-700">...</td>
+                  <td class="py-2 px-4 border border-slate-700">
+                    123
+                    <br />
+                    hcmue
+                  </td>
+                  <td class="py-2 px-4 border border-slate-700">
+                    321
+                    <br />
+                    eumch
+                  </td>
                 </tr>
               </tbody>
             </table>
             <br>
           `}
           >
-            <span>Input/Output</span>
+            <BsTable />
           </EditTextItem>
           <EditTextItemLink onChange={handleChangeItem} />
           <EditTextItemImage onChange={handleChangeItem} />
         </ul>
-        <ul className="ml-auto mr-2 flex items-center space-x-3">
-          <li
-            className="cursor-pointer hover:text-primary"
-            onClick={() => setDisabled(!disabled)}
-          >
-            {disabled ? <BsEye /> : <BsEyeSlash />}
+        <ul className="mr-2 flex">
+          <li>
+            <button
+              type="button"
+              className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+              onClick={() => setDisabled(!disabled)}
+            >
+              {disabled ? <BsEye /> : <BsEyeSlash />}
+            </button>
           </li>
-          <li
-            className="cursor-pointer hover:text-primary"
-            onClick={() => setIsZoomed(!isZoomed)}
-          >
-            <MdZoomOutMap />
+          <li>
+            <button
+              type="button"
+              className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+              onClick={() => setIsZoomed(!isZoomed)}
+            >
+              <MdZoomOutMap />
+            </button>
           </li>
         </ul>
       </div>
@@ -129,4 +143,4 @@ function EditText({ value, onChange, tagName = "div" }: EditTextProps) {
   );
 }
 
-export default EditText;
+export default memo(EditText);
