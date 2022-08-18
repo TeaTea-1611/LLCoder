@@ -51,7 +51,7 @@ function Selection({
         <span className="text-sm pl-2">{label}</span>
         <MdArrowDropDown className="absolute top-1/2 -translate-y-1/2 right-1" />
         {isOpen && (
-          <ul className="absolute w-full py-1 rounded top-9 ring-1 ring-slate-300 dark:ring-0 bg-white shadow-lg dark:bg-dark-color-4">
+          <ul className="absolute w-full top-9 bg-white rounded-lg ring-1 ring-slate-900/10 shadow-lg overflow-hidden py-1 text-slate-700 font-semibold dark:bg-dark-color-3 dark:ring-0 dark:highlight-white/5 dark:text-slate-300">
             {options.length > 0 ? (
               options.map((item) => (
                 <li

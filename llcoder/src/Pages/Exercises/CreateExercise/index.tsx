@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { EditText } from "../../../components/EditText";
 import { MarkdownEditor } from "../../../components/Markdown";
 import { MultiSelection } from "../../../components/Selection";
-import { Button, Input } from "../../../components/Tags";
+import { Button, Input } from "../../../components/UI";
 import Testcase from "./Testcase";
 
 function CreateExercisePage() {

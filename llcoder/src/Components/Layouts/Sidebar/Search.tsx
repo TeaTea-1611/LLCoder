@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { InputSearch } from "../../Tags";
+import { InputSearch } from "../../UI";
 
 function QuickSeach() {
   const [searchValue, setSearchValue] = useState("");

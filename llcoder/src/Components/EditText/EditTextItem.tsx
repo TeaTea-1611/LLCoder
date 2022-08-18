@@ -14,7 +14,7 @@ import {
   BsLink,
   BsImage,
 } from "react-icons/bs";
-import { Button, Input } from "../Tags";
+import { Button, Input } from "../UI";
 
 interface EditTextItemProps {
   children?: React.ReactNode;

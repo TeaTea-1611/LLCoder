@@ -1,5 +1,5 @@
 import { ModalForm } from "../../../Modal";
-import { Button, InputField } from "../../../Tags";
+import { Button, InputField } from "../../../UI";
 import { Form, Formik, FormikHelpers } from "formik";
 import { validateLogin } from "../../../../utils/helpers/validate";
 import { mapFieldError } from "../../../../utils/helpers/mapFieldError";

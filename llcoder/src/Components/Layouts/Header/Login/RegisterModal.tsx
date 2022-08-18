@@ -2,7 +2,7 @@ import { Form, Formik, FormikHelpers } from "formik";
 import { mapFieldError } from "../../../../utils/helpers/mapFieldError";
 import { validateRegister } from "../../../../utils/helpers/validate";
 import { ModalForm } from "../../../Modal";
-import { Button, InputField } from "../../../Tags";
+import { Button, InputField } from "../../../UI";
 import { ModalHeeaderProps } from "./LoginModal";
 
 interface FormValues {

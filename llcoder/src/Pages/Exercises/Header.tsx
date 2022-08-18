@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
-import { Button } from "../../../components/Tags";
-import SearchExrcises from "../SearchExrcises";
+import { Button } from "../../components/UI";
+import SearchExrcises from "./SearchExrcises";
 
 function HeaderExercisesPage() {
   const [isOpenSearch, setIsOpenSearch] = useState(false);

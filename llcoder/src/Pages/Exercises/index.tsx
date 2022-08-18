@@ -1,6 +1,6 @@
-import { Button } from "../../components/Tags";
-import { Table, Td } from "../../components/Tags";
-import HeaderExercisesPage from "./HeaderExercisesPage";
+import { Button } from "../../components/UI";
+import { Table, Td } from "../../components/UI";
+import HeaderExercisesPage from "./Header";
 
 const data = [
   {

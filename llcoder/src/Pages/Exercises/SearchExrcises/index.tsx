@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalForm } from "../../../components/Modal";
 import { Selection } from "../../../components/Selection";
-import { Button, InputSearch } from "../../../components/Tags";
+import { Button, InputSearch } from "../../../components/UI";
 
 function Search({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [searchValue, setSearchValue] = useState({
@@ -57,6 +57,7 @@ function Search({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
             onChange={(value) => console.log(value)}
           />
           <Selection
+            className="z-[1]"
             options={[
               { value: "Easy", label: "Easy" },
               { value: "Medium", label: "Medium" },

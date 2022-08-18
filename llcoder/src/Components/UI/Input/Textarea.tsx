@@ -14,8 +14,10 @@ function Textarea({ label, value, onChange }: TextareaProps) {
       />
       <label
         className={`absolute top-5 ${
-          value.length > 0 ? "-translate-y-11" : "-translate-y-1/2"
-        } left-3 text-gray-500 duration-200 ease-linear peer-focus:-translate-y-11 peer-focus:text-primary`}
+          value.length > 0
+            ? "-translate-y-11 left-1"
+            : "-translate-y-1/2 left-3"
+        } text-gray-500 duration-200 ease-linear peer-focus:-translate-y-11 peer-focus:text-primary peer-focus:left-1`}
       >
         {label}
       </label>

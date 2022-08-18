@@ -54,4 +54,49 @@
 }
 
 @layer components {
+  .animation-fadeIn {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .content-auto {
+    @apply absolute w-full h-full text-center text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text translate-x-full;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400% 400%;
+    /* Starting position */
+    -moz-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+
+    /* Apply animation to this element */
+    -moz-animation: contentAuto 10s linear infinite;
+    -webkit-animation: contentAuto 10s linear infinite;
+    animation: contentAuto 10s linear infinite;
+  }
+
+  @keyframes contentAuto {
+    0% {
+      -moz-transform: translateX(100%); /* Firefox bug fix */
+      -webkit-transform: translateX(100%); /* Firefox bug fix */
+      transform: translateX(100%);
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      -moz-transform: translateX(-100%); /* Firefox bug fix */
+      -webkit-transform: translateX(-100%); /* Firefox bug fix */
+      transform: translateX(-100%);
+      background-position: 0% 50%;
+    }
+  }
 }
