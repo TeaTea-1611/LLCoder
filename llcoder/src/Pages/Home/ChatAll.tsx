@@ -1,7 +1,7 @@
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { MdOutlineInsertEmoticon } from "react-icons/md";
 import { BsCardImage, BsStickiesFill } from "react-icons/bs";
-import { Emoji } from "../../components/Chat";
+import { Emoji, MessageChatAll } from "../../components/Chat";
 import { useState } from "react";
 
 function ChatAll() {
@@ -16,7 +16,12 @@ function ChatAll() {
           <h5 className="content-auto">Chào mừng bạn đến với LLCoder...</h5>
         </div>
         <div className="relative overflow-y-scroll w-full h-80 p-1 border-t border-b border-slate-200 dark:border-slate-700">
-          <div className="flex flex-col space-y-2"></div>
+          <div>
+            <MessageChatAll
+              message="Chào mừng bạn đến với LLCoder..."
+              user={{ nickname: "LLCoder" }}
+            />
+          </div>
         </div>
         <div className="flex items-center h-10 my-1 px-2 space-x-2">
           <div className="flex">
