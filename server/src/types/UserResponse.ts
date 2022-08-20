@@ -16,6 +16,16 @@ export class UserResponse implements MutationResponse {
   errors?: FieldError[];
 }
 
+@ObjectType({ implements: MutationResponse })
+export class UsersResponse implements MutationResponse {
+  code: number;
+  success: boolean;
+  message?: string;
+
+  @Field(() => [User], { nullable: true })
+  users?: User[];
+}
+
 @InputType()
 export class RegisterInput {
   @Field()

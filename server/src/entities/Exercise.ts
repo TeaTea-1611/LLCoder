@@ -16,23 +16,23 @@ export class Exercise extends BaseEntity {
   id!: number;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   name!: string;
 
   @Field()
-  @Column()
-  description!: string;
+  @Column({ type: "text", default: "" })
+  description: string;
 
-  @Field({ nullable: true })
-  @Column()
+  @Field()
+  @Column({ type: "text", default: "" })
   markdown: string;
 
   @Field()
-  @Column()
-  difficulty!: string;
+  @Column({ default: 0 })
+  difficulty!: number;
 
-  @Field({ defaultValue: 10, nullable: true })
-  @Column()
+  @Field()
+  @Column({ default: 10 })
   exp: number;
 
   @Field()

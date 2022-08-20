@@ -31,16 +31,25 @@ export class User extends BaseEntity {
   nickname!: string;
 
   @Field()
-  @Column({ nullable: true })
-  avatar: string;
+  @Column({ default: 4, enum: [0, 1, 2, 3, 4] })
+  // 0: admin | 1: teacher | 2: supervisor | 3: student | 4: user
+  role: number;
 
   @Field()
-  @Column({ nullable: true })
-  mssv: string;
+  @Column({ default: false })
+  isActive: boolean;
+
+  @Field()
+  @Column({ default: "" })
+  avatar: string;
 
   @Field()
   @Column({ default: 0 })
   exp: number;
+
+  @Field()
+  @Column({ nullable: true })
+  lastLogin: Date;
 
   @Field()
   @CreateDateColumn()
