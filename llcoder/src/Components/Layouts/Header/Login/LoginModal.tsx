@@ -3,6 +3,8 @@ import { Button, InputField } from "../../../UI";
 import { Form, Formik, FormikHelpers } from "formik";
 import { validateLogin } from "../../../../utils/helpers/validate";
 import { mapFieldError } from "../../../../utils/helpers/mapFieldError";
+import { LoginInput, useLoginMutation } from "../../../../generated/graphql";
+import { toast } from "react-toastify";
 
 export interface ModalHeeaderProps {
   isOpen: boolean;
@@ -10,20 +12,32 @@ export interface ModalHeeaderProps {
   changeModal: (modal: string) => void;
 }
 
-interface FormValues {
-  usernameOrEmail: string;
-  password: string;
-}
-
 function LoginModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
+  const [loginUser, { loading }] = useLoginMutation();
+
   const handleSubmit = async (
-    values: FormValues,
-    { setErrors }: FormikHelpers<FormValues>
+    values: LoginInput,
+    { setErrors }: FormikHelpers<LoginInput>
   ) => {
     const errors = validateLogin(values);
     if (errors.length) {
       setErrors(mapFieldError(errors));
       return;
+    }
+    const response = await loginUser({
+      variables: {
+        data: {
+          usernameOrEmail: values.usernameOrEmail,
+          password: values.password,
+        },
+      },
+    });
+    if (response.data?.login.errors) {
+      setErrors(mapFieldError(response.data.login.errors));
+    } else if (response.data?.login.success) {
+      toast("Successfully logged in!", { autoClose: 10000, type: "success" });
+      onClose();
+      changeModal("home");
     }
   };
 
@@ -36,11 +50,11 @@ function LoginModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
         }}
         onSubmit={handleSubmit}
       >
-        {({ setFieldValue }) => (
-          <Form className="space-y-6 mt-8 w-100">
+        {() => (
+          <Form className="mt-8 w-100">
             <InputField label="Username or Email" name="usernameOrEmail" />
             <InputField label="Password" name="password" isPassword />
-            <div className="flex">
+            <div className="flex mt-4">
               <button
                 type="button"
                 className="hover:underline"
@@ -51,11 +65,11 @@ function LoginModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
               >
                 Forgot Password?
               </button>
-              <Button type="submit" className="ml-auto">
+              <Button type="submit" className="ml-auto" isLoading={loading}>
                 Login
               </Button>
             </div>
-            <div className="flex justify-center space-x-1">
+            <div className="flex justify-center space-x-1 mt-4">
               <p>Don't have an account?</p>
               <button
                 type="button"

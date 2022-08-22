@@ -1,40 +1,19 @@
-import { User } from "../entities/User";
+import { User } from "../../entities/User";
+import { Context } from "../../types/Context";
+import { LoginInput, RegisterInput } from "../../types/InputType";
+import { UserResponse } from "../../types/UserResponse";
+import { validateLogin, validateRegister } from "../../utils/validate";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import {
-  LoginInput,
-  RegisterInput,
-  UserResponse,
-  UsersResponse,
-} from "../types/UserResponse";
-import argon2 from "argon2";
-import { validateLogin, validateRegister } from "../utils/validate";
-import { Context } from "../types/Context";
-import { COOKIES_NAME } from "../constans";
+import bcrypt from "bcryptjs";
+import { COOKIES_NAME } from "../../constans/constans";
+import { createConfirmationUrl } from "../../utils/createConfirmationUrl";
+import { sendEmail } from "../../utils/sendEmail";
 
 @Resolver()
-export class UserResolver {
-  @Query(() => UsersResponse)
-  async users(): Promise<UsersResponse> {
-    try {
-      const users = await User.find();
-      return {
-        code: 200,
-        success: true,
-        users,
-      };
-    } catch (err) {
-      return {
-        code: 500,
-        success: false,
-        message: "Internal server error" + err.message,
-      };
-    }
-  }
-
+export class LoginResolver {
   @Mutation(() => UserResponse)
   async register(
-    @Arg("data") registerInput: RegisterInput,
-    @Ctx() { req }: Context
+    @Arg("data") registerInput: RegisterInput
   ): Promise<UserResponse> {
     const errors = validateRegister(registerInput);
     if (errors.length > 0) return { code: 400, success: false, errors };
@@ -59,7 +38,7 @@ export class UserResolver {
         };
       }
 
-      const hashedPassword = await argon2.hash(password);
+      const hashedPassword = await bcrypt.hash(password, 12);
 
       const user = await User.create({
         username,
@@ -68,7 +47,10 @@ export class UserResolver {
         password: hashedPassword,
       }).save();
 
-      req.session.uid = user.id;
+      await sendEmail(
+        email,
+        await createConfirmationUrl(user.id, "user-confirmation")
+      );
 
       return {
         code: 200,
@@ -107,7 +89,7 @@ export class UserResolver {
             },
           ],
         };
-      const valid = await argon2.verify(user.password, password);
+      const valid = await bcrypt.compare(password, user.password);
       if (!valid)
         return {
           code: 400,
@@ -116,6 +98,18 @@ export class UserResolver {
             {
               field: "password",
               message: "Password is incorrect",
+            },
+          ],
+        };
+
+      if (!user.confirmed)
+        return {
+          code: 400,
+          success: false,
+          errors: [
+            {
+              field: "usernameOrEmail",
+              message: "Account is not confirmed",
             },
           ],
         };
@@ -155,5 +149,25 @@ export class UserResolver {
           });
         });
     });
+  }
+
+  @Query(() => UserResponse)
+  async me(@Ctx() { req }: Context): Promise<UserResponse> {
+    try {
+      const user = await User.findOne({ where: { id: req.session.uid } });
+      if (!user)
+        return { code: 400, success: false, message: "User not found" };
+      return {
+        code: 200,
+        success: true,
+        user,
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        success: false,
+        message: "Internal server error" + err.message,
+      };
+    }
   }
 }

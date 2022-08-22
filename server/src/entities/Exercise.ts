@@ -36,6 +36,14 @@ export class Exercise extends BaseEntity {
   exp: number;
 
   @Field()
+  @Column({ default: true })
+  isPublic: boolean;
+
+  @Field()
+  @Column({ default: false })
+  confirmed: boolean;
+
+  @Field()
   @CreateDateColumn()
   createdAt!: Date;
 

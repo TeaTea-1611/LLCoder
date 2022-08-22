@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { LoadingSpinner } from "../../Loading";
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -6,9 +7,17 @@ interface ButtonProps {
   className?: string;
   type?: "button" | "submit" | "reset";
   to?: string;
+  isLoading?: boolean;
 }
 
-function Button({ children, className, onClick, to, type }: ButtonProps) {
+function Button({
+  children,
+  className,
+  onClick,
+  to,
+  type,
+  isLoading = false,
+}: ButtonProps) {
   const navigate = useNavigate();
   return (
     <>
@@ -21,8 +30,11 @@ function Button({ children, className, onClick, to, type }: ButtonProps) {
           else if (onClick) onClick();
         }}
         type={type}
+        disabled={isLoading}
       >
-        <span className="text-sm flex items-center">{children}</span>
+        <span className="text-sm flex items-center">
+          {isLoading ? <LoadingSpinner /> : children}
+        </span>
       </button>
     </>
   );

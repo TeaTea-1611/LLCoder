@@ -15,11 +15,9 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
   @Column({ unique: true })
   username!: string;
 
-  @Field()
   @Column({ unique: true })
   email!: string;
 
@@ -37,7 +35,7 @@ export class User extends BaseEntity {
 
   @Field()
   @Column({ default: false })
-  isActive: boolean;
+  confirmed!: boolean;
 
   @Field()
   @Column({ default: "" })
@@ -46,6 +44,10 @@ export class User extends BaseEntity {
   @Field()
   @Column({ default: 0 })
   exp: number;
+
+  @Field()
+  @Column({ nullable: true })
+  dateOfBirth: Date;
 
   @Field()
   @Column({ nullable: true })

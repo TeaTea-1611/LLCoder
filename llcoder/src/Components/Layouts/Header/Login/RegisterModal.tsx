@@ -1,4 +1,6 @@
 import { Form, Formik, FormikHelpers } from "formik";
+import { toast } from "react-toastify";
+import { useRegisterMutation } from "../../../../generated/graphql";
 import { mapFieldError } from "../../../../utils/helpers/mapFieldError";
 import { validateRegister } from "../../../../utils/helpers/validate";
 import { ModalForm } from "../../../Modal";
@@ -13,14 +15,32 @@ interface FormValues {
 }
 
 function RegisterModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
+  const [registerUser, { loading }] = useRegisterMutation();
+
   const handleSubmit = async (
     values: FormValues,
     { setErrors }: FormikHelpers<FormValues>
   ) => {
     const errors = validateRegister(values);
-    if (errors.length) {
+    if (!!errors.length) {
       setErrors(mapFieldError(errors));
       return;
+    }
+    const response = await registerUser({
+      variables: {
+        data: {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        },
+      },
+    });
+    if (!!response.data?.register.errors) {
+      setErrors(mapFieldError(response.data.register.errors));
+    } else {
+      toast("Successfully registered!", { autoClose: 10000, type: "success" });
+      onClose();
+      changeModal("login");
     }
   };
 
@@ -35,8 +55,8 @@ function RegisterModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
         }}
         onSubmit={handleSubmit}
       >
-        {({ setFieldValue }) => (
-          <Form className="space-y-6 mt-8 w-100">
+        {() => (
+          <Form className="mt-8 w-100">
             <InputField label="Username" name="username" />
             <InputField label="Email" name="email" />
             <InputField label="Password" name="password" isPassword />
@@ -45,7 +65,7 @@ function RegisterModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
               name="confirmPassword"
               isPassword
             />
-            <div className="flex">
+            <div className="flex mt-4">
               <div className="flex items-center space-x-1">
                 <p>You have an account?</p>
                 <button
@@ -59,7 +79,7 @@ function RegisterModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
                   Login
                 </button>
               </div>
-              <Button type="submit" className="ml-auto">
+              <Button type="submit" className="ml-auto" isLoading={loading}>
                 Register
               </Button>
             </div>

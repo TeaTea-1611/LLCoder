@@ -26,7 +26,7 @@ export function InputField({
   return (
     <>
       <div
-        className={`relative z-0 w-full my-2${
+        className={`relative z-0 w-full mt-6${
           className ? ` ${className}` : ""
         }`}
       >
@@ -60,7 +60,7 @@ export function InputField({
           ))}
       </div>
       {error && (
-        <div className="text-red-500 dark:text-red-400 text-xs font-medium">
+        <div className="text-red-500 dark:text-red-400 text-xs font-medium mt-1">
           {error}
         </div>
       )}

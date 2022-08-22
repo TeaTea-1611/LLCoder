@@ -1,5 +1,5 @@
 import { User } from "../entities/User";
-import { Field, InputType, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import { MutationResponse } from "./MutationResponse";
 import { FieldError } from "./FieldError";
 
@@ -24,25 +24,4 @@ export class UsersResponse implements MutationResponse {
 
   @Field(() => [User], { nullable: true })
   users?: User[];
-}
-
-@InputType()
-export class RegisterInput {
-  @Field()
-  username: string;
-
-  @Field()
-  email: string;
-
-  @Field()
-  password: string;
-}
-
-@InputType()
-export class LoginInput {
-  @Field()
-  usernameOrEmail: string;
-
-  @Field()
-  password: string;
 }
