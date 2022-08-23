@@ -1,17 +1,25 @@
+import { useEffect, useState } from "react";
 import { BsMoonStars, BsTranslate } from "react-icons/bs";
-import { useAppDispatch, useAppSelector } from "../../../store/hook";
-import { changeTheme, selectTheme } from "../../../store/reducers/appReducer";
 import Menu from "../../Menu";
 import { LANGS, THEME } from "./Item";
 
 function Options() {
-  const dispatch = useAppDispatch();
-  const theme = useAppSelector(selectTheme);
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   const handleChangeTheme = (val: string) => {
-    if (theme === val) return;
-    dispatch(changeTheme(val));
+    setTheme(val);
   };
+
+  useEffect(() => {
+    if (theme) {
+      const historyTheme = localStorage.getItem("theme");
+      if (historyTheme) {
+        document.documentElement.classList.remove(historyTheme);
+      }
+      document.documentElement.classList.add(theme);
+      localStorage.setItem("theme", theme);
+    }
+  }, [theme]);
 
   return (
     <div className="space-x-4 pl-6 border-l border-slate-300 lg:flex items-center relative">

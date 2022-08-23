@@ -35,6 +35,8 @@ function RegisterModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
         },
       },
     });
+    console.log(response);
+
     if (!!response.data?.register.errors) {
       setErrors(mapFieldError(response.data.register.errors));
     } else {

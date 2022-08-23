@@ -120,6 +120,7 @@ export class LoginResolver {
         code: 200,
         success: true,
         message: "Login successfully",
+        user,
       };
     } catch (err) {
       return {
@@ -151,23 +152,13 @@ export class LoginResolver {
     });
   }
 
-  @Query(() => UserResponse)
-  async me(@Ctx() { req }: Context): Promise<UserResponse> {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req }: Context): Promise<User | null> {
     try {
-      const user = await User.findOne({ where: { id: req.session.uid } });
-      if (!user)
-        return { code: 400, success: false, message: "User not found" };
-      return {
-        code: 200,
-        success: true,
-        user,
-      };
+      if (!req.session.uid) return null;
+      return await User.findOne({ where: { id: req.session.uid } });
     } catch (err) {
-      return {
-        code: 500,
-        success: false,
-        message: "Internal server error" + err.message,
-      };
+      return null;
     }
   }
 }

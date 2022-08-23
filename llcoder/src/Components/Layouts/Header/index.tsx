@@ -1,4 +1,4 @@
-import Auth from "./Auth";
+import HeaderRight from "./HeaderRight";
 
 function Header() {
   return (
@@ -7,7 +7,7 @@ function Header() {
         <div className="lg:px-8 mx-4 lg:mx-0">
           <div className="relative h-14 flex items-center">
             <span>LLCoder</span>
-            <Auth />
+            <HeaderRight />
           </div>
         </div>
       </div>

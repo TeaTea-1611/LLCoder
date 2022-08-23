@@ -1,5 +1,5 @@
 import React, { useState, forwardRef } from "react";
-
+import images from "../../assets/images";
 interface Props {
   src: string;
   alt?: string;
@@ -7,7 +7,7 @@ interface Props {
 }
 
 function Image(
-  { src, alt, fallback: customFallback = "", ...props }: Props,
+  { src, alt, fallback: customFallback = images.noImageUser, ...props }: Props,
   ref: React.Ref<HTMLImageElement>
 ) {
   const [fallback, setFallback] = useState("");

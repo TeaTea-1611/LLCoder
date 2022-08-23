@@ -23,7 +23,7 @@
     background-color: rgba(0, 0, 0, 0.05);
   }
   body {
-    @apply font-barlow bg-white dark:bg-gray-900 dark:text-dark-text-color-1;
+    @apply font-barlow bg-white dark:bg-gray-900 dark:text-dark-text-color-1 duration-300;
   }
   h1 {
     @apply text-5xl;

@@ -3,7 +3,12 @@ import { Button, InputField } from "../../../UI";
 import { Form, Formik, FormikHelpers } from "formik";
 import { validateLogin } from "../../../../utils/helpers/validate";
 import { mapFieldError } from "../../../../utils/helpers/mapFieldError";
-import { LoginInput, useLoginMutation } from "../../../../generated/graphql";
+import {
+  LoginInput,
+  MeDocument,
+  MeQuery,
+  useLoginMutation,
+} from "../../../../generated/graphql";
 import { toast } from "react-toastify";
 
 export interface ModalHeeaderProps {
@@ -24,21 +29,29 @@ function LoginModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
       setErrors(mapFieldError(errors));
       return;
     }
-    const response = await loginUser({
+    await loginUser({
       variables: {
         data: {
           usernameOrEmail: values.usernameOrEmail,
           password: values.password,
         },
       },
+      update(cache, { data }) {
+        console.log("data", data);
+        if (data?.login.success) {
+          toast("login success");
+          onClose();
+          cache.writeQuery<MeQuery>({
+            query: MeDocument,
+            data: {
+              me: data.login.user,
+            },
+          });
+        } else if (data?.login.errors) {
+          setErrors(mapFieldError(data.login.errors));
+        }
+      },
     });
-    if (response.data?.login.errors) {
-      setErrors(mapFieldError(response.data.login.errors));
-    } else if (response.data?.login.success) {
-      toast("Successfully logged in!", { autoClose: 10000, type: "success" });
-      onClose();
-      changeModal("home");
-    }
   };
 
   return (

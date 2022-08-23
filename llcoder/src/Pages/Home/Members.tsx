@@ -1,36 +1,7 @@
 import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 const members = [
-  {
-    nickname: "llcoder",
-    level: 1,
-    exercises_solved: 0,
-    exp: 0,
-  },
-  {
-    nickname: "llcoder",
-    level: 1,
-    exercises_solved: 0,
-    exp: 0,
-  },
-  {
-    nickname: "llcoder",
-    level: 1,
-    exercises_solved: 0,
-    exp: 0,
-  },
-  {
-    nickname: "llcoder",
-    level: 1,
-    exercises_solved: 0,
-    exp: 0,
-  },
-  {
-    nickname: "llcoder",
-    level: 1,
-    exercises_solved: 0,
-    exp: 0,
-  },
   {
     nickname: "llcoder",
     level: 1,
@@ -46,7 +17,10 @@ function Members() {
         <h3 className="font-medium">Coder tích cực</h3>
         <div className="mt-4 space-y-1">
           {members.map((member) => (
-            <div className="p-2 rounded shadow dark:bg-slate-800">
+            <div
+              className="p-2 rounded shadow dark:bg-slate-800"
+              key={uuidv4()}
+            >
               <div className="flex justify-between text-lg">
                 <Link
                   to={`/members/${member.nickname}`}

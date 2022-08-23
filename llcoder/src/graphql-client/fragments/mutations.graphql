@@ -1,4 +1,4 @@
-fragment mutationStatus on MutationResponse {
+fragment mutationStatus on UserResponse {
   code
   success
   message

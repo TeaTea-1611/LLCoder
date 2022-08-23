@@ -1,0 +1,9 @@
+fragment userMutationResponse on UserResponse {
+  ...mutationStatus
+  user {
+    ...userInfo
+  }
+  errors {
+    ...fieldError
+  }
+}
