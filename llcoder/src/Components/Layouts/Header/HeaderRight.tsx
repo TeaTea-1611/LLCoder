@@ -10,7 +10,7 @@ function HeaderRight() {
 
   return (
     <div className="ml-auto flex space-x-4">
-      <div className="lg:inline-flex items-center space-x-3">
+      <div className="flex items-center space-x-3">
         {loading ? (
           <LoadingSpinner />
         ) : !data?.me ? (

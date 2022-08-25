@@ -26,13 +26,13 @@
     @apply font-barlow bg-white dark:bg-gray-900 dark:text-dark-text-color-1 duration-300;
   }
   h1 {
-    @apply text-5xl;
+    @apply text-5xl font-medium;
   }
   h2 {
-    @apply text-4xl;
+    @apply text-4xl font-medium;
   }
   h3 {
-    @apply text-3xl;
+    @apply text-3xl font-medium;
   }
   h4 {
     @apply text-2xl;
@@ -42,6 +42,10 @@
   }
   input {
     @apply focus:outline-none text-base leading-6 text-slate-400  dark:bg-slate-800;
+  }
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
   }
   textarea {
     @apply focus:outline-none text-base leading-6 text-slate-400  bg-transparent;
@@ -55,7 +59,7 @@
 
 @layer components {
   .animation-fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
+    animation: fadeIn 0.25s ease-in-out;
   }
 
   @keyframes fadeIn {

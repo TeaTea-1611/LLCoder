@@ -16,7 +16,7 @@ function MarkdownView({ value, className }: MarkdownViewProps) {
       remarkPlugins={[remarkGfm, remarkMath]}
       rehypePlugins={[rehypeKatex]}
       components={MarkdownComponents}
-      className={`overflow-auto w-full h-full ${className}`}
+      className={className ? className : "overflow-auto w-full h-full p-2"}
     />
   );
 }

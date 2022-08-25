@@ -27,7 +27,7 @@ function ChatAll() {
           <div className="flex">
             <button
               type="button"
-              className="m-auto text-lg flex p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-primary"
+              className="m-auto text-lg flex p-2 text-slate-700 dark:text-slate-400 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-sky-500 dark:hover:text-sky-500"
             >
               <BsCardImage className="m-auto" />
             </button>
@@ -35,7 +35,7 @@ function ChatAll() {
           <div className="flex">
             <button
               type="button"
-              className="m-auto text-lg flex p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-primary"
+              className="m-auto text-lg flex p-2 rounded-full text-slate-700 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-sky-500 dark:hover:text-sky-500"
             >
               <BsStickiesFill className="m-auto" />
             </button>
@@ -48,7 +48,7 @@ function ChatAll() {
               onChange={(e) => setContent(e.target.value)}
             />
             <button
-              className="absolute top-1/2 -translate-y-1/2 right-3 text-lg p-1 flex rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-primary"
+              className="absolute top-1/2 -translate-y-1/2 right-3 text-lg p-1 flex rounded-full text-slate-700 dark:text-slate-400 hover:bg-slate-100 hover:text-sky-500 dark:hover:text-sky-500 dark:hover:bg-slate-700"
               onClick={() => setIsOpenEmoji(!isOpenEmoji)}
             >
               <MdOutlineInsertEmoticon />
@@ -62,7 +62,7 @@ function ChatAll() {
           <div className="flex">
             <button
               type="button"
-              className="m-auto text-lg text-slate-700 flex p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-primary"
+              className="m-auto text-lg text-slate-700 flex p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-sky-500"
             >
               <RiSendPlane2Fill className="m-auto" />
             </button>

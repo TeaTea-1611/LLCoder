@@ -1,14 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import DefaultLayout from "./components/Layouts";
-import { publicRoutes } from "./routes";
+import PrivatePage from "./pages/PrivatePage";
+import { pageRoutes } from "./routes";
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          {publicRoutes.map((route) => {
+          {pageRoutes.map((route) => {
             const Page = route.component;
             return (
               <Route
@@ -16,7 +17,13 @@ function App() {
                 path={route.path}
                 element={
                   <DefaultLayout>
-                    <Page />
+                    {route.private ? (
+                      <PrivatePage>
+                        <Page />
+                      </PrivatePage>
+                    ) : (
+                      <Page />
+                    )}
                   </DefaultLayout>
                 }
               />

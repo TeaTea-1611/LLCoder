@@ -44,4 +44,3 @@ function Exercises() {
 }
 
 export default Exercises;
-export { default as CreateExercisePage } from "./CreateExercise";

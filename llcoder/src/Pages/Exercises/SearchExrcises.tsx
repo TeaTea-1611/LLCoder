@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ModalForm } from "../../../components/Modal";
-import { Selection } from "../../../components/Selection";
-import { Button, InputSearch } from "../../../components/UI";
+import { ModalForm } from "../../components/Modal";
+import { Selection } from "../../components/Selection";
+import { Button, InputSearch } from "../../components/UI";
 
 function Search({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [searchValue, setSearchValue] = useState({

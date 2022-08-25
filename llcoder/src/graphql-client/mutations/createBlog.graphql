@@ -1,0 +1,5 @@
+mutation CreateBlog($data: CreateBlogInput!) {
+  createBlog(data: $data) {
+    ...blogMutationResponse
+  }
+}

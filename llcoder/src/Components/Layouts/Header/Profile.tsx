@@ -58,7 +58,7 @@ function Profile({ me }: MeQuery) {
         <img className="w-8 h-8" src={images.noImageUser} alt="avatar" />
       </button>
       {isOpen && (
-        <div className="absolute -translate-x-1/2 left-1/2 top-12 shadow bg-white dark:bg-slate-800 dark:border dark:border-slate-700 p-2 rounded w-48">
+        <div className="absolute animation-fadeIn -translate-x-1/2 left-1/2 top-12 shadow bg-white dark:bg-slate-800 dark:border dark:border-slate-700 p-2 rounded w-48">
           <div className="flex space-x-4 p-2 rounded cursor-pointer hover:bg-slate-700/60">
             <div className="w-12 h-12 rounded-full overflow-hidden">
               <img src={images.noImageUser} alt="avatar" />

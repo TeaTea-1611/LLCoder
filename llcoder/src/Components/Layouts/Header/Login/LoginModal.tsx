@@ -37,7 +37,6 @@ function LoginModal({ isOpen, onClose, changeModal }: ModalHeeaderProps) {
         },
       },
       update(cache, { data }) {
-        console.log("data", data);
         if (data?.login.success) {
           toast("login success");
           onClose();

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Textarea } from "../../../components/UI";
+import { Textarea } from "../../components/UI";
 
 function Testcase() {
   const [totalTestcases, setTotalTestcases] = useState(5);

@@ -1,43 +1,68 @@
 import { Exercise } from "../../entities/Exercise";
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import {
-  CreateExerciseInput,
   ExerciseResponse,
+  CreateExerciseInput,
 } from "../../types/ExerciseResponse";
-import { Arg, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import { Context } from "../../types/Context";
+import { User } from "../../entities/User";
 import { isAuth } from "../../middlewares/auth";
+import { Category } from "../../entities/Category";
+import { In } from "typeorm";
 
 @Resolver()
 export class CreateExerciseResolver {
   @UseMiddleware(isAuth())
   @Mutation(() => ExerciseResponse)
   async createExercise(
-    @Arg("data") data: CreateExerciseInput
+    @Arg("data") data: CreateExerciseInput,
+    @Ctx() { req }: Context
   ): Promise<ExerciseResponse> {
     try {
-      const { name, description, markdown, difficulty, exp } = data;
-      const checkExercise = await Exercise.findOne({ where: { name } });
-      if (checkExercise)
+      const user = User.findOne({ where: { id: req.session.uid } });
+      if (!user)
+        return {
+          code: 401,
+          success: false,
+        };
+      const { name, text, categories = [], difficulty = 0, exp = 10 } = data;
+      const check = await Exercise.findOne({ where: { name } });
+      if (check)
         return {
           code: 400,
           success: false,
-          errors: [
-            {
-              field: "name",
-              message: "Exercise already exists",
-            },
-          ],
+          message: "title already exist",
         };
-      const exercise = await Exercise.create({
+
+      const exercise = Exercise.create({
+        userId: req.session.uid,
         name,
-        description,
-        markdown,
+        text,
         difficulty,
         exp,
-      }).save();
+      });
+
+      if (categories) {
+        const findCategories = await Category.find({
+          where: {
+            id: In(categories),
+          },
+        });
+        if (!findCategories)
+          return {
+            code: 400,
+            success: false,
+            message: "Categories not found",
+          };
+        exercise.categories = findCategories;
+      }
+
+      await exercise.save();
 
       return {
         code: 200,
         success: true,
+        message: "craete success!",
         exercise,
       };
     } catch (err) {

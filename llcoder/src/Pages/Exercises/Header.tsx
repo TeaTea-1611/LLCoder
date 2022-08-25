@@ -8,7 +8,7 @@ function HeaderExercisesPage() {
 
   return (
     <header className="relative flex items-center">
-      <h1 className="font-medium">Exercises</h1>
+      <h1>Exercises</h1>
       <div className="flex items-center ml-auto space-x-2">
         <Button onClick={() => setIsOpenSearch(true)}>
           <BsSearch size={16} />

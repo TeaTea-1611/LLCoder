@@ -26,41 +26,29 @@ export class ExercisesResponse implements MutationResponse {
   exercises?: Exercise[];
 }
 
+@ObjectType()
+export class PagtinatedExercises {
+  @Field()
+  totalCount!: number;
+
+  @Field(() => [Exercise], { nullable: true })
+  exercises?: Exercise[];
+}
+
 @InputType()
 export class CreateExerciseInput {
   @Field()
   name: string;
 
   @Field()
-  description: string;
+  text: string;
 
-  @Field()
-  markdown: string;
-
-  @Field()
+  @Field({ nullable: true })
   difficulty: number;
 
-  @Field()
-  exp: number;
-}
+  @Field(() => [ID], { nullable: true })
+  categories: number[];
 
-@InputType()
-export class UpdateExerciseInput {
-  @Field(() => ID)
-  id: number;
-
-  @Field()
-  name: string;
-
-  @Field()
-  description: string;
-
-  @Field()
-  markdown: string;
-
-  @Field()
-  difficulty: number;
-
-  @Field()
+  @Field({ nullable: true })
   exp: number;
 }

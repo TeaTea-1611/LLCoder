@@ -77,9 +77,9 @@ export class UsersResolver {
           message: "User not found",
         };
       const { nickname, dateOfBirth, password } = data;
-      if (nickname) user.nickname = nickname;
-      if (dateOfBirth) user.dateOfBirth = dateOfBirth;
-      if (password) user.password = password;
+      if (!!nickname) user.nickname = nickname;
+      if (!!dateOfBirth) user.dateOfBirth = dateOfBirth;
+      if (!!password) user.password = password;
       await user.save();
       return {
         code: 200,
@@ -139,6 +139,37 @@ export class UsersResolver {
         success: false,
         message: "Internal server error" + err.message,
       };
+    }
+  }
+
+  @Mutation(() => Boolean)
+  async setDarkModeSetting(@Ctx() { req }: Context): Promise<Boolean> {
+    try {
+      if (!req.session.uid) return false;
+      const user = await User.findOne({ where: { id: req.session.uid } });
+      if (!user) return false;
+      user.darkMode = !user.darkMode;
+      await user.save();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  @Mutation(() => Boolean)
+  async setLanguageSetting(
+    @Arg("language") language: string,
+    @Ctx() { req }: Context
+  ): Promise<Boolean> {
+    try {
+      if (!req.session.uid) return false;
+      const user = await User.findOne({ where: { id: req.session.uid } });
+      if (!user) return false;
+      user.language = language;
+      await user.save();
+      return true;
+    } catch {
+      return false;
     }
   }
 

@@ -2,6 +2,7 @@ export const routes = {
   home: "/",
   exercises: "/exercises",
   createExercise: "/exercises/create",
+  exercisesNotConfirmed: "/exercises/not-confirmed",
   codepad: "/codepad",
   members: "/members",
   manage: "/manage",
@@ -9,6 +10,9 @@ export const routes = {
   manageExercises: "/manage/exercises",
   exams: "/exams",
   aboutMe: "/about-me",
+  blogs: "/blogs",
+  createBlog: "/blogs/create",
+  blogsNotConfirmed: "/blogs/not-confirmed",
 };
 
 export const options = {

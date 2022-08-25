@@ -14,7 +14,7 @@ function Members() {
   return (
     <div className="fixed z-20 top-[3.8125rem] bottom-0 right-[max(0px,calc(50%-40rem))] w-[19.5rem] py-10 px-8 overflow-y-auto hidden xl:block">
       <div className="">
-        <h3 className="font-medium">Coder tích cực</h3>
+        <h3>Coder tích cực</h3>
         <div className="mt-4 space-y-1">
           {members.map((member) => (
             <div

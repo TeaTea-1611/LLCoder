@@ -4,9 +4,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Category } from "./Category";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -15,29 +20,33 @@ export class Exercise extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column()
+  userId: number;
+
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.exercises)
+  user: User;
+
   @Field()
   @Column({ unique: true })
   name!: string;
 
   @Field()
   @Column({ type: "text", default: "" })
-  description: string;
-
-  @Field()
-  @Column({ type: "text", default: "" })
-  markdown: string;
+  text: string;
 
   @Field()
   @Column({ default: 0 })
   difficulty!: number;
 
+  @Field(() => [Category])
+  @ManyToMany(() => Category, (category) => category.exercises)
+  @JoinTable()
+  categories!: Category[];
+
   @Field()
   @Column({ default: 10 })
   exp: number;
-
-  @Field()
-  @Column({ default: true })
-  isPublic: boolean;
 
   @Field()
   @Column({ default: false })

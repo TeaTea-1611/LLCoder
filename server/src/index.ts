@@ -21,7 +21,7 @@ import { createSchema } from "./utils/createSchema";
     password: process.env.DB_PASSWORD,
     logging: true,
     synchronize: true,
-    entities: [__dirname + "/entities/*.*"],
+    entities: [__dirname + "/entities/*.js"],
   });
   const app = express();
   const PORT = process.env.PORT || 4000;

@@ -1,0 +1,14 @@
+{
+  "sidebar-nav": {
+    "home": "Trang chủ",
+    "exercises": "Bài tập",
+    "create-exercise": "Thêm bài tập mới",
+    "exercises-not-confirmed": "Bài tập chưa được duyệt",
+    "members": "Thành viên",
+    "exams": "Kì thi",
+    "about-me": "Tác giả",
+    "blogs": "Blogs",
+    "create-blog": "Viết blog",
+    "blogs-not-confirmed": "Blogs chưa được duyệt"
+  }
+}

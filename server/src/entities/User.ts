@@ -4,9 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Blog } from "./Blog";
+import { Exercise } from "./Exercise";
 
 @ObjectType()
 @Entity()
@@ -45,13 +48,27 @@ export class User extends BaseEntity {
   @Column({ default: 0 })
   exp: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   dateOfBirth: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   lastLogin: Date;
+
+  @Field()
+  @Column({ default: false })
+  darkMode: boolean;
+
+  @Field()
+  @Column({ default: "vi" })
+  language: string;
+
+  @OneToMany(() => Blog, (blog) => blog.user)
+  blogs: Blog[];
+
+  @OneToMany(() => Exercise, (exercise) => exercise.user)
+  exercises: Exercise[];
 
   @Field()
   @CreateDateColumn()

@@ -7,14 +7,18 @@ import reportWebVitals from "./reportWebVitals";
 import GlobalStyles from "./styles";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./apolloClient";
+import IntlProviderWrapper from "./translations/IntlProviderWrapper";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <ApolloProvider client={client}>
     <GlobalStyles>
-      <App />
+      <IntlProviderWrapper>
+        <App />
+      </IntlProviderWrapper>
     </GlobalStyles>
   </ApolloProvider>
 );

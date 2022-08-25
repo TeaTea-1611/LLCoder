@@ -1,0 +1,14 @@
+{
+  "sidebar-nav": {
+    "home": "Home",
+    "exercises": "Exercises",
+    "create-exercise": "Create new exercise",
+    "exercises-not-confirmed": "Exercises not confirmed",
+    "members": "Members",
+    "exams": "Exams",
+    "about-me": "About me",
+    "blogs": "Blogs",
+    "create-blog": "Write new blog",
+    "blogs-not-confirmed": "Blogs not confirmed"
+  }
+}

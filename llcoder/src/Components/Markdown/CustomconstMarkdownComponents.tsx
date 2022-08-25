@@ -15,6 +15,7 @@ export const MarkdownComponents = {
           </span>
         </CopyToClipboard>
         <SyntaxHighlighter
+          customStyle={{ minHeight: 48 }}
           children={String(children).replace(/\n$/, "")}
           style={dracula}
           language={match[1]}
@@ -23,7 +24,10 @@ export const MarkdownComponents = {
         />
       </div>
     ) : (
-      <code className="" {...props}>
+      <code
+        className="p-1 rounded bg-slate-700 text-slate-400 font-medium"
+        {...props}
+      >
         {children}
       </code>
     );
@@ -48,5 +52,35 @@ export const MarkdownComponents = {
   },
   hr({ node, ...props }: any) {
     return <hr className="" {...props} />;
+  },
+  blockquote({ node, ...props }: any) {
+    return <blockquote className="border-l-2 border-sky-500 pl-2" {...props} />;
+  },
+  u({ node, ...props }: any) {
+    return <u style={{ textDecoration: "underline" }} {...props} />;
+  },
+  table({ node, ...props }: any) {
+    return (
+      <table
+        className="table-auto min-w-full leading-normal overflow-hidden shadow my-2"
+        {...props}
+      />
+    );
+  },
+  th({ node, ...props }: any) {
+    return (
+      <th
+        className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider dark:bg-dark-color-2 dark:border-gray-700"
+        {...props}
+      />
+    );
+  },
+  td({ node, ...props }: any) {
+    return (
+      <td
+        className="px-5 py-2 border-b border-gray-200 bg-white dark:bg-dark-color-3 dark:border-gray-700 text-sm"
+        {...props}
+      />
+    );
   },
 };

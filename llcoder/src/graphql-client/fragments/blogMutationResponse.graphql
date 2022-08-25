@@ -1,0 +1,11 @@
+fragment blogMutationResponse on BlogResponse {
+  code
+  success
+  message
+  blog {
+    ...blogInfo
+  }
+  errors {
+    ...fieldError
+  }
+}

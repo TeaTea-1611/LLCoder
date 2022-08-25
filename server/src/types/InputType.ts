@@ -38,7 +38,7 @@ export class LoginInput {
 
 @InputType()
 export class UpdateUserInput {
-  @Field()
+  @Field({ nullable: true })
   nickname?: string;
 
   @Field({ nullable: true })
