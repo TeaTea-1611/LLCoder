@@ -26,4 +26,8 @@ export class Entity extends BaseEntity {
   @Field()
   @Column({ default: 0 })
   reactionsCount: number;
+
+  @Field()
+  @Column({ default: 0 })
+  commentsCount: number;
 }

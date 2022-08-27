@@ -1,11 +1,13 @@
 import { NetworkStatus } from "@apollo/client";
 import { Button } from "../../components/UI";
-import { useBlogsQuery } from "../../generated/graphql";
+import { usePagtinatedBlogsQuery } from "../../generated/graphql";
+import moment from "moment";
+import { Link } from "react-router-dom";
 
 const limit = 5;
 
 function Blogs() {
-  const { data, fetchMore, networkStatus } = useBlogsQuery({
+  const { data, fetchMore, networkStatus } = usePagtinatedBlogsQuery({
     variables: { limit },
     notifyOnNetworkStatusChange: true,
   });
@@ -15,7 +17,7 @@ function Blogs() {
   const loadMoreBlogs = () =>
     fetchMore({
       variables: {
-        cursor: data?.blogs.cursor,
+        cursor: data?.pagtinatedBlogs.cursor,
       },
     });
 
@@ -31,29 +33,31 @@ function Blogs() {
         </div>
       </header>
       <div className="space-y-4 mt-6">
-        {data?.blogs.blogs?.map((blog) => (
+        {data?.pagtinatedBlogs.blogs?.map((blog) => (
           <div
-            key={blog.id + blog.title}
+            key={blog.entityId + blog.title}
             className="p-2 rounded dark:bg-slate-800"
           >
             <div>
-              <h3>{blog.title}</h3>
-            </div>
-            <div>
-              <p>{blog.markdown}</p>
+              <Link
+                to={blog.entityId}
+                className="font-medium text-3xl hover:underline"
+              >
+                {blog.title}
+              </Link>
             </div>
             <div className="flex justify-between">
               <div>
-                <button className="hover:underline">Xem</button>
+                <button className="hover:underline">Like</button>
               </div>
               <div>
-                <span>{blog.createdAt}</span>
+                <span>{moment(blog.createdAt).format("YYYY-MM-DD")}</span>
               </div>
             </div>
           </div>
         ))}
       </div>
-      {data?.blogs.hashMore && (
+      {data?.pagtinatedBlogs.hashMore && (
         <div className="flex mt-4">
           <Button
             className="m-auto"

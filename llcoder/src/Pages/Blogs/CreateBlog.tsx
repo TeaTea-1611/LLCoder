@@ -23,7 +23,7 @@ function CreateBlog() {
       variables: {
         data: {
           title,
-          markdown,
+          text: markdown,
         },
       },
     });
@@ -32,7 +32,7 @@ function CreateBlog() {
       toast(response.data.createBlog.message);
       setTitle("");
       setMarkdown("");
-    } else if (response.data?.createBlog.errors) {
+    } else if (response.data?.createBlog) {
     }
   };
 

@@ -1,0 +1,17 @@
+query PagtinatedBlogs($limit: Int!, $cursor: String) {
+  pagtinatedBlogs(limit: $limit, cursor: $cursor) {
+    totalCount
+    cursor
+    hashMore
+    blogs {
+      user {
+        nickname
+      }
+      entityId
+      title
+      text
+      createdAt
+      updatedAt
+    }
+  }
+}

@@ -21,15 +21,16 @@ export type Blog = {
   __typename?: 'Blog';
   confirmed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  markdown: Scalars['String'];
+  entity: Entity;
+  entityId: Scalars['ID'];
+  text: Scalars['String'];
   title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   user: User;
 };
 
-export type BlogResponse = MutationResponse & {
-  __typename?: 'BlogResponse';
+export type BlogMutationResponse = MutationResponse & {
+  __typename?: 'BlogMutationResponse';
   blog?: Maybe<Blog>;
   code: Scalars['Float'];
   errors?: Maybe<Array<FieldError>>;
@@ -37,53 +38,78 @@ export type BlogResponse = MutationResponse & {
   success: Scalars['Boolean'];
 };
 
-export type CreateBlogInput = {
-  markdown: Scalars['String'];
-  title: Scalars['String'];
-};
-
-export type CreateExerciseInput = {
-  description: Scalars['String'];
-  difficulty: Scalars['Float'];
-  exp: Scalars['Float'];
-  markdown: Scalars['String'];
-  name: Scalars['String'];
-};
-
-export type CreateUserInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-  role: Scalars['Float'];
-  username: Scalars['String'];
-};
-
-export type Exercise = {
-  __typename?: 'Exercise';
-  confirmed: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-  description: Scalars['String'];
-  difficulty: Scalars['Float'];
-  exp: Scalars['Float'];
+export type Category = {
+  __typename?: 'Category';
+  exercises: Array<Exercise>;
   id: Scalars['ID'];
-  isPublic: Scalars['Boolean'];
-  markdown: Scalars['String'];
-  name: Scalars['String'];
-  updatedAt: Scalars['DateTime'];
+  nameEn: Scalars['String'];
+  nameVi: Scalars['String'];
 };
 
-export type ExerciseResponse = MutationResponse & {
-  __typename?: 'ExerciseResponse';
+export type CategoryMutationResponse = MutationResponse & {
+  __typename?: 'CategoryMutationResponse';
+  category?: Maybe<Category>;
   code: Scalars['Float'];
   errors?: Maybe<Array<FieldError>>;
-  exercise?: Maybe<Exercise>;
   message?: Maybe<Scalars['String']>;
   success: Scalars['Boolean'];
 };
 
-export type ExercisesResponse = MutationResponse & {
-  __typename?: 'ExercisesResponse';
+export type Comment = {
+  __typename?: 'Comment';
+  comment: Scalars['String'];
+  id: Scalars['ID'];
+  reactions: Array<Reactions>;
+  reactionsCount: Scalars['Float'];
+  user: User;
+  userId: Scalars['Float'];
+};
+
+export type CreateBlogInput = {
+  text: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type CreateCategoryInput = {
+  nameEn: Scalars['String'];
+  nameVi: Scalars['String'];
+};
+
+export type CreateExerciseInput = {
+  categories?: InputMaybe<Array<Scalars['ID']>>;
+  difficulty?: InputMaybe<Scalars['Float']>;
+  exp?: InputMaybe<Scalars['Float']>;
+  name: Scalars['String'];
+  text: Scalars['String'];
+};
+
+export type Entity = {
+  __typename?: 'Entity';
+  comments: Array<Comment>;
+  entityType: Scalars['String'];
+  id: Scalars['ID'];
+  reactionsCount: Scalars['Float'];
+};
+
+export type Exercise = {
+  __typename?: 'Exercise';
+  categories: Array<Category>;
+  confirmed: Scalars['Boolean'];
+  createdAt: Scalars['DateTime'];
+  difficulty: Scalars['Float'];
+  exp: Scalars['Float'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  text: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+};
+
+export type ExerciseMutationResponse = MutationResponse & {
+  __typename?: 'ExerciseMutationResponse';
   code: Scalars['Float'];
-  exercises?: Maybe<Array<Exercise>>;
+  errors?: Maybe<Array<FieldError>>;
+  exercise?: Maybe<Exercise>;
   message?: Maybe<Scalars['String']>;
   success: Scalars['Boolean'];
 };
@@ -102,18 +128,19 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   confirmUser: Scalars['Boolean'];
-  createBlog: BlogResponse;
-  createExercise: ExerciseResponse;
-  createUser: UserResponse;
+  createBlog: BlogMutationResponse;
+  createCategory: CategoryMutationResponse;
+  createComment?: Maybe<Comment>;
+  createExercise: ExerciseMutationResponse;
+  editProfile: UserMutationResponse;
   forgotPassword: Scalars['Boolean'];
-  login: UserResponse;
+  login: UserMutationResponse;
   logout: Scalars['Boolean'];
-  register: UserResponse;
-  resetPassword: UserResponse;
+  register: UserMutationResponse;
+  resetPassword: UserMutationResponse;
   setDarkModeSetting: Scalars['Boolean'];
   setLanguageSetting: Scalars['Boolean'];
-  updateUser: UserResponse;
-  uploadAvatar: UserResponse;
+  updateAvatar: UserMutationResponse;
 };
 
 
@@ -127,13 +154,24 @@ export type MutationCreateBlogArgs = {
 };
 
 
+export type MutationCreateCategoryArgs = {
+  data: CreateCategoryInput;
+};
+
+
+export type MutationCreateCommentArgs = {
+  comment: Scalars['String'];
+  id: Scalars['Int'];
+};
+
+
 export type MutationCreateExerciseArgs = {
   data: CreateExerciseInput;
 };
 
 
-export type MutationCreateUserArgs = {
-  data: CreateUserInput;
+export type MutationEditProfileArgs = {
+  data: UpdateUserInput;
 };
 
 
@@ -163,12 +201,7 @@ export type MutationSetLanguageSettingArgs = {
 };
 
 
-export type MutationUpdateUserArgs = {
-  data: UpdateUserInput;
-};
-
-
-export type MutationUploadAvatarArgs = {
+export type MutationUpdateAvatarArgs = {
   avatar: Scalars['Upload'];
 };
 
@@ -186,44 +219,59 @@ export type PagtinatedBlogs = {
   totalCount: Scalars['Float'];
 };
 
+export type PagtinatedExercises = {
+  __typename?: 'PagtinatedExercises';
+  exercises?: Maybe<Array<Exercise>>;
+  totalCount: Scalars['Float'];
+};
+
+export type PagtinatedMember = {
+  __typename?: 'PagtinatedMember';
+  members?: Maybe<Array<User>>;
+  totalCount: Scalars['Float'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  blogs: PagtinatedBlogs;
   me?: Maybe<User>;
-  user: UserResponse;
-  users: UsersResponse;
+  pagtinatedBlogs: PagtinatedBlogs;
+  pagtinatedExercises: PagtinatedExercises;
+  pagtinatedMember: PagtinatedMember;
+  profile: User;
 };
 
 
-export type QueryBlogsArgs = {
+export type QueryPagtinatedBlogsArgs = {
   cursor?: InputMaybe<Scalars['String']>;
   limit: Scalars['Int'];
 };
 
 
-export type QueryUserArgs = {
-  id: Scalars['ID'];
+export type QueryPagtinatedExercisesArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryPagtinatedMemberArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryProfileArgs = {
+  id: Scalars['Int'];
+};
+
+export type Reactions = {
+  __typename?: 'Reactions';
+  type: Scalars['String'];
 };
 
 export type RegisterInput = {
   email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
-};
-
-export type UpdateBlogInput = {
-  id: Scalars['ID'];
-  markdown: Scalars['String'];
-  title: Scalars['String'];
-};
-
-export type UpdateExerciseInput = {
-  description: Scalars['String'];
-  difficulty: Scalars['Float'];
-  exp: Scalars['Float'];
-  id: Scalars['ID'];
-  markdown: Scalars['String'];
-  name: Scalars['String'];
 };
 
 export type UpdateUserInput = {
@@ -235,21 +283,22 @@ export type UpdateUserInput = {
 export type User = {
   __typename?: 'User';
   avatar: Scalars['String'];
+  blogs: Array<Blog>;
   confirmed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   darkMode: Scalars['Boolean'];
-  dateOfBirth?: Maybe<Scalars['DateTime']>;
+  dob?: Maybe<Scalars['DateTime']>;
   exp: Scalars['Float'];
   id: Scalars['ID'];
   language: Scalars['String'];
-  lastLogin?: Maybe<Scalars['DateTime']>;
+  ll?: Maybe<Scalars['DateTime']>;
   nickname: Scalars['String'];
   role: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
 };
 
-export type UserResponse = MutationResponse & {
-  __typename?: 'UserResponse';
+export type UserMutationResponse = MutationResponse & {
+  __typename?: 'UserMutationResponse';
   code: Scalars['Float'];
   errors?: Maybe<Array<FieldError>>;
   message?: Maybe<Scalars['String']>;
@@ -257,39 +306,31 @@ export type UserResponse = MutationResponse & {
   user?: Maybe<User>;
 };
 
-export type UsersResponse = MutationResponse & {
-  __typename?: 'UsersResponse';
-  code: Scalars['Float'];
-  message?: Maybe<Scalars['String']>;
-  success: Scalars['Boolean'];
-  users?: Maybe<Array<User>>;
-};
+export type BlogInfoFragment = { __typename?: 'Blog', entityId: string, title: string, text: string, createdAt: any, updatedAt: any };
 
-export type BlogInfoFragment = { __typename?: 'Blog', id: string, title: string, markdown: string, createdAt: any, updatedAt: any };
-
-export type BlogMutationResponseFragment = { __typename?: 'BlogResponse', code: number, success: boolean, message?: string | null, blog?: { __typename?: 'Blog', id: string, title: string, markdown: string, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null };
+export type BlogMutationResponseFragment = { __typename?: 'BlogMutationResponse', code: number, success: boolean, message?: string | null, blog?: { __typename?: 'Blog', entityId: string, title: string, text: string, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null };
 
 export type FieldErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type MutationStatusFragment = { __typename?: 'UserResponse', code: number, success: boolean, message?: string | null };
+export type MutationStatusFragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null };
 
-export type UserInfoFragment = { __typename?: 'User', id: string, nickname: string, avatar: string, role: number, exp: number, confirmed: boolean, dateOfBirth?: any | null, lastLogin?: any | null, darkMode: boolean, language: string, createdAt: any, updatedAt: any };
+export type UserInfoFragment = { __typename?: 'User', id: string, nickname: string, role: number, confirmed: boolean, avatar: string, exp: number, dob?: any | null, darkMode: boolean, language: string, ll?: any | null, createdAt: any, updatedAt: any };
 
-export type UserMutationResponseFragment = { __typename?: 'UserResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', id: string, nickname: string, avatar: string, role: number, exp: number, confirmed: boolean, dateOfBirth?: any | null, lastLogin?: any | null, darkMode: boolean, language: string, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null };
+export type UserMutationResponseFragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', id: string, nickname: string, role: number, confirmed: boolean, avatar: string, exp: number, dob?: any | null, darkMode: boolean, language: string, ll?: any | null, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null };
 
 export type CreateBlogMutationVariables = Exact<{
   data: CreateBlogInput;
 }>;
 
 
-export type CreateBlogMutation = { __typename?: 'Mutation', createBlog: { __typename?: 'BlogResponse', code: number, success: boolean, message?: string | null, blog?: { __typename?: 'Blog', id: string, title: string, markdown: string, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type CreateBlogMutation = { __typename?: 'Mutation', createBlog: { __typename?: 'BlogMutationResponse', code: number, success: boolean, message?: string | null, blog?: { __typename?: 'Blog', entityId: string, title: string, text: string, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', id: string, nickname: string, avatar: string, role: number, exp: number, confirmed: boolean, dateOfBirth?: any | null, lastLogin?: any | null, darkMode: boolean, language: string, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', id: string, nickname: string, role: number, confirmed: boolean, avatar: string, exp: number, dob?: any | null, darkMode: boolean, language: string, ll?: any | null, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -301,7 +342,7 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', code: number, success: boolean, message?: string | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type SetDarkModeSettingMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -315,31 +356,24 @@ export type SetLanguageSettingMutationVariables = Exact<{
 
 export type SetLanguageSettingMutation = { __typename?: 'Mutation', setLanguageSetting: boolean };
 
-export type UpdateUserMutationVariables = Exact<{
-  data: UpdateUserInput;
-}>;
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'User', id: string, nickname: string, avatar: string, role: number, exp: number, confirmed: boolean, dateOfBirth?: any | null, lastLogin?: any | null, darkMode: boolean, language: string, createdAt: any, updatedAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, nickname: string, role: number, confirmed: boolean, avatar: string, exp: number, dob?: any | null, darkMode: boolean, language: string, ll?: any | null, createdAt: any, updatedAt: any } | null };
 
-export type BlogsQueryVariables = Exact<{
+export type PagtinatedBlogsQueryVariables = Exact<{
   limit: Scalars['Int'];
   cursor?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type BlogsQuery = { __typename?: 'Query', blogs: { __typename?: 'PagtinatedBlogs', totalCount: number, cursor: any, hashMore: boolean, blogs?: Array<{ __typename?: 'Blog', id: string, title: string, markdown: string, createdAt: any, updatedAt: any }> | null } };
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, nickname: string, avatar: string, role: number, exp: number, confirmed: boolean, dateOfBirth?: any | null, lastLogin?: any | null, darkMode: boolean, language: string, createdAt: any, updatedAt: any } | null };
+export type PagtinatedBlogsQuery = { __typename?: 'Query', pagtinatedBlogs: { __typename?: 'PagtinatedBlogs', totalCount: number, cursor: any, hashMore: boolean, blogs?: Array<{ __typename?: 'Blog', entityId: string, title: string, text: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', nickname: string } }> | null } };
 
 export const BlogInfoFragmentDoc = gql`
     fragment blogInfo on Blog {
-  id
+  entityId
   title
-  markdown
+  text
   createdAt
   updatedAt
 }
@@ -351,7 +385,7 @@ export const FieldErrorFragmentDoc = gql`
 }
     `;
 export const BlogMutationResponseFragmentDoc = gql`
-    fragment blogMutationResponse on BlogResponse {
+    fragment blogMutationResponse on BlogMutationResponse {
   code
   success
   message
@@ -365,7 +399,7 @@ export const BlogMutationResponseFragmentDoc = gql`
     ${BlogInfoFragmentDoc}
 ${FieldErrorFragmentDoc}`;
 export const MutationStatusFragmentDoc = gql`
-    fragment mutationStatus on UserResponse {
+    fragment mutationStatus on UserMutationResponse {
   code
   success
   message
@@ -375,20 +409,20 @@ export const UserInfoFragmentDoc = gql`
     fragment userInfo on User {
   id
   nickname
-  avatar
   role
-  exp
   confirmed
-  dateOfBirth
-  lastLogin
+  avatar
+  exp
+  dob
   darkMode
   language
+  ll
   createdAt
   updatedAt
 }
     `;
 export const UserMutationResponseFragmentDoc = gql`
-    fragment userMutationResponse on UserResponse {
+    fragment userMutationResponse on UserMutationResponse {
   ...mutationStatus
   user {
     ...userInfo
@@ -594,84 +628,6 @@ export function useSetLanguageSettingMutation(baseOptions?: Apollo.MutationHookO
 export type SetLanguageSettingMutationHookResult = ReturnType<typeof useSetLanguageSettingMutation>;
 export type SetLanguageSettingMutationResult = Apollo.MutationResult<SetLanguageSettingMutation>;
 export type SetLanguageSettingMutationOptions = Apollo.BaseMutationOptions<SetLanguageSettingMutation, SetLanguageSettingMutationVariables>;
-export const UpdateUserDocument = gql`
-    mutation UpdateUser($data: UpdateUserInput!) {
-  updateUser(data: $data) {
-    ...userMutationResponse
-  }
-}
-    ${UserMutationResponseFragmentDoc}`;
-export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
-
-/**
- * __useUpdateUserMutation__
- *
- * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
-      }
-export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
-export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
-export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
-export const BlogsDocument = gql`
-    query Blogs($limit: Int!, $cursor: String) {
-  blogs(limit: $limit, cursor: $cursor) {
-    totalCount
-    cursor
-    hashMore
-    blogs {
-      id
-      title
-      markdown
-      createdAt
-      updatedAt
-    }
-  }
-}
-    `;
-
-/**
- * __useBlogsQuery__
- *
- * To run a query within a React component, call `useBlogsQuery` and pass it any options that fit your needs.
- * When your component renders, `useBlogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useBlogsQuery({
- *   variables: {
- *      limit: // value for 'limit'
- *      cursor: // value for 'cursor'
- *   },
- * });
- */
-export function useBlogsQuery(baseOptions: Apollo.QueryHookOptions<BlogsQuery, BlogsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BlogsQuery, BlogsQueryVariables>(BlogsDocument, options);
-      }
-export function useBlogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogsQuery, BlogsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BlogsQuery, BlogsQueryVariables>(BlogsDocument, options);
-        }
-export type BlogsQueryHookResult = ReturnType<typeof useBlogsQuery>;
-export type BlogsLazyQueryHookResult = ReturnType<typeof useBlogsLazyQuery>;
-export type BlogsQueryResult = Apollo.QueryResult<BlogsQuery, BlogsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -706,3 +662,51 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const PagtinatedBlogsDocument = gql`
+    query PagtinatedBlogs($limit: Int!, $cursor: String) {
+  pagtinatedBlogs(limit: $limit, cursor: $cursor) {
+    totalCount
+    cursor
+    hashMore
+    blogs {
+      user {
+        nickname
+      }
+      entityId
+      title
+      text
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+/**
+ * __usePagtinatedBlogsQuery__
+ *
+ * To run a query within a React component, call `usePagtinatedBlogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePagtinatedBlogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePagtinatedBlogsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function usePagtinatedBlogsQuery(baseOptions: Apollo.QueryHookOptions<PagtinatedBlogsQuery, PagtinatedBlogsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PagtinatedBlogsQuery, PagtinatedBlogsQueryVariables>(PagtinatedBlogsDocument, options);
+      }
+export function usePagtinatedBlogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PagtinatedBlogsQuery, PagtinatedBlogsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PagtinatedBlogsQuery, PagtinatedBlogsQueryVariables>(PagtinatedBlogsDocument, options);
+        }
+export type PagtinatedBlogsQueryHookResult = ReturnType<typeof usePagtinatedBlogsQuery>;
+export type PagtinatedBlogsLazyQueryHookResult = ReturnType<typeof usePagtinatedBlogsLazyQuery>;
+export type PagtinatedBlogsQueryResult = Apollo.QueryResult<PagtinatedBlogsQuery, PagtinatedBlogsQueryVariables>;

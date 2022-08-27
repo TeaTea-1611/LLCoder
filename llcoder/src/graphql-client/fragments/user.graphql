@@ -1,14 +1,14 @@
 fragment userInfo on User {
   id
   nickname
-  avatar
   role
-  exp
   confirmed
-  dateOfBirth
-  lastLogin
+  avatar
+  exp
+  dob
   darkMode
   language
+  ll
   createdAt
   updatedAt
 }

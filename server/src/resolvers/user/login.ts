@@ -154,13 +154,9 @@ export class LoginResolver {
 
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req }: Context): Promise<User | null> {
-    try {
-      if (!req.session.uid) return null;
-      return await User.findOne({
-        where: { id: req.session.uid },
-      });
-    } catch (err) {
-      return null;
-    }
+    if (!req.session.uid) return null;
+    return await User.findOne({
+      where: { id: req.session.uid },
+    });
   }
 }

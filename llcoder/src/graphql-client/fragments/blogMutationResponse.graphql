@@ -1,4 +1,4 @@
-fragment blogMutationResponse on BlogResponse {
+fragment blogMutationResponse on BlogMutationResponse {
   code
   success
   message

@@ -1,4 +1,4 @@
-fragment userMutationResponse on UserResponse {
+fragment userMutationResponse on UserMutationResponse {
   ...mutationStatus
   user {
     ...userInfo

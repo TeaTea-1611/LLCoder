@@ -7,7 +7,7 @@ export const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          blogs: {
+          pagtinatedBlogs: {
             keyArgs: false,
             merge(existting, incoming) {
               // console.log("existting", existting);

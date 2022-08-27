@@ -11,6 +11,7 @@ export const routes = {
   exams: "/exams",
   aboutMe: "/about-me",
   blogs: "/blogs",
+  blog: "/blogs/:id",
   createBlog: "/blogs/create",
   blogsNotConfirmed: "/blogs/not-confirmed",
 };
