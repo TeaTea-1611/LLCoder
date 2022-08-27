@@ -1,12 +1,11 @@
-import { Blog } from "../../entities/Blog";
-import { Arg, Ctx, Int, Mutation, Resolver } from "type-graphql";
-import { Context } from "../../types/Context";
-import { User } from "../../entities/User";
 import { AuthenticationError, UserInputError } from "apollo-server-core";
+import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
+import { Blog } from "../../entities/Blog";
 import { Entity } from "../../entities/Entity";
-import { Comment } from "../../entities/Comment";
-import { CreateBlogInput } from "../../types/blog/CreateBlogInput";
+import { User } from "../../entities/User";
 import { BlogMutationResponse } from "../../types/blog/BlogMutationResponse";
+import { CreateBlogInput } from "../../types/blog/CreateBlogInput";
+import { Context } from "../../types/Context";
 
 @Resolver()
 export class CreateBlogResolver {
@@ -45,27 +44,6 @@ export class CreateBlogResolver {
         success: true,
         blog,
       };
-    });
-  }
-
-  @Mutation(() => Comment, { nullable: true })
-  async createComment(
-    @Arg("id", () => Int) id: number,
-    @Arg("comment") comment: string,
-    @Ctx() { req, connection }: Context
-  ): Promise<Comment | null> {
-    return await connection.transaction(async (transactionEntityManger) => {
-      const user = await transactionEntityManger.findOne(User, {
-        where: { id: req.session.uid },
-      });
-      if (!user) throw new AuthenticationError("Not Authentication");
-      return await transactionEntityManger
-        .create(Comment, {
-          comment,
-          entityId: id,
-          userId: req.session.uid,
-        })
-        .save();
     });
   }
 }
