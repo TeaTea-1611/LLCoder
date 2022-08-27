@@ -1,18 +1,16 @@
 import { Category } from "../../entities/Category";
 import { Arg, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { isAuth } from "../../middlewares/auth";
-import {
-  CategoryResponse,
-  CreateCategoryInput,
-} from "../../types/CategoryResponse";
+import { CategoryMutationResponse } from "../../types/category/CategoryMutationResponse";
+import { CreateCategoryInput } from "../../types/category/CreateCategoryInput";
 
 @Resolver()
 export class CreateCategoryResolver {
   @UseMiddleware(isAuth([0]))
-  @Mutation(() => CategoryResponse)
+  @Mutation(() => CategoryMutationResponse)
   async createCategory(
     @Arg("data") data: CreateCategoryInput
-  ): Promise<CategoryResponse> {
+  ): Promise<CategoryMutationResponse> {
     try {
       const { nameVi, nameEn } = data;
       const check = await Category.findOne({ where: [{ nameEn }, { nameVi }] });

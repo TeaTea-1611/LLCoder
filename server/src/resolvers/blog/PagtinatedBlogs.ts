@@ -1,12 +1,12 @@
 import { Blog } from "../../entities/Blog";
 import { Arg, Int, Query, Resolver } from "type-graphql";
-import { PagtinatedBlogs } from "../../types/BlogResponse";
+import { PagtinatedBlogs } from "../../types/blog/BlogMutationResponse";
 import { LessThan } from "typeorm";
 
 @Resolver()
-export class QueryBlogResolver {
+export class PagtinatedBlogsResolver {
   @Query(() => PagtinatedBlogs)
-  async blogs(
+  async pagtinatedBlogs(
     @Arg("limit", () => Int) limit: number,
     @Arg("cursor", { nullable: true }) cursor?: string
   ): Promise<PagtinatedBlogs | null> {

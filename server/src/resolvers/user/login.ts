@@ -1,20 +1,20 @@
 import { User } from "../../entities/User";
 import { Context } from "../../types/Context";
-import { LoginInput, RegisterInput } from "../../types/InputType";
-import { UserResponse } from "../../types/UserResponse";
 import { validateLogin, validateRegister } from "../../utils/validate";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import bcrypt from "bcryptjs";
 import { COOKIES_NAME } from "../../constans/constans";
 import { createConfirmationUrl } from "../../utils/createConfirmationUrl";
 import { sendEmail } from "../../utils/sendEmail";
+import { UserMutationResponse } from "../../types/user/UserMutationResponse";
+import { LoginInput, RegisterInput } from "../../types/user/LoginInput";
 
 @Resolver()
 export class LoginResolver {
-  @Mutation(() => UserResponse)
+  @Mutation(() => UserMutationResponse)
   async register(
     @Arg("data") registerInput: RegisterInput
-  ): Promise<UserResponse> {
+  ): Promise<UserMutationResponse> {
     const errors = validateRegister(registerInput);
     if (errors.length > 0) return { code: 400, success: false, errors };
 
@@ -66,11 +66,11 @@ export class LoginResolver {
     }
   }
 
-  @Mutation(() => UserResponse)
+  @Mutation(() => UserMutationResponse)
   async login(
     @Arg("data") loginInput: LoginInput,
     @Ctx() { req }: Context
-  ): Promise<UserResponse> {
+  ): Promise<UserMutationResponse> {
     const errors = validateLogin(loginInput);
     if (errors.length > 0) return { code: 400, success: false, errors };
     try {
@@ -134,7 +134,7 @@ export class LoginResolver {
   @Mutation(() => Boolean)
   async logout(@Ctx() { req, res }: Context): Promise<Boolean> {
     return new Promise((resolve) => {
-      User.update({ id: req.session.uid }, { lastLogin: new Date() })
+      User.update({ id: req.session.uid }, { ll: new Date() })
         .then(() => {
           res.clearCookie(COOKIES_NAME);
           req.session.destroy((err) => {
@@ -156,7 +156,9 @@ export class LoginResolver {
   async me(@Ctx() { req }: Context): Promise<User | null> {
     try {
       if (!req.session.uid) return null;
-      return await User.findOne({ where: { id: req.session.uid } });
+      return await User.findOne({
+        where: { id: req.session.uid },
+      });
     } catch (err) {
       return null;
     }

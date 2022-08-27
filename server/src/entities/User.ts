@@ -9,7 +9,9 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Blog } from "./Blog";
+import { Comment } from "./Comment";
 import { Exercise } from "./Exercise";
+import { Reactions } from "./Reactions";
 
 @ObjectType()
 @Entity()
@@ -50,11 +52,11 @@ export class User extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  dateOfBirth: Date;
+  dob: Date;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  lastLogin: Date;
+  ll: Date;
 
   @Field()
   @Column({ default: false })
@@ -64,11 +66,18 @@ export class User extends BaseEntity {
   @Column({ default: "vi" })
   language: string;
 
+  @Field(() => [Blog])
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs: Blog[];
 
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment;
+
   @OneToMany(() => Exercise, (exercise) => exercise.user)
   exercises: Exercise[];
+
+  @OneToMany(() => Reactions, (reactions) => reactions.user)
+  reactions: Reactions[];
 
   @Field()
   @CreateDateColumn()

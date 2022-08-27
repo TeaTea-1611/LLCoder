@@ -1,5 +1,4 @@
 import { User } from "../../entities/User";
-import { UserResponse } from "../../types/UserResponse";
 import { Arg, Mutation, Resolver } from "type-graphql";
 import bcrypt from "bcryptjs";
 import { createConfirmationUrl } from "../../utils/createConfirmationUrl";
@@ -9,6 +8,7 @@ import {
   forgotPasswordPrefix,
   userConfirmationPrefix,
 } from "../../constans/redisPrefixed";
+import { UserMutationResponse } from "../../types/user/UserMutationResponse";
 
 @Resolver()
 export class ConfirmationResolver {
@@ -39,11 +39,11 @@ export class ConfirmationResolver {
     }
   }
 
-  @Mutation(() => UserResponse)
+  @Mutation(() => UserMutationResponse)
   async resetPassword(
     @Arg("token") token: string,
     @Arg("password") password: string
-  ): Promise<UserResponse> {
+  ): Promise<UserMutationResponse> {
     const userId = await redis.get(forgotPasswordPrefix + token);
 
     if (!userId) return { code: 400, success: false, message: "Token expired" };

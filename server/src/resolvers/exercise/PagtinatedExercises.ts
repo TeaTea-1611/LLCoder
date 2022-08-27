@@ -1,11 +1,11 @@
 import { Exercise } from "../../entities/Exercise";
 import { Arg, Int, Query, Resolver } from "type-graphql";
-import { PagtinatedExercises } from "../../types/ExerciseResponse";
+import { PagtinatedExercises } from "../../types/exercise/ExerciseMutationResponse";
 
 @Resolver()
-export class QueryExerciseResolver {
+export class PagtinatedExercisesResolver {
   @Query(() => PagtinatedExercises)
-  async exercises(
+  async pagtinatedExercises(
     @Arg("limit", () => Int, { nullable: true }) limit: number = 15,
     @Arg("page", () => Int, { nullable: true }) page: number = 1
   ): Promise<PagtinatedExercises | null> {

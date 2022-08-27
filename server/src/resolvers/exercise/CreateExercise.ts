@@ -1,23 +1,21 @@
 import { Exercise } from "../../entities/Exercise";
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
-import {
-  ExerciseResponse,
-  CreateExerciseInput,
-} from "../../types/ExerciseResponse";
 import { Context } from "../../types/Context";
 import { User } from "../../entities/User";
 import { isAuth } from "../../middlewares/auth";
 import { Category } from "../../entities/Category";
 import { In } from "typeorm";
+import { ExerciseMutationResponse } from "../../types/exercise/ExerciseMutationResponse";
+import { CreateExerciseInput } from "../../types/exercise/CreateExerciseInput";
 
 @Resolver()
 export class CreateExerciseResolver {
   @UseMiddleware(isAuth())
-  @Mutation(() => ExerciseResponse)
+  @Mutation(() => ExerciseMutationResponse)
   async createExercise(
     @Arg("data") data: CreateExerciseInput,
     @Ctx() { req }: Context
-  ): Promise<ExerciseResponse> {
+  ): Promise<ExerciseMutationResponse> {
     try {
       const user = User.findOne({ where: { id: req.session.uid } });
       if (!user)

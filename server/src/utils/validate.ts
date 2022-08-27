@@ -1,5 +1,5 @@
 import { FieldError } from "src/types/FieldError";
-import { LoginInput, RegisterInput } from "../types/InputType";
+import { LoginInput, RegisterInput } from "../types/user/LoginInput";
 
 export const validateRegister = (options: RegisterInput) => {
   const { username, email, password } = options;

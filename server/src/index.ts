@@ -14,7 +14,7 @@ import { graphqlUploadExpress } from "graphql-upload";
 import { createSchema } from "./utils/createSchema";
 
 (async () => {
-  await createConnection({
+  const connection = await createConnection({
     type: "postgres",
     database: "llcoder",
     username: process.env.DB_USER,
@@ -60,7 +60,7 @@ import { createSchema } from "./utils/createSchema";
 
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req, res }): Context => ({ req, res }),
+    context: ({ req, res }): Context => ({ req, res, connection }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   });
 
