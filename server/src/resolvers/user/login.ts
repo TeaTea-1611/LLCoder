@@ -134,7 +134,7 @@ export class LoginResolver {
   @Mutation(() => Boolean)
   async logout(@Ctx() { req, res }: Context): Promise<Boolean> {
     return new Promise((resolve) => {
-      User.update({ id: req.session.uid }, { ll: new Date() })
+      User.update({ id: req.session.uid }, { lastLogin: new Date() })
         .then(() => {
           res.clearCookie(COOKIES_NAME);
           req.session.destroy((err) => {

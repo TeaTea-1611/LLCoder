@@ -5,9 +5,10 @@ query PagtinatedBlogs($limit: Int!, $cursor: String) {
     hashMore
     blogs {
       user {
+        avatar
         nickname
       }
-      entityId
+      id
       title
       text
       createdAt

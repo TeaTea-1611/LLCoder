@@ -1,0 +1,5 @@
+mutation SetThemeSettings($themeType: ThemeType!) {
+  setThemeSetting(themeType: $themeType) {
+    theme
+  }
+}

@@ -1,5 +1,5 @@
 fragment blogInfo on Blog {
-  entityId
+  id
   title
   text
   createdAt

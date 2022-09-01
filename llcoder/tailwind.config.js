@@ -7,20 +7,7 @@ module.exports = {
       fontFamily: {
         barlow: ['"Barlow Condensed"', "sans-serif"],
       },
-      colors: {
-        primary: "#2881ad",
-
-        //dark mode colors
-        "dark-color-1": "#010409",
-        "dark-color-2": "#161b22",
-        "dark-color-3": "#1e2531",
-        "dark-color-4": "#0d1117",
-        "dark-color-5": "#212529",
-        "dark-border-color": "#21262d",
-        "dark-hover-color": "rgba(255, 255, 255, 0.05)",
-        "dark-text-color-1": "#c9d1d9",
-        "dark-text-color-2": "#565d65",
-      },
+      colors: {},
       width: {
         16: "4rem",
         20: "5rem",
@@ -44,6 +31,20 @@ module.exports = {
         92: "23rem",
         96: "24rem",
         100: "25rem",
+      },
+      animation: {
+        "fade-in": "fade-in 0.25s linear",
+        scale: "scale 0.25s linear",
+      },
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        scale: {
+          "0%": { transform: "scale(.9)" },
+          "100%": { transform: "scale(1)" },
+        },
       },
     },
   },

@@ -35,12 +35,12 @@ function Blogs() {
       <div className="space-y-4 mt-6">
         {data?.pagtinatedBlogs.blogs?.map((blog) => (
           <div
-            key={blog.entityId + blog.title}
+            key={blog.id + blog.title}
             className="p-2 rounded dark:bg-slate-800"
           >
             <div>
               <Link
-                to={blog.entityId}
+                to={blog.id}
                 className="font-medium text-3xl hover:underline"
               >
                 {blog.title}

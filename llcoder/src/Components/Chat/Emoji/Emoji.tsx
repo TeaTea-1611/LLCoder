@@ -15,7 +15,7 @@ function Emoji({ onChange, className, isOpen }: EmojiProps) {
 
   return isOpen ? (
     <div
-      className={`${className} shadow-lg rounded dark:border dark:border-slate-700 dark:bg-gray-800 w-80 animation-fadeIn`}
+      className={`${className} shadow-lg rounded dark:border dark:border-slate-700 dark:bg-gray-800 w-80`}
     >
       <div className="p-[2px]">
         <ul className="grid grid-cols-8 overflow-y-auto overflow-x-hidden h-52">

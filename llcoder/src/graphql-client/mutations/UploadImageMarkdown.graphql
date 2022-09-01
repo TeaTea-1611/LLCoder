@@ -1,0 +1,5 @@
+mutation UploadImageMarkDown($image: Upload!) {
+  uploadImage(image: $image) {
+    url
+  }
+}

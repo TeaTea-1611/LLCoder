@@ -4,6 +4,7 @@ import { useEffect } from "react";
 interface ModalFormProps extends ModalProps {
   title: string;
   className?: string;
+  onClose: () => void;
 }
 
 function ModalForm({
@@ -25,26 +26,32 @@ function ModalForm({
     };
   }, [onClose, isOpen]);
 
-  const classes = `min-w-[288px] bg-slate-50 dark:bg-slate-800 rounded p-4${
-    className ? ` ${className}` : ""
-  }`;
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <div className={classes}>
-          <header className="flex items-center mb-4 py-2">
-            <h2 className="flex-1">{title}</h2>
-            <button
-              className="rounded-md border border-dark-border-color px-2 py-1 uppercase w-7 h-6 text-center flex items-center justify-center hover:bg-dark-hover-color"
-              onClick={onClose}
-            >
-              <span className="text-xs">ESC</span>
-            </button>
-          </header>
-          <div>{children}</div>
+    <Modal isOpen={isOpen}>
+      <>
+        <div
+          className="fixed inset-0 bg-gray-900 opacity-50 z-0"
+          onClick={onClose}
+        />
+        <div className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div
+            className={
+              "min-w-[288px] bg-slate-50 dark:bg-slate-800 rounded animate-scale animate-fade-in p-4"
+            }
+          >
+            <header className="flex items-center mb-4 py-2">
+              <h2 className="flex-1">{title}</h2>
+              <button
+                className="rounded-md shadow-lg dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 px-2 py-1 uppercase text-xs"
+                onClick={onClose}
+              >
+                ESC
+              </button>
+            </header>
+            <div>{children}</div>
+          </div>
         </div>
-      </div>
+      </>
     </Modal>
   );
 }

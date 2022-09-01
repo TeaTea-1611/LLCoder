@@ -4,25 +4,19 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
-  OneToOne,
-  PrimaryColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
-import { Entity as _Entity } from "./Entity";
+import { BlogComment } from "./BlogComment";
 @ObjectType()
 @Entity()
 export class Blog extends BaseEntity {
   @Field(() => ID)
-  @PrimaryColumn()
-  entityId!: number;
-
-  @Field(() => _Entity)
-  @OneToOne(() => _Entity)
-  @JoinColumn()
-  entity: _Entity;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Column()
   userId: number;
@@ -39,9 +33,16 @@ export class Blog extends BaseEntity {
   @Column({ type: "text", default: "" })
   text!: string;
 
+  @OneToMany(() => BlogComment, (comment) => comment.blog)
+  comments: BlogComment[];
+
+  @Field()
+  @Column({ type: "int", default: 0 })
+  commentsCount: number;
+
   @Field()
   @Column({ default: false })
-  confirmed!: boolean;
+  confirmed: boolean;
 
   @Field()
   @CreateDateColumn({ type: "timestamptz" })

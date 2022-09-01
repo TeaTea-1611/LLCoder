@@ -2,7 +2,7 @@ import { Exercise } from "../../entities/Exercise";
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { Context } from "../../types/Context";
 import { User } from "../../entities/User";
-import { isAuth } from "../../middlewares/auth";
+import { checkAuth } from "../../middlewares/auth";
 import { Category } from "../../entities/Category";
 import { In } from "typeorm";
 import { ExerciseMutationResponse } from "../../types/exercise/ExerciseMutationResponse";
@@ -10,7 +10,7 @@ import { CreateExerciseInput } from "../../types/exercise/CreateExerciseInput";
 
 @Resolver()
 export class CreateExerciseResolver {
-  @UseMiddleware(isAuth())
+  @UseMiddleware(checkAuth)
   @Mutation(() => ExerciseMutationResponse)
   async createExercise(
     @Arg("data") data: CreateExerciseInput,

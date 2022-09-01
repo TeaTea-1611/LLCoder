@@ -5,7 +5,7 @@ import { UserMutationResponse } from "../../types/user/UserMutationResponse";
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import { User } from "../../entities/User";
 import { Context } from "../../types/Context";
-import { Upload } from "../../types/Upload";
+import { Upload } from "../../types/upload/Upload";
 
 @Resolver()
 export class EditProfileResolver {
@@ -59,11 +59,11 @@ export class EditProfileResolver {
         createReadStream()
           .pipe(
             createWriteStream(
-              __dirname + `/../../../public/images/${newFilename}`
+              __dirname + `/../../../public/images/avatar/${newFilename}`
             )
           )
           .on("finish", async () => {
-            user.avatar = `http://localhost:4000/images/${newFilename}`;
+            user.avatar = `http://localhost:4000/images/avatar/${newFilename}`;
             await user.save();
             resolve({
               code: 200,

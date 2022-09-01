@@ -33,7 +33,7 @@ export function InputField({
         <input
           {...field}
           id={id}
-          className={`block py-2 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 dark:bg-transparent peer`}
+          className={`block py-2 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-500 dark:bg-transparent peer`}
           type={isPassword && !showPassword ? "password" : "text"}
           {...props}
         />
@@ -41,7 +41,7 @@ export function InputField({
           htmlFor={id}
           className={`absolute rounded-none text-slate-400 duration-300 transform ${
             field.value.length > 0 ? "-translate-y-10" : "-translate-y-1/2"
-          } scale-75 top-1/2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10`}
+          } scale-75 top-1/2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-500 peer-focus:dark:text-sky-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10`}
         >
           {label}
         </label>
@@ -84,7 +84,7 @@ export function Input({ className, onChange, value, label }: InputProps) {
     >
       <input
         id={id}
-        className={`block py-2 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 dark:bg-transparent peer`}
+        className={`block py-2 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-500 dark:bg-transparent peer`}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -93,7 +93,7 @@ export function Input({ className, onChange, value, label }: InputProps) {
         htmlFor={id}
         className={`absolute rounded-none text-slate-400 duration-300 transform ${
           value.length > 0 ? "-translate-y-10" : "-translate-y-1/2"
-        } scale-75 top-1/2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10`}
+        } scale-75 top-1/2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-500 peer-focus:dark:text-sky-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10`}
       >
         {label}
       </label>

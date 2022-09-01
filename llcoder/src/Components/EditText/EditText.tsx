@@ -135,7 +135,7 @@ function EditText({ value, onChange, tagName = "div" }: EditTextProps) {
   return !isZoomed ? (
     body
   ) : (
-    <Modal isOpen={isZoomed} onClose={() => setIsZoomed(false)}>
+    <Modal isOpen={isZoomed}>
       <div className="w-full h-full bg-white dark:bg-gray-900 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {body}
       </div>

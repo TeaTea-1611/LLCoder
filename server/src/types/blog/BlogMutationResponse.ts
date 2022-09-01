@@ -2,6 +2,7 @@ import { Field, ObjectType } from "type-graphql";
 import { MutationResponse } from "../MutationResponse";
 import { FieldError } from "../FieldError";
 import { Blog } from "../../entities/Blog";
+import { BlogComment } from "../../entities/BlogComment";
 
 @ObjectType({ implements: MutationResponse })
 export class BlogMutationResponse implements MutationResponse {
@@ -14,6 +15,16 @@ export class BlogMutationResponse implements MutationResponse {
 
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
+}
+
+@ObjectType({ implements: MutationResponse })
+export class BlogCommentMutationResponse implements MutationResponse {
+  code: number;
+  success: boolean;
+  message?: string;
+
+  @Field(() => BlogComment, { nullable: true })
+  comment?: BlogComment;
 }
 
 @ObjectType()

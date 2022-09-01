@@ -3,18 +3,8 @@ import { Arg, Int, Query, Resolver } from "type-graphql";
 
 @Resolver()
 export class BlogResolver {
-  @Query(() => Blog)
+  @Query(() => Blog, { nullable: true })
   async blog(@Arg("id", () => Int) id: number): Promise<Blog | null> {
-    return await Blog.findOne({
-      where: { entityId: id },
-      relations: {
-        user: true,
-        entity: {
-          comments: {
-            user: true,
-          },
-        },
-      },
-    });
+    return await Blog.findOne({ where: { id } });
   }
 }

@@ -1,0 +1,5 @@
+mutation SetLanguageSettings($languageType: LanguageType!) {
+  setLanguageSetting(languageType: $languageType) {
+    language
+  }
+}

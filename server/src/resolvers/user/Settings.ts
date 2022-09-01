@@ -1,37 +1,66 @@
-import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
+import { checkAuth } from "../../middlewares/auth";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  registerEnumType,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { User } from "../../entities/User";
 import { Context } from "../../types/Context";
+import {
+  ThemeSettingResponse,
+  ThemeType,
+  LanguageSettingResponse,
+  LanguageType,
+} from "../../types/user/Settings";
+import { AuthenticationError } from "apollo-server-core";
 
+registerEnumType(ThemeType, {
+  name: "ThemeType",
+});
+
+registerEnumType(LanguageType, {
+  name: "LanguageType",
+});
 @Resolver()
 export class SettingsResolver {
-  @Mutation(() => Boolean)
-  async setDarkModeSetting(@Ctx() { req }: Context): Promise<Boolean> {
+  @UseMiddleware(checkAuth)
+  @Mutation(() => ThemeSettingResponse)
+  async setThemeSetting(
+    @Arg("themeType", () => ThemeType) themeType: ThemeType,
+    @Ctx() { req }: Context
+  ): Promise<ThemeSettingResponse> {
     try {
-      if (!req.session.uid) return false;
       const user = await User.findOne({ where: { id: req.session.uid } });
-      if (!user) return false;
-      user.darkMode = !user.darkMode;
+      if (!user) throw new AuthenticationError("Not Authentication");
+      user.theme = themeType;
       await user.save();
-      return true;
-    } catch {
-      return false;
+      return {
+        theme: themeType,
+      };
+    } catch (err) {
+      return err;
     }
   }
 
-  @Mutation(() => Boolean)
+  @UseMiddleware(checkAuth)
+  @Mutation(() => LanguageSettingResponse)
   async setLanguageSetting(
-    @Arg("language") language: string,
+    @Arg("languageType", () => LanguageType) language: LanguageType,
     @Ctx() { req }: Context
-  ): Promise<Boolean> {
+  ): Promise<LanguageSettingResponse> {
     try {
-      if (!req.session.uid) return false;
       const user = await User.findOne({ where: { id: req.session.uid } });
-      if (!user) return false;
+      if (!user) throw new AuthenticationError("Not Authentication");
       user.language = language;
       await user.save();
-      return true;
-    } catch {
-      return false;
+      return {
+        language,
+      };
+    } catch (err) {
+      return err;
     }
   }
 }

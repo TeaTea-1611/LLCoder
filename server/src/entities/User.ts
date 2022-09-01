@@ -1,3 +1,4 @@
+import { UserRoleType } from "../types/user/UserType";
 import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -9,9 +10,10 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Blog } from "./Blog";
-import { Comment } from "./Comment";
 import { Exercise } from "./Exercise";
-import { Reactions } from "./Reactions";
+import { LanguageType, ThemeType } from "../types/user/Settings";
+import { BlogComment } from "./BlogComment";
+import { BlogCommentReactions } from "./BlogCommentReactions";
 
 @ObjectType()
 @Entity()
@@ -34,9 +36,11 @@ export class User extends BaseEntity {
   nickname!: string;
 
   @Field()
-  @Column({ default: 4, enum: [0, 1, 2, 3, 4] })
-  // 0: admin | 1: teacher | 2: supervisor | 3: student | 4: user
-  role: number;
+  @Column({
+    enum: UserRoleType,
+    default: UserRoleType.GHOST,
+  })
+  role!: UserRoleType;
 
   @Field()
   @Column({ default: false })
@@ -56,28 +60,29 @@ export class User extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  ll: Date;
+  lastLogin: Date;
 
   @Field()
-  @Column({ default: false })
-  darkMode: boolean;
+  @Column({ enum: ThemeType, default: ThemeType.light })
+  theme: ThemeType;
 
   @Field()
-  @Column({ default: "vi" })
-  language: string;
+  @Column({ enum: LanguageType, default: LanguageType.vi })
+  language: LanguageType;
 
   @Field(() => [Blog])
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs: Blog[];
 
-  @OneToMany(() => Comment, (comment) => comment.user)
-  comments: Comment;
+  @OneToMany(() => BlogComment, (comment) => comment.user)
+  blogComments: Comment[];
 
+  @OneToMany(() => BlogCommentReactions, (reactions) => reactions.user)
+  blogCommentReactions: BlogCommentReactions[];
+
+  @Field(() => [Exercise])
   @OneToMany(() => Exercise, (exercise) => exercise.user)
   exercises: Exercise[];
-
-  @OneToMany(() => Reactions, (reactions) => reactions.user)
-  reactions: Reactions[];
 
   @Field()
   @CreateDateColumn()

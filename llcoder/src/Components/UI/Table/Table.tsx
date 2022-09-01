@@ -17,7 +17,7 @@ function Table({ children, thead, className }: TableProps) {
             {thead.map((item) => (
               <th
                 key={item}
-                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider dark:bg-dark-color-2 dark:border-gray-700"
+                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider dark:bg-slate-900/75 dark:border-gray-700"
               >
                 {item}
               </th>
@@ -32,7 +32,7 @@ function Table({ children, thead, className }: TableProps) {
 
 export const Td = ({ children, className }: TableProps) => (
   <td
-    className={`px-5 py-2 border-b border-gray-200 bg-white dark:bg-dark-color-3 dark:border-gray-700 text-sm${
+    className={`px-5 py-2 border-b border-gray-200 bg-white dark:bg-slate-900 dark:border-gray-700 text-sm${
       className ? ` ${className}` : ""
     }`}
   >

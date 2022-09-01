@@ -6,9 +6,9 @@ fragment userInfo on User {
   avatar
   exp
   dob
-  darkMode
+  theme
   language
-  ll
+  lastLogin
   createdAt
   updatedAt
 }

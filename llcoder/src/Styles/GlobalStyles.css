@@ -23,7 +23,7 @@
     background-color: rgba(0, 0, 0, 0.05);
   }
   body {
-    @apply font-barlow bg-white dark:bg-gray-900 dark:text-dark-text-color-1 duration-300;
+    @apply font-barlow bg-white dark:bg-slate-900 dark:text-slate-400 duration-300;
   }
   h1 {
     @apply text-5xl font-medium;
@@ -58,19 +58,6 @@
 }
 
 @layer components {
-  .animation-fadeIn {
-    animation: fadeIn 0.25s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
   .content-auto {
     @apply absolute w-full h-full text-center text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text translate-x-full;
     -webkit-background-clip: text;
@@ -102,5 +89,14 @@
       transform: translateX(-100%);
       background-position: 0% 50%;
     }
+  }
+
+  .table-markdown {
+    width: 100%;
+  }
+  .table-markdown th,
+  .table-markdown td {
+    border: 1px solid #ddd;
+    padding: 8px;
   }
 }

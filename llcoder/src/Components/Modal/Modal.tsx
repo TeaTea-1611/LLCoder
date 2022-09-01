@@ -1,22 +1,16 @@
-import ReactDOM from "react-dom";
+import { Portal } from "../Portal";
 
 export interface ModalProps {
   children: React.ReactNode;
   isOpen: boolean;
-  onClose: () => void;
 }
 
-function Modal({ children, isOpen, onClose }: ModalProps) {
+function Modal({ children, isOpen }: ModalProps) {
   if (!isOpen) return null;
-  return ReactDOM.createPortal(
-    <div className="fixed inset-0 z-50">
-      <div
-        className="fixed inset-0 bg-gray-900 opacity-50 z-0"
-        onClick={onClose}
-      />
-      {children}
-    </div>,
-    document.getElementById("llcoder-modal") as HTMLElement
+  return (
+    <Portal>
+      <div className="fixed inset-0 z-50">{children}</div>
+    </Portal>
   );
 }
 

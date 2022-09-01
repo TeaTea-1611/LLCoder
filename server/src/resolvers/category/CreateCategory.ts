@@ -1,12 +1,12 @@
 import { Category } from "../../entities/Category";
 import { Arg, Mutation, Resolver, UseMiddleware } from "type-graphql";
-import { isAuth } from "../../middlewares/auth";
+import { checkAuth } from "../../middlewares/auth";
 import { CategoryMutationResponse } from "../../types/category/CategoryMutationResponse";
 import { CreateCategoryInput } from "../../types/category/CreateCategoryInput";
 
 @Resolver()
 export class CreateCategoryResolver {
-  @UseMiddleware(isAuth([0]))
+  @UseMiddleware(checkAuth)
   @Mutation(() => CategoryMutationResponse)
   async createCategory(
     @Arg("data") data: CreateCategoryInput

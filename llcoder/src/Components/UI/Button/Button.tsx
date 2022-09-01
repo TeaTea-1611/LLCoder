@@ -1,3 +1,4 @@
+import Tippy from "@tippyjs/react/headless";
 import { useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../../Loading";
 
@@ -8,6 +9,7 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   to?: string;
   isLoading?: boolean;
+  title?: React.ReactNode | string;
 }
 
 function Button({
@@ -17,26 +19,45 @@ function Button({
   to,
   type,
   isLoading = false,
+  title,
 }: ButtonProps) {
   const navigate = useNavigate();
-  return (
-    <>
-      <button
-        className={`border-primary border py-1 px-2 rounded hover:bg-primary hover:text-white dark:border-dark-border-color dark:bg-dark-color-4 dark:text-dark-text-color-1 dark:hover:bg-[#21262d] dark:hover:border-[#8b949e] duration-100${
-          className ? ` ${className}` : ""
-        }`}
-        onClick={() => {
-          if (to) navigate(to);
-          else if (onClick) onClick();
-        }}
-        type={type}
-        disabled={isLoading}
-      >
-        <span className="text-sm flex items-center">
-          {isLoading ? <LoadingSpinner /> : children}
-        </span>
-      </button>
-    </>
+
+  const btn = (
+    <button
+      className={`border-primary py-1 px-2 rounded shadow-lg hover:bg-slate-100 dark:hover:bg-slate-700 dark:hover:text-slate-100 dark:bg-slate-800 dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 duration-100${
+        className ? ` ${className}` : ""
+      }`}
+      onClick={() => {
+        if (to) navigate(to);
+        else if (onClick) onClick();
+      }}
+      type={type}
+      disabled={isLoading}
+    >
+      <span className="text-sm flex items-center">
+        {isLoading ? <LoadingSpinner /> : children}
+      </span>
+    </button>
+  );
+
+  return !!title ? (
+    <Tippy
+      placement="top"
+      render={(attrs) => (
+        <div
+          className="bg-white rounded ring-1 ring-slate-900/10 shadow-lg overflow-hidden py-1 px-2 text-sm text-slate-700 font-semibold dark:bg-slate-800 dark:ring-0 dark:highlight-white/5 dark:text-slate-300"
+          tabIndex={-1}
+          {...attrs}
+        >
+          <span>{title}</span>
+        </div>
+      )}
+    >
+      {btn}
+    </Tippy>
+  ) : (
+    btn
   );
 }
 

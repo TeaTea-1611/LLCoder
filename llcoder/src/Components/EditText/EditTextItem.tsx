@@ -120,7 +120,7 @@ export function EditTextItemFormatBlock() {
         <BsCardHeading />
       </button>
       {isOpen && (
-        <ul className="absolute z-10 left-1/2 -translate-x-1/2 w-36 max-h-48 top-12 overflow-y-auto shadow bg-white rounded py-1 dark:bg-dark-color-3">
+        <ul className="absolute z-10 left-1/2 -translate-x-1/2 w-36 max-h-48 top-12 overflow-y-auto shadow bg-white rounded py-1 dark:bg-slate-900">
           {ITEMS_FORMAT.map((item) => (
             <EditTextItem key={uuidv4()} cmd={item.cmd} arg={item?.arg}>
               {item?.children}
@@ -161,7 +161,7 @@ export function EditTextPalette({
         {backgroundColor ? <BsPaintBucket /> : <BsPalette />}
       </button>
       {isOpen && (
-        <ul className="absolute z-10 grid grid-cols-5 gap-2 w-40 left-1/2 -translate-x-1/2 max-h-48 top-12 overflow-y-auto shadow bg-white rounded p-2 dark:bg-dark-color-3">
+        <ul className="absolute z-10 grid grid-cols-5 gap-2 w-40 left-1/2 -translate-x-1/2 max-h-48 top-12 overflow-y-auto shadow bg-white rounded p-2 dark:bg-slate-900">
           {ITEMS_PALETTE.map((color) => (
             <li
               key={uuidv4()}
@@ -224,7 +224,7 @@ export function EditTextItemLink({
         <BsLink />
       </button>
       {isOpen && (
-        <div className="absolute z-10 left-1/2 -translate-x-1/2 w-72 px-6 top-12 overflow-y-auto shadow bg-white rounded py-1 dark:bg-dark-color-3">
+        <div className="absolute z-10 left-1/2 -translate-x-1/2 w-72 px-6 top-12 overflow-y-auto shadow bg-white rounded py-1 dark:bg-slate-900">
           <div className="mt-6 space-y-6">
             <Input
               label="URL"
