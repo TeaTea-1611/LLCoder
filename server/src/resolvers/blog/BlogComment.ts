@@ -18,17 +18,18 @@ import { AuthenticationError } from "apollo-server-core";
 import { IsNull } from "typeorm";
 
 @Resolver()
-export class BlogResolver {
+export class BlogCommentResolver {
   @UseMiddleware(checkAuth)
   @Mutation(() => BlogCommentMutationResponse)
   async createBlogComment(
     @Arg("data") data: BlogCommentInput,
-    @Ctx() { req }: Context
+    @Ctx() { req, connection }: Context
   ): Promise<BlogCommentMutationResponse> {
-    try {
+    return await connection.transaction(async (transactionEntityManage) => {
       const user = await User.findOne({ where: { id: req.session.uid } });
       if (!user) throw new AuthenticationError("not authentication");
       const { blogId, comment, parentId } = data;
+
       const existBLog = await Blog.findOne({ where: { id: blogId } });
       if (!existBLog)
         return {
@@ -47,24 +48,23 @@ export class BlogResolver {
             message: "Invalid comment",
           };
       }
-      const newComment = await BlogComment.create({
+      const newComment = transactionEntityManage.create(BlogComment, {
         blogId,
         userId: user.id,
         comment,
         parentId,
-      }).save();
+      });
+      await transactionEntityManage.save(newComment);
+
+      existBLog.commentsCount += 1;
+      await transactionEntityManage.save(existBLog);
+
       return {
         code: 200,
         success: true,
         comment: newComment,
       };
-    } catch (err) {
-      return {
-        code: 500,
-        success: false,
-        message: "Internal server error" + err.message,
-      };
-    }
+    });
   }
 
   @Query(() => [BlogComment], { nullable: true })
@@ -79,5 +79,29 @@ export class BlogResolver {
     @Arg("commentId", () => Int) commentId: number
   ): Promise<BlogComment[] | null> {
     return await BlogComment.find({ where: { parentId: commentId } });
+  }
+
+  @UseMiddleware(checkAuth)
+  @Mutation(() => Boolean)
+  async deleteBlogComment(
+    @Arg("commentId", () => Int) commentId: number,
+    @Ctx() { req, connection }: Context
+  ): Promise<Boolean> {
+    return await connection.transaction(async (transactionEntityManage) => {
+      const user = await User.findOne({ where: { id: req.session.uid } });
+      if (!user) throw new AuthenticationError("not authentication");
+      const comment = await transactionEntityManage.findOne(BlogComment, {
+        where: { id: commentId },
+      });
+      if (!comment) return false;
+      const blog = await transactionEntityManage.findOne(Blog, {
+        where: { id: comment.blogId },
+      });
+      if (!blog) return false;
+      blog.commentsCount -= 1;
+      await transactionEntityManage.remove(comment);
+      await transactionEntityManage.save(blog);
+      return true;
+    });
   }
 }

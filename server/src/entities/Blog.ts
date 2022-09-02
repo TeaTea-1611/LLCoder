@@ -4,6 +4,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -11,6 +13,8 @@ import {
 } from "typeorm";
 import { User } from "./User";
 import { BlogComment } from "./BlogComment";
+import { BlogLike } from "./BlogLike";
+import { BlogTag } from "./BlogTag";
 @ObjectType()
 @Entity()
 export class Blog extends BaseEntity {
@@ -39,6 +43,19 @@ export class Blog extends BaseEntity {
   @Field()
   @Column({ type: "int", default: 0 })
   commentsCount: number;
+
+  @Field(() => [BlogLike])
+  @OneToMany(() => BlogLike, (reactions) => reactions.blog)
+  likes: BlogLike[];
+
+  @Field()
+  @Column({ type: "int", default: 0 })
+  likesCount: number;
+
+  @Field(() => [BlogTag])
+  @ManyToMany(() => BlogTag, (tag) => tag.blogs)
+  @JoinTable()
+  tags!: BlogTag[];
 
   @Field()
   @Column({ default: false })

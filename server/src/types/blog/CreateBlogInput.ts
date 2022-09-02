@@ -1,4 +1,4 @@
-import { Field, InputType } from "type-graphql";
+import { Field, ID, InputType } from "type-graphql";
 
 @InputType()
 export class CreateBlogInput {
@@ -7,4 +7,7 @@ export class CreateBlogInput {
 
   @Field()
   text: string;
+
+  @Field(() => [ID], { nullable: true })
+  tags?: number[];
 }

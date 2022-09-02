@@ -12,7 +12,7 @@ export class CreateExerciseInput {
   difficulty: number;
 
   @Field(() => [ID], { nullable: true })
-  categories: number[];
+  categories?: number[];
 
   @Field({ nullable: true })
   exp: number;

@@ -29,6 +29,9 @@ export type Blog = {
   confirmed: Scalars["Boolean"];
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
+  likes: Array<BlogLike>;
+  likesCount: Scalars["Float"];
+  tags: Array<BlogTag>;
   text: Scalars["String"];
   title: Scalars["String"];
   updatedAt: Scalars["DateTime"];
@@ -38,10 +41,13 @@ export type Blog = {
 export type BlogComment = {
   __typename?: "BlogComment";
   comment: Scalars["String"];
+  createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   parentId?: Maybe<Scalars["ID"]>;
   reactions: Array<BlogCommentReactions>;
   reactionsCount: Scalars["Float"];
+  replyCount: Scalars["Float"];
+  updatedAt: Scalars["DateTime"];
   user: User;
   userId: Scalars["Float"];
 };
@@ -62,7 +68,17 @@ export type BlogCommentMutationResponse = MutationResponse & {
 
 export type BlogCommentReactions = {
   __typename?: "BlogCommentReactions";
+  createdAt: Scalars["DateTime"];
   type: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type BlogLike = {
+  __typename?: "BlogLike";
+  blog: Blog;
+  blogId: Scalars["ID"];
+  user: User;
+  userId: Scalars["ID"];
 };
 
 export type BlogMutationResponse = MutationResponse & {
@@ -72,6 +88,13 @@ export type BlogMutationResponse = MutationResponse & {
   errors?: Maybe<Array<FieldError>>;
   message?: Maybe<Scalars["String"]>;
   success: Scalars["Boolean"];
+};
+
+export type BlogTag = {
+  __typename?: "BlogTag";
+  blogs: Array<Blog>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
 };
 
 export type Category = {
@@ -92,6 +115,7 @@ export type CategoryMutationResponse = MutationResponse & {
 };
 
 export type CreateBlogInput = {
+  tags?: InputMaybe<Array<Scalars["ID"]>>;
   text: Scalars["String"];
   title: Scalars["String"];
 };
@@ -160,8 +184,10 @@ export type Mutation = {
   createBlogComment: BlogCommentMutationResponse;
   createCategory: CategoryMutationResponse;
   createExercise: ExerciseMutationResponse;
+  deleteBlogComment: Scalars["Boolean"];
   editProfile: UserMutationResponse;
   forgotPassword: Scalars["Boolean"];
+  likeBlog?: Maybe<Blog>;
   login: UserMutationResponse;
   logout: Scalars["Boolean"];
   register: UserMutationResponse;
@@ -192,12 +218,20 @@ export type MutationCreateExerciseArgs = {
   data: CreateExerciseInput;
 };
 
+export type MutationDeleteBlogCommentArgs = {
+  commentId: Scalars["Int"];
+};
+
 export type MutationEditProfileArgs = {
   data: UpdateUserInput;
 };
 
 export type MutationForgotPasswordArgs = {
   email: Scalars["String"];
+};
+
+export type MutationLikeBlogArgs = {
+  blogId: Scalars["Int"];
 };
 
 export type MutationLoginArgs = {
@@ -589,9 +623,12 @@ export type PagtinatedBlogsQuery = {
       id: string;
       title: string;
       text: string;
+      commentsCount: number;
+      likesCount: number;
       createdAt: any;
       updatedAt: any;
-      user: { __typename?: "User"; avatar: string; nickname: string };
+      user: { __typename?: "User"; nickname: string; avatar: string };
+      tags: Array<{ __typename?: "BlogTag"; name: string }>;
     }> | null;
   };
 };
@@ -1055,12 +1092,17 @@ export const PagtinatedBlogsDocument = gql`
       hashMore
       blogs {
         user {
-          avatar
           nickname
+          avatar
         }
         id
         title
         text
+        commentsCount
+        likesCount
+        tags {
+          name
+        }
         createdAt
         updatedAt
       }

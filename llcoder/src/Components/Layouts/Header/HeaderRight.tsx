@@ -9,18 +9,20 @@ function HeaderRight() {
   const { data, loading } = useMeQuery();
 
   return (
-    <div className="ml-auto flex space-x-4">
-      <div className="flex items-center space-x-3">
+    <div className="ml-auto flex">
+      <div className="flex items-center space-x-4">
         {loading ? (
           <LoadingSpinner />
         ) : !data?.me ? (
           <Login />
         ) : (
-          <div className="flex items-center space-x-4">
-            <div className="p-2 rounded-full dark:bg-slate-800 dark:hover:bg-slate-700 cursor-pointer">
-              <BsFillBellFill size={18} />
+          <div className="flex items-center">
+            <div className="relative mr-4 before:content-[''] before:w-[1px] before:h-6 before:bg-slate-500/50 before:absolute before:top-1/2 before:-translate-y-1/2 before:-right-4">
+              <div className="p-2 rounded-full dark:bg-slate-800 dark:hover:bg-slate-700 cursor-pointer">
+                <BsFillBellFill size={16} />
+              </div>
             </div>
-            <div className="pl-4 border-l dark:border-l-slate-600">
+            <div className="pl-4">
               <MenuProfile />
             </div>
           </div>

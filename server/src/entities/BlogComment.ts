@@ -2,10 +2,12 @@ import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
 import { Blog } from "./Blog";
@@ -41,10 +43,22 @@ export class BlogComment extends BaseEntity {
   parentId: number;
 
   @Field()
+  @Column({ type: "int", default: 0 })
+  replyCount: number;
+
+  @Field()
   @Column({ default: 0 })
   reactionsCount: number;
 
   @Field(() => [BlogCommentReactions])
   @OneToMany(() => BlogCommentReactions, (reaction) => reaction.comment)
   reactions: BlogCommentReactions[];
+
+  @Field()
+  @CreateDateColumn({ type: "timestamptz" })
+  createdAt!: Date;
+
+  @Field()
+  @UpdateDateColumn({ type: "timestamptz" })
+  updatedAt!: Date;
 }

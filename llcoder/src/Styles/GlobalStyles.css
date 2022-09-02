@@ -25,6 +25,9 @@
   body {
     @apply font-barlow bg-white dark:bg-slate-900 dark:text-slate-400 duration-300;
   }
+  div {
+    @apply block;
+  }
   h1 {
     @apply text-5xl font-medium;
   }

@@ -1,7 +1,16 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { User } from "./User";
 import { BlogComment } from "./BlogComment";
+import { ReactionsType } from "../types/Reactions/ReactionsType";
 
 @ObjectType()
 @Entity()
@@ -19,6 +28,14 @@ export class BlogCommentReactions extends BaseEntity {
   comment: BlogComment;
 
   @Field()
-  @Column()
-  type: string;
+  @Column({ enum: ReactionsType })
+  type: ReactionsType;
+
+  @Field()
+  @CreateDateColumn({ type: "timestamptz" })
+  createdAt!: Date;
+
+  @Field()
+  @UpdateDateColumn({ type: "timestamptz" })
+  updatedAt!: Date;
 }

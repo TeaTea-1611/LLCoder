@@ -5,12 +5,17 @@ query PagtinatedBlogs($limit: Int!, $cursor: String) {
     hashMore
     blogs {
       user {
-        avatar
         nickname
+        avatar
       }
       id
       title
       text
+      commentsCount
+      likesCount
+      tags {
+        name
+      }
       createdAt
       updatedAt
     }

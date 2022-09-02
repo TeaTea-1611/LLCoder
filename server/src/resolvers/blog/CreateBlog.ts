@@ -5,6 +5,9 @@ import { User } from "../../entities/User";
 import { BlogMutationResponse } from "../../types/blog/BlogMutationResponse";
 import { CreateBlogInput } from "../../types/blog/CreateBlogInput";
 import { Context } from "../../types/Context";
+import { AuthenticationError } from "apollo-server-core";
+import { BlogTag } from "../../entities/BlogTag";
+import { In } from "typeorm";
 
 @Resolver()
 export class CreateBlogResolver {
@@ -12,17 +15,12 @@ export class CreateBlogResolver {
   @Mutation(() => BlogMutationResponse)
   async createBlog(
     @Arg("data") data: CreateBlogInput,
-    @Ctx() { req }: Context
+    @Ctx() { req, connection }: Context
   ): Promise<BlogMutationResponse> {
-    try {
+    return await connection.transaction(async (transactionEntityManage) => {
       const user = await User.findOne({ where: { id: req.session.uid } });
-      if (!user)
-        return {
-          code: 401,
-          success: false,
-          message: "not authentication",
-        };
-      const { title, text } = data;
+      if (!user) throw new AuthenticationError("not authentication");
+      const { title, text, tags = [] } = data;
       const existBlog = await Blog.findOne({ where: { title } });
       if (existBlog)
         return {
@@ -30,23 +28,34 @@ export class CreateBlogResolver {
           success: false,
           errors: [{ field: "title", message: "title already exists" }],
         };
-      const blog = await Blog.create({
+
+      const blog = transactionEntityManage.create(Blog, {
         userId: user.id,
         title,
         text,
-      }).save();
+      });
+
+      if (tags) {
+        const findTags = await BlogTag.find({
+          where: {
+            id: In(tags),
+          },
+        });
+        if (!findTags)
+          return {
+            code: 400,
+            success: false,
+          };
+        blog.tags = findTags;
+      }
+
+      await transactionEntityManage.save(blog);
 
       return {
         code: 200,
         success: true,
         blog,
       };
-    } catch (err) {
-      return {
-        code: 500,
-        success: false,
-        message: "Internal server error" + err.message,
-      };
-    }
+    });
   }
 }

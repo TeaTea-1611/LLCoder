@@ -26,6 +26,7 @@ export class PagtinatedBlogsResolver {
         take: rLimit,
         relations: {
           user: true,
+          tags: true,
         },
       };
 
@@ -51,7 +52,7 @@ export class PagtinatedBlogsResolver {
         blogs,
       };
     } catch (err) {
-      return null;
+      return err;
     }
   }
 }
