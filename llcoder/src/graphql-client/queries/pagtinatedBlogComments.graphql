@@ -1,0 +1,25 @@
+query BlogComments($blogId: Int!, $limit: Int!, $cursor: String) {
+  blogComments(blogId: $blogId, limit: $limit, cursor: $cursor) {
+    totalCount
+    cursor
+    hashMore
+    comments {
+      user {
+        id
+        nickname
+        avatar
+      }
+      id
+      comment
+      parentId
+      replyCount
+      reactionsCount
+      reactions {
+        userId
+        type
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

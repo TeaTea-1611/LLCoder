@@ -10,12 +10,15 @@ import {
 } from "type-graphql";
 import { BlogComment } from "../../entities/BlogComment";
 import { BlogCommentInput } from "../../types/blog/BlogCommentInput";
-import { BlogCommentMutationResponse } from "../../types/blog/BlogMutationResponse";
+import {
+  BlogCommentMutationResponse,
+  PagtinatedComment,
+} from "../../types/blog/BlogMutationResponse";
 import { Context } from "../../types/Context";
 import { checkAuth } from "../../middlewares/auth";
 import { User } from "../../entities/User";
 import { AuthenticationError } from "apollo-server-core";
-import { IsNull } from "typeorm";
+import { IsNull, LessThan } from "typeorm";
 
 @Resolver()
 export class BlogCommentResolver {
@@ -47,6 +50,9 @@ export class BlogCommentResolver {
             success: false,
             message: "Invalid comment",
           };
+
+        parentComment.replyCount += 1;
+        await transactionEntityManage.save(parentComment);
       }
       const newComment = transactionEntityManage.create(BlogComment, {
         blogId,
@@ -67,11 +73,55 @@ export class BlogCommentResolver {
     });
   }
 
-  @Query(() => [BlogComment], { nullable: true })
+  @Query(() => PagtinatedComment)
   async blogComments(
-    @Arg("blogId", () => Int) blogId: number
-  ): Promise<BlogComment[] | null> {
-    return await BlogComment.find({ where: { blogId, parentId: IsNull() } });
+    @Arg("blogId", () => Int) blogId: number,
+    @Arg("limit", () => Int) limit: number,
+    @Arg("cursor", { nullable: true }) cursor?: string
+  ): Promise<PagtinatedComment> {
+    try {
+      const totalCount = await BlogComment.count({
+        where: { blogId },
+      });
+      const rLimit = Math.min(20, limit);
+
+      const findOptions: { [key: string]: any } = {
+        where: { blogId },
+        order: {
+          createdAt: "DESC",
+        },
+        take: rLimit,
+        relations: {
+          user: true,
+          reactions: true,
+        },
+      };
+
+      let lastComment: BlogComment[] = [];
+
+      if (cursor) {
+        findOptions.where = { createdAt: LessThan(cursor), confirmed: true };
+        lastComment = await BlogComment.find({
+          where: { blogId },
+          order: { createdAt: "ASC" },
+          take: 1,
+        });
+      }
+
+      const comments = await BlogComment.find(findOptions);
+
+      return {
+        totalCount,
+        cursor: comments[comments.length - 1].createdAt,
+        hashMore: cursor
+          ? lastComment[0].createdAt.toString() !==
+            comments[comments.length - 1].createdAt.toString()
+          : comments.length < totalCount,
+        comments,
+      };
+    } catch (err) {
+      return err;
+    }
   }
 
   @Query(() => [BlogComment], { nullable: true })

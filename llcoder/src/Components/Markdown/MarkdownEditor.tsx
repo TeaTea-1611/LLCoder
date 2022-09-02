@@ -238,7 +238,7 @@ function MarkdownEditor({
           placeholder={placeholder}
         />
         <div className="w-1/2">
-          <div className="w-full h-full">
+          <div className="w-full h-full leading-8">
             <MarkdownView value={value} />
           </div>
         </div>

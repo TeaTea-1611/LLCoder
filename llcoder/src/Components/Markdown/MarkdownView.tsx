@@ -9,11 +9,11 @@ import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
 
 interface MarkdownViewProps {
-  value: string;
+  value?: string;
   className?: string;
 }
 
-function MarkdownView({ value, className }: MarkdownViewProps) {
+function MarkdownView({ value = "", className }: MarkdownViewProps) {
   return (
     <ReactMarkdown
       children={value}
@@ -91,7 +91,11 @@ function MarkdownView({ value, className }: MarkdownViewProps) {
           );
         },
       }}
-      className={className ? className : "overflow-auto w-full h-full p-2"}
+      className={
+        className
+          ? `${className} overflow-auto w-full h-full p-2`
+          : "overflow-auto w-full h-full p-2"
+      }
     />
   );
 }

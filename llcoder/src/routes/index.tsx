@@ -31,8 +31,8 @@ const pageRoutes = [
   { path: config.routes.exams, component: Exams },
   { path: config.routes.members, component: Members },
 
-  { path: config.routes.blogs, component: Blogs },
   { path: config.routes.blog, component: Blog },
+  { path: config.routes.blogs, component: Blogs },
   { path: config.routes.createBlog, component: CreateBlog, private: true },
   { path: config.routes.blogsNotConfirmed, component: BlogsNotConfirmed },
 ];

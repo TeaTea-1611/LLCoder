@@ -1,0 +1,19 @@
+query Blog($id: Int!) {
+  blog(id: $id) {
+    id
+    user {
+      id
+      nickname
+      avatar
+    }
+    title
+    text
+    commentsCount
+    likesCount
+    tags {
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}

@@ -41,3 +41,18 @@ export class PagtinatedBlogs {
   @Field(() => [Blog], { nullable: true })
   blogs?: Blog[];
 }
+
+@ObjectType()
+export class PagtinatedComment {
+  @Field()
+  totalCount!: number;
+
+  @Field(() => Date)
+  cursor!: Date;
+
+  @Field()
+  hashMore!: boolean;
+
+  @Field(() => [BlogComment], { nullable: true })
+  comments?: BlogComment[];
+}

@@ -8,7 +8,7 @@ import { FaRegCommentDots } from "react-icons/fa";
 import Image from "../../components/Image";
 import { FiMoreHorizontal } from "react-icons/fi";
 
-const limit = 5;
+const limit = 2;
 
 function Blogs() {
   const { data, fetchMore, networkStatus } = usePagtinatedBlogsQuery({
@@ -24,8 +24,6 @@ function Blogs() {
         cursor: data?.pagtinatedBlogs.cursor,
       },
     });
-
-  console.log(data);
 
   return (
     <>

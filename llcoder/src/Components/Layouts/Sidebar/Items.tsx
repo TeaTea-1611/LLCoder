@@ -5,59 +5,60 @@ import { FiUsers } from "react-icons/fi";
 import { FaGraduationCap, FaRegNewspaper } from "react-icons/fa";
 import { SiAboutdotme } from "react-icons/si";
 import { FormattedMessage } from "react-intl";
+import config from "../../../config";
 
 export const NavItems = [
   {
-    path: "/",
+    path: config.routes.home,
     label: <FormattedMessage id="sidebar-nav.home" />,
     icon: <GoHome size={18} />,
   },
   {
-    path: "/exercises",
+    path: config.routes.exercises,
     label: <FormattedMessage id="sidebar-nav.exercises" />,
     icon: <BiBookBookmark size={18} />,
     children: [
       {
-        path: "/exercises/create",
+        path: config.routes.createExercise,
         label: <FormattedMessage id="sidebar-nav.create-exercise" />,
       },
       {
-        path: "/exercises/not-confirmed",
+        path: config.routes.exercisesNotConfirmed,
         label: <FormattedMessage id="sidebar-nav.exercises-not-confirmed" />,
       },
     ],
   },
   {
-    path: "/codepad",
+    path: config.routes.codepad,
     label: "Codepad",
     icon: <DiCodeBadge size={18} />,
   },
   {
-    path: "/members",
+    path: config.routes.members,
     label: <FormattedMessage id="sidebar-nav.members" />,
     icon: <FiUsers size={18} />,
   },
   {
-    path: "/exams",
+    path: config.routes.exams,
     label: <FormattedMessage id="sidebar-nav.exams" />,
     icon: <FaGraduationCap size={18} />,
   },
   {
-    path: "/about-me",
+    path: config.routes.aboutMe,
     label: <FormattedMessage id="sidebar-nav.about-me" />,
     icon: <SiAboutdotme size={18} />,
   },
   {
-    path: "/blogs",
+    path: config.routes.blogs,
     label: <FormattedMessage id="sidebar-nav.blogs" />,
     icon: <FaRegNewspaper size={18} />,
     children: [
       {
-        path: "/blogs/create",
+        path: config.routes.createBlog,
         label: <FormattedMessage id="sidebar-nav.create-blog" />,
       },
       {
-        path: "/blogs/not-confirmed",
+        path: config.routes.blogsNotConfirmed,
         label: <FormattedMessage id="sidebar-nav.blogs-not-confirmed" />,
       },
     ],

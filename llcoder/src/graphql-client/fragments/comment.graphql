@@ -1,0 +1,18 @@
+fragment commentType on BlogComment {
+  user {
+    id
+    nickname
+    avatar
+  }
+  id
+  comment
+  parentId
+  replyCount
+  reactionsCount
+  reactions {
+    userId
+    type
+  }
+  createdAt
+  updatedAt
+}
