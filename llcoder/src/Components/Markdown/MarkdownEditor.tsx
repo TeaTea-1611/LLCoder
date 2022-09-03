@@ -1,6 +1,6 @@
 import MarkdownView from "./MarkdownView";
 import { v4 as uuidv4 } from "uuid";
-import { memo, useRef, useState } from "react";
+import { memo, useRef, useState, useEffect } from "react";
 import {
   BsBlockquoteLeft,
   BsCode,
@@ -93,6 +93,11 @@ function MarkdownEditor({
   const [isZoom, setIsZoom] = useState(false);
   let rcMdEdRef = useRef<HTMLTextAreaElement>(null);
   const [uploadImageMarkdown] = useUploadImageMarkDownMutation();
+
+  useEffect(() => {
+    if (isZoom) document.body.style.overflowY = "hidden";
+    else document.body.style.overflowY = "visible";
+  }, [isZoom]);
 
   const insertFormating = (
     txtarea: any,
@@ -221,7 +226,9 @@ function MarkdownEditor({
           <li>
             <button
               className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
-              onClick={() => setIsZoom(!isZoom)}
+              onClick={() => {
+                setIsZoom(!isZoom);
+              }}
             >
               <MdZoomOutMap />
             </button>

@@ -7,7 +7,7 @@ function Comment({
   replies,
 }: {
   comment: CommentTypeFragment;
-  replies: CommentTypeFragment[];
+  replies: (cmt: CommentTypeFragment) => CommentTypeFragment[];
 }) {
   return (
     <div className="flex space-x-2">
@@ -23,14 +23,21 @@ function Comment({
         </div>
         <div>{comment.comment}</div>
         <div className="space-y-4 mt-4">
-          {comment.replyCount > 0 &&
-            (replies.length === 0 ? (
-              <div>Replies</div>
-            ) : (
-              replies.map((reply) => (
-                <Comment key={reply.id} comment={reply} replies={[]} />
-              ))
-            ))}
+          {comment.replyCount > 0 && (
+            <>
+              <div>{comment.replyCount} Replies</div>
+              {replies(comment).map(
+                (reply) =>
+                  reply.parentId === comment.id && (
+                    <Comment
+                      key={reply.id}
+                      comment={reply}
+                      replies={(cmt) => replies(cmt)}
+                    />
+                  )
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

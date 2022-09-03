@@ -2,19 +2,32 @@ import { CommentTypeFragment } from "../../generated/graphql";
 import Comment from "./Comment";
 
 interface CommentsProps {
-  currentUserId?: number;
+  authEntityId?: number;
   comments?: CommentTypeFragment[];
 }
 
-function Comments({ currentUserId, comments = [] }: CommentsProps) {
+function Comments({ authEntityId, comments = [] }: CommentsProps) {
+  console.log(comments);
+
   const rootComments = comments.filter((comment) => comment.parentId === null);
-  const getReplies = (commentId: string | number) => {
-    return comments
-      .filter((cmt) => cmt.parentId === commentId.toString())
-      .sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
+  const rootReplies = comments.filter((comment) => comment.parentId !== null);
+
+  const getReplies = (comment: CommentTypeFragment) => {
+    if (comment.replyCount === 0) return [];
+    let replies: CommentTypeFragment[] = [];
+    rootReplies.forEach((reply) => {
+      if (reply.parentId === comment.id) {
+        replies.push(reply);
+        if (reply.replyCount > 0) {
+          replies = replies.concat(getReplies(reply));
+        }
+      }
+    });
+
+    return replies.sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
   };
 
   return (
@@ -25,7 +38,7 @@ function Comments({ currentUserId, comments = [] }: CommentsProps) {
           <Comment
             key={rootComment.id}
             comment={rootComment}
-            replies={getReplies(rootComment.id)}
+            replies={(cmt) => getReplies(cmt)}
           ></Comment>
         ))}
       </div>
