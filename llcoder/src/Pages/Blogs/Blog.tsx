@@ -6,28 +6,87 @@ import { Link, useParams } from "react-router-dom";
 import { Comments } from "../../components/Comments";
 import Image from "../../components/Image";
 import { MarkdownView } from "../../components/Markdown";
+import { Button } from "../../components/UI";
 import config from "../../config";
-import { useBlogCommentsQuery, useBlogQuery } from "../../generated/graphql";
+import {
+  CommentTypeFragment,
+  useBlogCommentsLazyQuery,
+  useBlogQuery,
+  useGetRepliesBlogLazyQuery,
+} from "../../generated/graphql";
 
-const limit = 20;
+import { useEffect, useState } from "react";
+
+const limit = 5;
 
 function Blog() {
   const { id = "0" } = useParams();
-
   const { data } = useBlogQuery({
     variables: {
       id: parseInt(id as string),
     },
+    fetchPolicy: "no-cache",
   });
 
-  const {
-    data: _dataComment,
-    fetchMore,
-    networkStatus,
-  } = useBlogCommentsQuery({
-    variables: { blogId: parseInt(id as string), limit },
-    notifyOnNetworkStatusChange: true,
-  });
+  const [comments, setComments] = useState<CommentTypeFragment[]>([]);
+  const [hashMoreComments, setHashMoreComments] = useState(false);
+  const [cursorComments, setCursorComments] = useState();
+
+  const [loadBlogComment] = useBlogCommentsLazyQuery();
+
+  const [loadReplies] = useGetRepliesBlogLazyQuery();
+
+  useEffect(() => {
+    (async () => {
+      const resComments = await loadBlogComment({
+        variables: {
+          blogId: parseInt(id as string),
+          limit,
+        },
+      });
+      if (resComments.data?.blogComments) {
+        setComments((pre) => [
+          ...pre,
+          ...(resComments.data?.blogComments?.comments || []),
+        ]);
+        setCursorComments(resComments.data?.blogComments.cursor);
+        setHashMoreComments(resComments.data?.blogComments.hashMore);
+      }
+    })();
+  }, [loadBlogComment, id]);
+
+  const loadMoreComments = async () => {
+    const resComments = await loadBlogComment({
+      variables: {
+        blogId: parseInt(id as string),
+        limit,
+        cursor: cursorComments,
+      },
+    });
+    if (resComments.data?.blogComments) {
+      setComments((pre) => [
+        ...pre,
+        ...(resComments.data?.blogComments?.comments || []),
+      ]);
+      setCursorComments(resComments.data?.blogComments.cursor);
+      setHashMoreComments(resComments.data?.blogComments.hashMore);
+    }
+  };
+
+  const onLoadingRelies = async (cmtId: number | string) => {
+    const resReplies = await loadReplies({
+      variables: {
+        commentId: Number(cmtId),
+      },
+      fetchPolicy: "no-cache",
+    });
+    if (resReplies.data?.getRepliesBlog) {
+      setComments((pre) => [
+        ...pre,
+        ...(resReplies.data?.getRepliesBlog || []),
+      ]);
+    }
+  };
 
   return (
     <>
@@ -77,7 +136,14 @@ function Blog() {
           </div>
         </div>
         <div>
-          <Comments comments={_dataComment?.blogComments.comments || []} />
+          <>
+            <Comments comments={comments} onLoadingRelies={onLoadingRelies} />
+            {hashMoreComments && (
+              <div className="flex mt-4" onClick={loadMoreComments}>
+                <Button className="m-auto">Load More</Button>
+              </div>
+            )}
+          </>
         </div>
       </footer>
     </>

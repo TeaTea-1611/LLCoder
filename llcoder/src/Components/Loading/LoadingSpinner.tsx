@@ -3,18 +3,11 @@ interface IProps {
   small?: boolean;
   medium?: boolean;
   large?: boolean;
-  className?: string;
 }
 
-function LoadingSpinner({
-  isLoading = true,
-  small,
-  medium,
-  large,
-  className,
-}: IProps) {
+function LoadingSpinner({ isLoading = true, small, medium, large }: IProps) {
   let size = "w-6 h-6";
-  if (small) size = "w-[18] h-[18]";
+  if (small) size = "w-4 h-4";
   else if (medium) size = "w-8 h-8";
   else if (large) size = "w-16 h-16";
   return (

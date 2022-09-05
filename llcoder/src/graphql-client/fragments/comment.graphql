@@ -16,3 +16,8 @@ fragment commentType on BlogComment {
   createdAt
   updatedAt
 }
+
+fragment reactionsComment on BlogCommentReactions {
+  userId
+  type
+}

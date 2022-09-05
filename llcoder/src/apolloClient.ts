@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
-import { Blog } from "./generated/graphql";
+import { Blog, BlogComment } from "./generated/graphql";
 
 export const client = new ApolloClient({
   link: createUploadLink({

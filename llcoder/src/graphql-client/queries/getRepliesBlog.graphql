@@ -1,0 +1,20 @@
+query getRepliesBlog($commentId: Int!) {
+  getRepliesBlog(commentId: $commentId) {
+    user {
+      id
+      nickname
+      avatar
+    }
+    id
+    comment
+    parentId
+    replyCount
+    reactionsCount
+    reactions {
+      userId
+      type
+    }
+    createdAt
+    updatedAt
+  }
+}

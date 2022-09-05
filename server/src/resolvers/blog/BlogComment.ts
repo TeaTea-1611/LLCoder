@@ -73,20 +73,22 @@ export class BlogCommentResolver {
     });
   }
 
-  @Query(() => PagtinatedComment)
+  @Query(() => PagtinatedComment, { nullable: true })
   async blogComments(
     @Arg("blogId", () => Int) blogId: number,
     @Arg("limit", () => Int) limit: number,
     @Arg("cursor", { nullable: true }) cursor?: string
-  ): Promise<PagtinatedComment> {
+  ): Promise<PagtinatedComment | null> {
     try {
       const totalCount = await BlogComment.count({
-        where: { blogId },
+        where: { blogId, parentId: IsNull() },
       });
       const rLimit = Math.min(20, limit);
+      const blog = await Blog.findOne({ where: { id: blogId } });
+      if (!blog || blog.commentsCount === 0) return null;
 
       const findOptions: { [key: string]: any } = {
-        where: { blogId },
+        where: { blogId, parentId: IsNull() },
         order: {
           createdAt: "DESC",
         },
@@ -100,9 +102,9 @@ export class BlogCommentResolver {
       let lastComment: BlogComment[] = [];
 
       if (cursor) {
-        findOptions.where = { createdAt: LessThan(cursor), confirmed: true };
+        findOptions.where = { createdAt: LessThan(cursor) };
         lastComment = await BlogComment.find({
-          where: { blogId },
+          where: { blogId, parentId: IsNull() },
           order: { createdAt: "ASC" },
           take: 1,
         });
@@ -125,10 +127,16 @@ export class BlogCommentResolver {
   }
 
   @Query(() => [BlogComment], { nullable: true })
-  async blogChildrenComments(
+  async getRepliesBlog(
     @Arg("commentId", () => Int) commentId: number
   ): Promise<BlogComment[] | null> {
-    return await BlogComment.find({ where: { parentId: commentId } });
+    return await BlogComment.find({
+      where: { parentId: commentId },
+      relations: {
+        user: true,
+        reactions: true,
+      },
+    });
   }
 
   @UseMiddleware(checkAuth)
