@@ -2,10 +2,12 @@ import { Blog } from "../../entities/Blog";
 import {
   Arg,
   Ctx,
+  FieldResolver,
   Int,
   Mutation,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from "type-graphql";
 import { BlogComment } from "../../entities/BlogComment";
@@ -20,8 +22,24 @@ import { User } from "../../entities/User";
 import { AuthenticationError } from "apollo-server-core";
 import { IsNull, LessThan } from "typeorm";
 
-@Resolver()
+@Resolver(BlogComment)
 export class BlogCommentResolver {
+  @FieldResolver()
+  async reactionsSort(@Root() parent: BlogComment) {
+    const mapReactions: { [key: string]: number } = {};
+    if (parent.reactions.length === 0) return mapReactions;
+    parent.reactions.forEach((rct) => {
+      if (mapReactions[rct.type]) {
+        mapReactions[rct.type] += 1;
+      } else {
+        mapReactions[rct.type] = 1;
+      }
+    });
+    return Object.entries(mapReactions)
+      .sort(([, a], [, b]) => b - a)
+      .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+  }
+
   @UseMiddleware(checkAuth)
   @Mutation(() => BlogCommentMutationResponse)
   async createBlogComment(

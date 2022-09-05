@@ -12,6 +12,7 @@ import {
 import { User } from "./User";
 import { Blog } from "./Blog";
 import { BlogCommentReactions } from "./BlogCommentReactions";
+import { GraphQLJSONObject } from "graphql-type-json";
 
 @ObjectType()
 @Entity()
@@ -53,6 +54,9 @@ export class BlogComment extends BaseEntity {
   @Field(() => [BlogCommentReactions])
   @OneToMany(() => BlogCommentReactions, (reaction) => reaction.comment)
   reactions: BlogCommentReactions[];
+
+  @Field(() => GraphQLJSONObject)
+  reactionsSort: object;
 
   @Field()
   @CreateDateColumn({ type: "timestamptz" })
