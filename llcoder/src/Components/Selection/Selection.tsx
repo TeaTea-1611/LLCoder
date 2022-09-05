@@ -8,10 +8,10 @@ export interface Option {
 
 interface SelectProps {
   options: Option[];
-  defaultValue?: string;
+  defaultValue?: Option;
   className?: string;
   placeholder?: string;
-  onChange?: (value: string) => void;
+  onChange?: (option: Option) => void;
 }
 
 function Selection({
@@ -22,7 +22,7 @@ function Selection({
   onChange,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [label, setLabel] = useState(defaultValue || placeholder);
+  const [label, setLabel] = useState(defaultValue?.label || placeholder);
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ function Selection({
   return (
     <>
       <div
-        className={`relative shadow border dark:border-slate-700 h-8 w-full ${className} rounded flex items-center cursor-pointer`}
+        className={className ? `${className} relative shadow border dark:border-slate-700 h-8 rounded flex items-center cursor-pointer` : "relative w-full shadow border dark:border-slate-700 h-8 rounded flex items-center cursor-pointer"}
         onClick={() => setIsOpen(!isOpen)}
         ref={selectRef}
       >
@@ -62,7 +62,7 @@ function Selection({
                   onClick={() => {
                     setIsOpen(false);
                     setLabel(item.label);
-                    if (onChange) onChange(item.value);
+                    if (onChange) onChange(item);
                   }}
                 >
                   <span>{item.label}</span>

@@ -6,3 +6,4 @@ export { default as AboutMe } from "./AboutMe";
 export { default as Profile } from "./Profile";
 export { default as Exams } from "./Exams";
 export { Blogs, Blog, CreateBlog, BlogsNotConfirmed } from "./Blogs";
+export { default as PageNotFound} from './PageNotFound'

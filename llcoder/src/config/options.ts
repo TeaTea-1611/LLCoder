@@ -16,6 +16,7 @@ export const routes = {
   blog: "/blog/:id",
   createBlog: "/blog/create",
   blogsNotConfirmed: "/blog/not-confirmed",
+  pageNotFound: "*"
 };
 
 export const options = {

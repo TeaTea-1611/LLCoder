@@ -11,6 +11,7 @@ import {
   CreateBlog,
   BlogsNotConfirmed,
   Blog,
+  PageNotFound
 } from "../pages";
 import config from "../config";
 
@@ -35,6 +36,7 @@ const pageRoutes = [
   { path: config.routes.blogs, component: Blogs },
   { path: config.routes.createBlog, component: CreateBlog, private: true },
   { path: config.routes.blogsNotConfirmed, component: BlogsNotConfirmed },
+  { path: config.routes.pageNotFound, component: PageNotFound },
 ];
 
 export { pageRoutes };

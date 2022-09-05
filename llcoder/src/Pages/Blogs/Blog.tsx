@@ -89,33 +89,37 @@ function Blog() {
   };
 
   return (
-    <>
+    data?.blog ? <>
       <header className="space-y-6 mb-6">
-        <h1>{data?.blog?.title}</h1>
-        <div className="flex justify-between">
-          <div className="flex items-center space-x-2">
-            <Link to={config.routes.members + "/" + data?.blog?.user.id}>
-              <Image
-                className="w-12 h-12 rounded-full"
-                src={data?.blog?.user.avatar}
-              />
-            </Link>
-            <div className="flex flex-col py-1">
+        
+        
+          <h1>{data?.blog?.title}</h1>
+          <div className="flex justify-between">
+            <div className="flex items-center space-x-2">
               <Link to={config.routes.members + "/" + data?.blog?.user.id}>
-                <p className="font-medium">{data?.blog?.user.nickname}</p>
+                <Image
+                  className="w-12 h-12 rounded-full"
+                  src={data?.blog?.user.avatar}
+                />
               </Link>
-              <p>{moment(data?.blog?.createdAt).format("YYYY-MM-DD")}</p>
+              <div className="flex flex-col py-1">
+                <Link to={config.routes.members + "/" + data?.blog?.user.id}>
+                  <p className="font-medium">{data?.blog?.user.nickname}</p>
+                </Link>
+                <p>{moment(data?.blog?.createdAt).format("YYYY-MM-DD")}</p>
+              </div>
+            </div>
+            <div>
+              <FiMoreHorizontal />
             </div>
           </div>
           <div>
-            <FiMoreHorizontal />
+            {data?.blog?.tags?.map((item) => (
+              <div className="" key={item.name}></div>
+            ))}
           </div>
-        </div>
-        <div>
-          {data?.blog?.tags?.map((item) => (
-            <div className="" key={item.name}></div>
-          ))}
-        </div>
+        
+        
       </header>
       <div className="leading-8 text-lg space-y-6">
         <MarkdownView value={data?.blog?.text} />
@@ -146,7 +150,7 @@ function Blog() {
           </>
         </div>
       </footer>
-    </>
+    </> : null
   );
 }
 
