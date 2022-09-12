@@ -1,17 +1,18 @@
+import { Max, Min } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
+  JoinColumn,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Category } from "./Category";
-import { User } from "./User";
+import { ExerciseCategory } from "./ExerciseCategory";
+import { ExerciseDifficulty } from "./ExerciseDifficulty";
 
 @ObjectType()
 @Entity()
@@ -20,43 +21,42 @@ export class Exercise extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
-  userId: number;
-
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.exercises)
-  user: User;
-
   @Field()
   @Column({ unique: true })
-  name!: string;
+  title: string;
 
   @Field()
-  @Column({ type: "text", default: "" })
-  text: string;
+  @Column("text")
+  content: string;
 
   @Field()
-  @Column({ default: 0 })
-  difficulty!: number;
-
-  @Field(() => [Category])
-  @ManyToMany(() => Category, (category) => category.exercises)
-  @JoinTable()
-  categories!: Category[];
+  @Min(5)
+  @Max(30)
+  @Column({ default: 5 })
+  xp: number;
 
   @Field()
-  @Column({ default: 10 })
-  exp: number;
+  @Column()
+  difficulty_id: number;
+
+  @Field(() => ExerciseDifficulty)
+  @ManyToOne(() => ExerciseDifficulty)
+  @JoinColumn({ name: "difficulty_id", referencedColumnName: "id" })
+  difficulty: ExerciseDifficulty;
+
+  @Field(() => [ExerciseCategory])
+  @ManyToMany(() => ExerciseCategory, (category) => category.exercises)
+  categories: ExerciseCategory[];
 
   @Field()
   @Column({ default: false })
   confirmed: boolean;
 
   @Field()
-  @CreateDateColumn()
-  createdAt!: Date;
+  @CreateDateColumn({ type: "timestamptz" })
+  created_at!: Date;
 
   @Field()
-  @UpdateDateColumn()
-  updatedAt!: Date;
+  @UpdateDateColumn({ type: "timestamptz" })
+  updated_at!: Date;
 }

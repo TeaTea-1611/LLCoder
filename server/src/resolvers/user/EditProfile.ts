@@ -24,7 +24,7 @@ export class EditProfileResolver {
         };
       const { nickname, dateOfBirth, password } = data;
       if (!!nickname) user.nickname = nickname;
-      if (!!dateOfBirth) user.dob = dateOfBirth;
+      if (!!dateOfBirth) user.date_of_birth = dateOfBirth;
       if (!!password) user.password = password;
       await user.save();
       return {

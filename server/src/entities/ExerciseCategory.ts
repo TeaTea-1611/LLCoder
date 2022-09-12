@@ -10,7 +10,7 @@ import { Exercise } from "./Exercise";
 
 @ObjectType()
 @Entity()
-export class Category extends BaseEntity {
+export class ExerciseCategory extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id!: number;

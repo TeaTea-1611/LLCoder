@@ -1,19 +1,19 @@
-import { UserRoleType } from "../types/user/UserType";
+import { MaxLength, MinLength } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Blog } from "./Blog";
-import { Exercise } from "./Exercise";
-import { LanguageType, ThemeType } from "../types/user/Settings";
-import { BlogComment } from "./BlogComment";
-import { BlogCommentReactions } from "./BlogCommentReactions";
+import { _Entity } from "./Entity";
+import { Role } from "./Role";
 
 @ObjectType()
 @Entity()
@@ -22,6 +22,8 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @MinLength(6)
+  @MaxLength(20)
   @Column({ unique: true })
   username!: string;
 
@@ -36,11 +38,13 @@ export class User extends BaseEntity {
   nickname!: string;
 
   @Field()
-  @Column({
-    enum: UserRoleType,
-    default: UserRoleType.GHOST,
-  })
-  role!: UserRoleType;
+  @Column({ nullable: true })
+  role_id: string;
+
+  @Field(() => Role)
+  @ManyToOne(() => Role)
+  @JoinColumn({ name: "role_id", referencedColumnName: "value" })
+  role: Role;
 
   @Field()
   @Column({ default: false })
@@ -52,43 +56,29 @@ export class User extends BaseEntity {
 
   @Field()
   @Column({ default: 0 })
-  exp: number;
+  xp: number;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  dob: Date;
+  date_of_birth: Date;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  lastLogin: Date;
+  last_login: Date;
 
-  @Field()
-  @Column({ enum: ThemeType, default: ThemeType.light })
-  theme: ThemeType;
-
-  @Field()
-  @Column({ enum: LanguageType, default: LanguageType.vi })
-  language: LanguageType;
-
-  @Field(() => [Blog])
-  @OneToMany(() => Blog, (blog) => blog.user)
-  blogs: Blog[];
-
-  @OneToMany(() => BlogComment, (comment) => comment.user)
-  blogComments: Comment[];
-
-  @OneToMany(() => BlogCommentReactions, (reactions) => reactions.user)
-  blogCommentReactions: BlogCommentReactions[];
-
-  @Field(() => [Exercise])
-  @OneToMany(() => Exercise, (exercise) => exercise.user)
-  exercises: Exercise[];
+  @Field(() => [_Entity])
+  @OneToMany(() => _Entity, (entity) => entity.user)
+  entities: _Entity[];
 
   @Field()
   @CreateDateColumn()
-  createdAt!: Date;
+  created_at!: Date;
 
   @Field()
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updated_at!: Date;
+
+  @Field({ nullable: true })
+  @DeleteDateColumn({ nullable: true })
+  deleted_at: Date;
 }

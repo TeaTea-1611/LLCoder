@@ -1,4 +1,4 @@
-import { Category } from "../../entities/Category";
+import { ExerciseCategory } from "../../entities/ExerciseCategory";
 import { Arg, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { checkAuth } from "../../middlewares/auth";
 import { CategoryMutationResponse } from "../../types/category/CategoryMutationResponse";
@@ -13,14 +13,16 @@ export class CreateCategoryResolver {
   ): Promise<CategoryMutationResponse> {
     try {
       const { nameVi, nameEn } = data;
-      const check = await Category.findOne({ where: [{ nameEn }, { nameVi }] });
+      const check = await ExerciseCategory.findOne({
+        where: [{ nameEn }, { nameVi }],
+      });
       if (check)
         return {
           code: 400,
           success: false,
           message: "category already exist",
         };
-      const category = await Category.create({
+      const category = await ExerciseCategory.create({
         nameVi,
         nameEn,
       }).save();

@@ -26,7 +26,7 @@ function Comment({
       </div>
       <div>
         <div>
-          <div className="relative inline-block p-2 rounded-lg dark:bg-slate-800">
+          <div className="relative inline-block p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
             <div className="space-x-2">
               <span className="dark:text-slate-100 font-medium">
                 {comment.user.nickname}

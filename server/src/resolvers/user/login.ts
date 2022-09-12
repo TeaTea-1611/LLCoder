@@ -8,6 +8,7 @@ import { createConfirmationUrl } from "../../utils/createConfirmationUrl";
 import { sendEmail } from "../../utils/sendEmail";
 import { UserMutationResponse } from "../../types/user/UserMutationResponse";
 import { LoginInput, RegisterInput } from "../../types/user/LoginInput";
+import { Role } from "../../entities/Role";
 
 @Resolver()
 export class LoginResolver {
@@ -39,12 +40,19 @@ export class LoginResolver {
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
+      const roleUser = await Role.findOne({
+        where: {
+          value: "R4",
+          name_en: "user",
+        },
+      });
 
       const user = await User.create({
         username,
         nickname: username,
         email,
         password: hashedPassword,
+        role_id: roleUser ? roleUser.value : undefined,
       }).save();
 
       await sendEmail(
@@ -61,7 +69,7 @@ export class LoginResolver {
       return {
         code: 500,
         success: false,
-        message: "Internal server error" + err.message,
+        message: "Internal server error: " + err.message,
       };
     }
   }
@@ -77,6 +85,9 @@ export class LoginResolver {
       const { usernameOrEmail, password } = loginInput;
       const user = await User.findOne({
         where: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
+        relations: {
+          role: true,
+        },
       });
       if (!user)
         return {
@@ -134,7 +145,7 @@ export class LoginResolver {
   @Mutation(() => Boolean)
   async logout(@Ctx() { req, res }: Context): Promise<Boolean> {
     return new Promise((resolve) => {
-      User.update({ id: req.session.uid }, { lastLogin: new Date() })
+      User.update({ id: req.session.uid }, { last_login: new Date() })
         .then(() => {
           res.clearCookie(COOKIES_NAME);
           req.session.destroy((err) => {

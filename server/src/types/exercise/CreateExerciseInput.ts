@@ -3,13 +3,13 @@ import { Field, ID, InputType } from "type-graphql";
 @InputType()
 export class CreateExerciseInput {
   @Field()
-  name: string;
+  title: string;
 
   @Field()
-  text: string;
+  content: string;
 
   @Field({ nullable: true })
-  difficulty: number;
+  difficulty_id: number;
 
   @Field(() => [ID], { nullable: true })
   categories?: number[];

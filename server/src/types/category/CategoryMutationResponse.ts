@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 import { MutationResponse } from "../MutationResponse";
 import { FieldError } from "../FieldError";
-import { Category } from "../../entities/Category";
+import { ExerciseCategory } from "../../entities/ExerciseCategory";
 
 @ObjectType({ implements: MutationResponse })
 export class CategoryMutationResponse implements MutationResponse {
@@ -9,8 +9,8 @@ export class CategoryMutationResponse implements MutationResponse {
   success: boolean;
   message?: string;
 
-  @Field(() => Category, { nullable: true })
-  category?: Category;
+  @Field(() => ExerciseCategory, { nullable: true })
+  category?: ExerciseCategory;
 
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];

@@ -4,16 +4,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
   ManyToMany,
-  ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { User } from "./User";
-import { BlogComment } from "./BlogComment";
-import { BlogLike } from "./BlogLike";
 import { BlogTag } from "./BlogTag";
 @ObjectType()
 @Entity()
@@ -22,40 +16,17 @@ export class Blog extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
-  userId: number;
-
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.blogs)
-  user!: User;
-
   @Field()
   @Column({ unique: true })
-  title!: string;
+  title: string;
 
   @Field()
-  @Column({ type: "text", default: "" })
-  text!: string;
-
-  @OneToMany(() => BlogComment, (comment) => comment.blog)
-  comments: BlogComment[];
-
-  @Field()
-  @Column({ type: "int", default: 0 })
-  commentsCount: number;
-
-  @Field(() => [BlogLike])
-  @OneToMany(() => BlogLike, (reactions) => reactions.blog)
-  likes: BlogLike[];
-
-  @Field()
-  @Column({ type: "int", default: 0 })
-  likesCount: number;
+  @Column("text")
+  content: string;
 
   @Field(() => [BlogTag])
   @ManyToMany(() => BlogTag, (tag) => tag.blogs)
-  @JoinTable()
-  tags!: BlogTag[];
+  tags: BlogTag[];
 
   @Field()
   @Column({ default: false })
@@ -63,9 +34,9 @@ export class Blog extends BaseEntity {
 
   @Field()
   @CreateDateColumn({ type: "timestamptz" })
-  createdAt!: Date;
+  created_at!: Date;
 
   @Field()
   @UpdateDateColumn({ type: "timestamptz" })
-  updatedAt!: Date;
+  updated_at!: Date;
 }

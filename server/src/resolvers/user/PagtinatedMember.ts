@@ -22,7 +22,7 @@ export class PagtinatedMemberResolver {
 
     const members = await User.find({
       where: { confirmed: true },
-      order: { createdAt: "DESC" },
+      order: { created_at: "DESC" },
       take: rLimit,
       skip: (page - 1) * rLimit,
     });

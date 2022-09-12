@@ -43,14 +43,11 @@ function Comments({
         <div>
           <Image src="" className="w-12 h-12 rounded-full" />
         </div>
-        <div className="relative w-full pt-6">
+        <div className="relative w-full">
           <div
-            className="peer w-full py-1 outline-none focus-visible:outline-none border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-500"
+            className="w-full py-1 outline-none focus-visible:outline-none border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-500"
             contentEditable={true}
           ></div>
-          <span className="absolute top-0 peer-focus:text-sky-500">
-            Viết bình luận
-          </span>
         </div>
       </div>
       <div className="space-y-4">

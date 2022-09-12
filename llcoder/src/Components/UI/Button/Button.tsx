@@ -25,9 +25,11 @@ function Button({
 
   const btn = (
     <button
-      className={`border-primary py-1 px-2 rounded shadow-lg hover:bg-slate-100 dark:hover:bg-slate-700 dark:hover:text-slate-100 dark:bg-slate-800 dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 duration-100${
-        className ? ` ${className}` : ""
-      }`}
+      className={
+        className
+          ? `${className} border border-sky-500 py-1 px-2 rounded shadow-lg hover:bg-sky-500 dark:hover:bg-sky-500 hover:text-white dark:hover:text-white dark:bg-slate-800 dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 duration-100`
+          : "border border-sky-500 py-1 px-2 rounded shadow-lg hover:bg-sky-500 dark:hover:bg-sky-500 hover:text-white dark:hover:text-white dark:bg-slate-800 dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 duration-100"
+      }
       onClick={() => {
         if (to) navigate(to);
         else if (onClick) onClick();
