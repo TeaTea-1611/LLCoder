@@ -13,7 +13,9 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { _Entity } from "./Entity";
+import { Level } from "./Level";
 import { Role } from "./Role";
+import { UserSetting } from "./UserSetting";
 
 @ObjectType()
 @Entity()
@@ -37,8 +39,11 @@ export class User extends BaseEntity {
   @Column()
   nickname!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
+  mssv: string;
+
+  @Column()
   role_id: string;
 
   @Field(() => Role)
@@ -58,6 +63,22 @@ export class User extends BaseEntity {
   @Column({ default: 0 })
   xp: number;
 
+  @Column()
+  level: number;
+
+  @Column()
+  next_level: number;
+
+  @Field(() => Level)
+  @ManyToOne(() => Level)
+  @JoinColumn({ name: "level", referencedColumnName: "level" })
+  xp_level: Level;
+
+  @Field(() => Level)
+  @ManyToOne(() => Level)
+  @JoinColumn({ name: "next_level", referencedColumnName: "level" })
+  xp_next_level: Level;
+
   @Field({ nullable: true })
   @Column({ nullable: true })
   date_of_birth: Date;
@@ -69,6 +90,10 @@ export class User extends BaseEntity {
   @Field(() => [_Entity])
   @OneToMany(() => _Entity, (entity) => entity.user)
   entities: _Entity[];
+
+  @Field(() => [UserSetting])
+  @OneToMany(() => UserSetting, (setting) => setting.user)
+  settings: UserSetting[];
 
   @Field()
   @CreateDateColumn()

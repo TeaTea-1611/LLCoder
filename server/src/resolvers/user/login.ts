@@ -8,10 +8,22 @@ import { createConfirmationUrl } from "../../utils/createConfirmationUrl";
 import { sendEmail } from "../../utils/sendEmail";
 import { UserMutationResponse } from "../../types/user/UserMutationResponse";
 import { LoginInput, RegisterInput } from "../../types/user/LoginInput";
-import { Role } from "../../entities/Role";
 
-@Resolver()
+@Resolver(User)
 export class LoginResolver {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req }: Context): Promise<User | null> {
+    if (!req.session.uid) return null;
+    return await User.findOne({
+      where: { id: req.session.uid },
+      relations: {
+        role: true,
+        xp_level: true,
+        xp_next_level: true,
+      },
+    });
+  }
+
   @Mutation(() => UserMutationResponse)
   async register(
     @Arg("data") registerInput: RegisterInput
@@ -40,19 +52,15 @@ export class LoginResolver {
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
-      const roleUser = await Role.findOne({
-        where: {
-          value: "R4",
-          name_en: "user",
-        },
-      });
 
       const user = await User.create({
         username,
         nickname: username,
         email,
         password: hashedPassword,
-        role_id: roleUser ? roleUser.value : undefined,
+        role_id: "R4",
+        level: 1,
+        next_level: 2,
       }).save();
 
       await sendEmail(
@@ -87,6 +95,8 @@ export class LoginResolver {
         where: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
         relations: {
           role: true,
+          xp_level: true,
+          xp_next_level: true,
         },
       });
       if (!user)
@@ -160,14 +170,6 @@ export class LoginResolver {
             resolve(true);
           });
         });
-    });
-  }
-
-  @Query(() => User, { nullable: true })
-  async me(@Ctx() { req }: Context): Promise<User | null> {
-    if (!req.session.uid) return null;
-    return await User.findOne({
-      where: { id: req.session.uid },
     });
   }
 }

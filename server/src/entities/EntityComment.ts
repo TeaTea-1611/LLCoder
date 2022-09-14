@@ -44,6 +44,23 @@ export class EntityComment extends BaseEntity {
 
   @Field()
   @Column({ default: 0 })
+  replies_count: number;
+
+  @Field()
+  @Column({ nullable: true })
+  parent_id: number;
+
+  @Field(() => [EntityComment], { nullable: true })
+  @OneToMany(() => EntityComment, (reply) => reply.parent)
+  replies: EntityComment[];
+
+  @Field(() => EntityComment, { nullable: true })
+  @ManyToOne(() => EntityComment, (comment) => comment.replies)
+  @JoinColumn({ name: "parent_id", referencedColumnName: "id" })
+  parent: EntityComment;
+
+  @Field()
+  @Column({ default: 0 })
   reactions_count: number;
 
   @Field(() => [CommentReaction])
@@ -52,9 +69,9 @@ export class EntityComment extends BaseEntity {
 
   @Field()
   @CreateDateColumn({ type: "timestamptz" })
-  createdAt!: Date;
+  created_at!: Date;
 
   @Field()
   @UpdateDateColumn({ type: "timestamptz" })
-  updatedAt!: Date;
+  updated_at!: Date;
 }
