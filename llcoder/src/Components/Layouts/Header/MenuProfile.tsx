@@ -9,14 +9,10 @@ import {
 import { MdGTranslate, MdLogout, MdOutlineLiveHelp } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import {
-  LanguageType,
   MeDocument,
   MeQuery,
-  ThemeType,
   useLogoutMutation,
   useMeQuery,
-  useSetLanguageSettingsMutation,
-  useSetThemeSettingsMutation,
 } from "../../../generated/graphql";
 import Image from "../../Image";
 import MenuHeader from "./MenuHeader";
@@ -44,13 +40,13 @@ const MENU_ITEMS: MenuItems[] = [
             icon: <BsFillMoonStarsFill />,
             title: "Dark",
             type: "theme",
-            code: ThemeType.Dark,
+            code: "dark",
           },
           {
             icon: <BsFillSunFill />,
             title: "Light",
             type: "theme",
-            code: ThemeType.Light,
+            code: "dark",
           },
         ],
       },
@@ -58,8 +54,8 @@ const MENU_ITEMS: MenuItems[] = [
         icon: <MdGTranslate />,
         title: "Language",
         children: [
-          { title: "English", type: "language", code: LanguageType.En },
-          { title: "Vietnamese", type: "language", code: LanguageType.Vi },
+          { title: "English", type: "language", code: "en" },
+          { title: "Vietnamese", type: "language", code: "vi" },
         ],
       },
     ],
@@ -80,8 +76,6 @@ function Profile() {
   const navigate = useNavigate();
   const { data } = useMeQuery();
   const [logoutUser] = useLogoutMutation();
-  const [setTheme] = useSetThemeSettingsMutation();
-  const [setLanguage] = useSetLanguageSettingsMutation();
 
   const handleChangeMenu = async (menu: any) => {
     switch (menu.type) {
@@ -100,40 +94,8 @@ function Profile() {
         });
         break;
       case "theme":
-        if (menu.code !== data?.me?.theme)
-          await setTheme({
-            variables: {
-              themeType: menu.code,
-            },
-            update(cache, { data: _dataTheme }) {
-              if (_dataTheme?.setThemeSetting) {
-                cache.updateQuery({ query: MeDocument }, (dt) => ({
-                  me: {
-                    ...dt?.me,
-                    theme: menu.code,
-                  },
-                }));
-              }
-            },
-          });
         break;
       case "language":
-        if (menu.code !== data?.me?.language)
-          await setLanguage({
-            variables: {
-              languageType: menu.code,
-            },
-            update(cache, { data: _dataLanguage }) {
-              if (_dataLanguage?.setLanguageSetting) {
-                cache.updateQuery({ query: MeDocument }, (dt) => ({
-                  me: {
-                    ...dt?.me,
-                    language: menu.code,
-                  },
-                }));
-              }
-            },
-          });
         break;
       default:
         break;
@@ -197,8 +159,10 @@ function Profile() {
                   <div>
                     <span>{data?.me?.nickname}</span>
                   </div>
-                  <div>
-                    <span>{`Exp: ${data?.me?.exp}`}</span>
+                  <div className="space-x-1">
+                    <span>level:</span>
+                    <span>{data?.me?.xp_level.name_vi}</span>
+                    <span>{`(${data?.me?.xp}xp)`}</span>
                   </div>
                 </div>
               </div>

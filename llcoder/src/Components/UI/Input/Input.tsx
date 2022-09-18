@@ -81,7 +81,11 @@ export function Input({ className, onChange, value, label }: InputProps) {
   const id = useId();
   return (
     <div
-      className={`relative z-0 w-full my-2${className ? ` ${className}` : ""}`}
+      className={
+        className
+          ? `${className} relative z-0 my-2`
+          : "relative z-0 my-2 w-full"
+      }
     >
       <input
         id={id}

@@ -9,11 +9,14 @@ export class CreateExerciseInput {
   content: string;
 
   @Field({ nullable: true })
-  difficulty_id: number;
-
-  @Field(() => [ID], { nullable: true })
-  categories?: number[];
+  difficulty_id?: number;
 
   @Field({ nullable: true })
-  exp: number;
+  category_id?: number;
+
+  @Field(() => [ID], { nullable: true })
+  form?: number[];
+
+  @Field({ nullable: true })
+  xp?: number;
 }

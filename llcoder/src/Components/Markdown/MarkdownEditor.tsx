@@ -35,8 +35,8 @@ const options = [
     txt: "strikethrough",
   },
   { title: "header", icon: <TbHeading />, text: "# ", txt: "h1", text2: " " },
-  { icon: <MdSubscript />, text: "$", txt: "x_2", text2: "$" },
-  { icon: <MdSuperscript />, text: "$", txt: "x^2", text2: "$" },
+  { icon: <MdSubscript />, text: "$x_2$", text2: " " },
+  { icon: <MdSuperscript />, text: "$x^2$", text2: " " },
   {
     icon: <TbMath />,
     text: "[link tham khảo](http://csrgxtu.github.io/2015/03/20/Writing-Mathematic-Fomulars-in-Markdown/)\n\n$\nx=\\frac{n}{\\sqrt[n]{y^2}}",

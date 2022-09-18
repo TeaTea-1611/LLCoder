@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MdArrowDropDown } from "react-icons/md";
 
 export interface Option {
-  value: string;
+  value: string | number;
   label: string;
 }
 
@@ -16,7 +16,7 @@ interface SelectProps {
 
 function Selection({
   options,
-  defaultValue,
+  defaultValue = { label: "mặc định", value: "" },
   className,
   placeholder = "Select...",
   onChange,
@@ -44,7 +44,11 @@ function Selection({
   return (
     <>
       <div
-        className={className ? `${className} relative shadow border dark:border-slate-700 h-8 rounded flex items-center cursor-pointer` : "relative w-full shadow border dark:border-slate-700 h-8 rounded flex items-center cursor-pointer"}
+        className={
+          className
+            ? `${className} relative shadow border dark:border-slate-700 h-8 rounded flex items-center cursor-pointer`
+            : "relative w-full shadow border dark:border-slate-700 h-8 rounded flex items-center cursor-pointer"
+        }
         onClick={() => setIsOpen(!isOpen)}
         ref={selectRef}
       >

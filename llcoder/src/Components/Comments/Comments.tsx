@@ -1,11 +1,10 @@
-import { CommentTypeFragment } from "../../generated/graphql";
 import Image from "../Image";
 import Comment from "./Comment";
 import { useId } from "react";
 
 interface CommentsProps {
   authEntityId?: number;
-  comments?: CommentTypeFragment[];
+  comments?: any[];
   onLoadingRelies?: (parentId: string | number) => any;
 }
 
@@ -18,9 +17,9 @@ function Comments({
   const rootComments = comments.filter((comment) => comment.parentId === null);
   const rootReplies = comments.filter((comment) => comment.parentId !== null);
 
-  const getReplies = (comment: CommentTypeFragment) => {
+  const getReplies = (comment: any) => {
     if (comment.replyCount === 0) return [];
-    let replies: CommentTypeFragment[] = [];
+    let replies: any[] = [];
     rootReplies.forEach((reply) => {
       if (reply.parentId === comment.id) {
         replies.push(reply);

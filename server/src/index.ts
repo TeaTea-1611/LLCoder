@@ -16,7 +16,7 @@ import { createSchema } from "./utils/createSchema";
 (async () => {
   const connection = await createConnection({
     type: "postgres",
-    database: "llcoder",
+    database: "postgres",
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     logging: true,

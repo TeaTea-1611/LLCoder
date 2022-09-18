@@ -46,7 +46,7 @@ const FONT_SIZE = [
 function AceEditorCode({ onChange }: AceEditorProps) {
   const [mode, setMode] = useState(MODE[0]);
   const [theme, setTheme] = useState(THEME[0]);
-  const [fontSize, setFontSize] = useState((FONT_SIZE[2]));
+  const [fontSize, setFontSize] = useState(FONT_SIZE[2]);
   const [value, setValue] = useState("");
 
   const handleChange = (val: string) => {
@@ -62,24 +62,23 @@ function AceEditorCode({ onChange }: AceEditorProps) {
             defaultValue={mode}
             className="z-10 w-40"
             options={MODE}
-            onChange={(val) => setMode(val)}
+            onChange={(val) => setMode(val.value as any)}
           />
           <Selection
             defaultValue={theme}
             className="z-10 w-40"
             options={THEME}
-            onChange={(val) => setTheme(val)}
+            onChange={(val) => setTheme(val.value as any)}
           />
           <Selection
             defaultValue={fontSize}
             className="z-10 w-20"
             options={FONT_SIZE}
-            onChange={(val) => setFontSize((val))}
+            onChange={(val) => setFontSize(val.value as any)}
           />
         </div>
       </div>
       <div className="relative">
-      
         <AceEditor
           mode={mode.value}
           theme={theme.value}
@@ -91,7 +90,7 @@ function AceEditorCode({ onChange }: AceEditorProps) {
           style={{
             width: "100%",
             height: "500px",
-            zIndex: "0"
+            zIndex: "0",
           }}
           setOptions={{
             showPrintMargin: false,
@@ -99,10 +98,10 @@ function AceEditorCode({ onChange }: AceEditorProps) {
           }}
         />
         <CopyToClipboard text={value}>
-         <button className="absolute z-10 top-1 right-2 bg-slate-300/20 p-2 rounded cursor-pointer hover:text-primary hover:bg-slate-300/40 hidden hover:block peer-hover:block">
-           <FaRegClone />
-         </button>
-      </CopyToClipboard>
+          <button className="absolute z-10 top-1 right-2 bg-slate-300/20 p-2 rounded cursor-pointer hover:text-primary hover:bg-slate-300/40 hidden hover:block peer-hover:block">
+            <FaRegClone />
+          </button>
+        </CopyToClipboard>
       </div>
     </div>
   );

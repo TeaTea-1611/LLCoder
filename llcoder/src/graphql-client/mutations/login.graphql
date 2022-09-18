@@ -1,5 +1,32 @@
 mutation Login($data: LoginInput!) {
   login(data: $data) {
-    ...userMutationResponse
+    ...mutationStatus
+    user {
+      id
+      nickname
+      mssv
+      role {
+        value
+        name_vi
+        name_en
+      }
+      avatar
+      xp
+      xp_level {
+        level
+        min_xp
+        name_vi
+        name_en
+      }
+      xp_next_level {
+        level
+        min_xp
+        name_vi
+        name_en
+      }
+    }
+    errors {
+      ...fieldError
+    }
   }
 }

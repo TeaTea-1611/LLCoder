@@ -1,14 +1,28 @@
 fragment userInfo on User {
   id
   nickname
-  role
-  confirmed
   avatar
-  exp
-  dob
-  theme
-  language
-  lastLogin
-  createdAt
-  updatedAt
+  mssv
+  xp
+  date_of_birth
+  last_login
+  role {
+    name_vi
+    name_en
+  }
+  xp_level {
+    level
+    min_xp
+    name_vi
+    name_en
+  }
+  xp_next_level {
+    level
+    min_xp
+    name_vi
+    name_en
+  }
+  blogs {
+    title
+  }
 }

@@ -1,5 +1,26 @@
 query Me {
   me {
-    ...userInfo
+    id
+    nickname
+    mssv
+    role {
+      value
+      name_vi
+      name_en
+    }
+    avatar
+    xp
+    xp_level {
+      level
+      min_xp
+      name_vi
+      name_en
+    }
+    xp_next_level {
+      level
+      min_xp
+      name_vi
+      name_en
+    }
   }
 }

@@ -6,7 +6,7 @@ export class CreateBlogInput {
   title: string;
 
   @Field()
-  text: string;
+  content: string;
 
   @Field(() => [ID], { nullable: true })
   tags?: number[];

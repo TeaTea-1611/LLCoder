@@ -4,6 +4,7 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from "typeorm";
 @ObjectType()
 @Entity()
 export class Role extends BaseEntity {
+  @Field()
   @PrimaryColumn()
   value: string;
 

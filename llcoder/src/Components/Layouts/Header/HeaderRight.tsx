@@ -1,6 +1,6 @@
 import { useMeQuery } from "../../../generated/graphql";
 import {} from "@apollo/client";
-import Login from "./Login";
+import Login from "../../Auth/Login";
 import MenuProfile from "./MenuProfile";
 import { BsFillBellFill } from "react-icons/bs";
 import { LoadingSpinner } from "../../Loading";

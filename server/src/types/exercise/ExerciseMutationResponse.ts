@@ -1,4 +1,4 @@
-import { Exercise } from "../../entities/Exercise";
+import { Category, Exercise, ExerciseForm } from "../../entities/Exercise";
 import { Field, ObjectType } from "type-graphql";
 import { FieldError } from "../FieldError";
 import { MutationResponse } from "../MutationResponse";
@@ -23,4 +23,13 @@ export class PagtinatedExercises {
 
   @Field(() => [Exercise], { nullable: true })
   exercises?: Exercise[];
+}
+
+@ObjectType()
+export class InfoCreateExercise {
+  @Field(() => [ExerciseForm], { nullable: true })
+  exercises_form?: ExerciseForm[];
+
+  @Field(() => [Category], { nullable: true })
+  categories?: Category[];
 }

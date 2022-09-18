@@ -12,7 +12,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Blog } from "./Blog";
 import { _Entity } from "./Entity";
+import { Exercise } from "./Exercise";
 import { Level } from "./Level";
 import { Role } from "./Role";
 import { UserSetting } from "./UserSetting";
@@ -87,9 +89,13 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   last_login: Date;
 
-  @Field(() => [_Entity])
-  @OneToMany(() => _Entity, (entity) => entity.user)
-  entities: _Entity[];
+  @Field(() => [Blog], { nullable: true })
+  @OneToMany(() => Blog, (blog) => blog.user)
+  blogs: Blog[];
+
+  @Field(() => [Exercise], { nullable: true })
+  @OneToMany(() => Exercise, (exercise) => exercise.user)
+  exercises: Exercise[];
 
   @Field(() => [UserSetting])
   @OneToMany(() => UserSetting, (setting) => setting.user)

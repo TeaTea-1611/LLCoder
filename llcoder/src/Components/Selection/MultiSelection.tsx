@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 interface MultiSelectionProps {
   options: Option[];
   className?: string;
-  onChange: (value: string[]) => void;
+  onChange: (value: Option[]) => void;
   defaultValue?: Option[];
   placeholder?: string;
 }
@@ -41,7 +41,11 @@ function MultiSelection({
   return (
     <div
       ref={selectRef}
-      className={`relative w-full flex flex-wrap items-center py-[2px] pl-2 pr-12 min-h-[40px] rounded border shadow dark:border-slate-700 cursor-pointer ${className}`}
+      className={
+        className
+          ? `relative flex flex-wrap items-center py-[2px] pl-2 pr-12 min-h-[40px] rounded border shadow dark:border-slate-700 cursor-pointer ${className}`
+          : "relative flex flex-wrap items-center py-[2px] pl-2 pr-12 min-h-[40px] rounded border shadow dark:border-slate-700 cursor-pointer"
+      }
     >
       <div
         className="absolute inset-0 z-10"
@@ -62,9 +66,7 @@ function MultiSelection({
                 className="p-[2px] mx-1 hover:text-primary hover:bg-slate-100/50 dark:hover:bg-gray-700/50"
                 onClick={() => {
                   setSelected(selected.filter((i) => i !== item));
-                  onChange(
-                    selected.filter((i) => i !== item).map((i) => i.value)
-                  );
+                  onChange(selected.filter((i) => i !== item).map((i) => i));
                 }}
               >
                 <MdOutlineClose />
@@ -106,7 +108,7 @@ function MultiSelection({
                     className={`px-4 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer`}
                     onClick={() => {
                       setSelected([...selected, item]);
-                      onChange([...selected, item].map((i) => i.value));
+                      onChange([...selected, item].map((i) => i));
                     }}
                   >
                     {item.label}

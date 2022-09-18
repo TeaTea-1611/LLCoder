@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import { MarkdownEditor } from "../../components/Markdown";
 import { Button, Input } from "../../components/UI";
-import { useCreateBlogMutation } from "../../generated/graphql";
 
 function CreateBlog() {
   const [title, setTitle] = useState("");
@@ -14,26 +13,8 @@ function CreateBlog() {
     },
     [setMarkdown]
   );
-
-  const [craeteBlog, { loading }] = useCreateBlogMutation();
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await craeteBlog({
-      variables: {
-        data: {
-          title,
-          text: markdown,
-        },
-      },
-    });
-
-    if (response.data?.createBlog.success) {
-      toast(response.data.createBlog.message);
-      setTitle("");
-      setMarkdown("");
-    } else if (response.data?.createBlog) {
-    }
   };
 
   return (
@@ -54,7 +35,7 @@ function CreateBlog() {
             placeholder="Aa"
           />
           <div className="flex">
-            <Button type="submit" className="ml-auto" isLoading={loading}>
+            <Button type="submit" className="ml-auto" isLoading={true}>
               Confirm
             </Button>
           </div>

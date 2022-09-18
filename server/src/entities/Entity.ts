@@ -3,14 +3,11 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { EntityComment } from "./EntityComment";
 import { EntityReaction } from "./EntityReaction";
-import { User } from "./User";
 
 @ObjectType()
 @Entity("entity")
@@ -18,14 +15,6 @@ export class _Entity extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id!: number;
-
-  @Column()
-  user_id!: number;
-
-  @Field(() => User)
-  @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  user: User;
 
   @Field()
   @Column()

@@ -1,20 +1,27 @@
 import { useCallback, useState } from "react";
 import { MarkdownEditor } from "../../components/Markdown";
-import { MultiSelection } from "../../components/Selection";
+import { MultiSelection, Selection } from "../../components/Selection";
 import { Button, Input } from "../../components/UI";
+import { useInfoCreateExerciseQuery } from "../../generated/graphql";
 import Testcase from "./Testcase";
 
 function CreateExercisePage() {
-  const [name, setName] = useState("");
-  const [source, setSource] = useState("");
-  const [markdown, setMarkdown] = useState("");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [title, setTitle] = useState("");
+  const [fileInput, setFileInput] = useState("input.txt");
+  const [fileOutput, setFileOutput] = useState("output.txt");
+  const [time, setTime] = useState("1");
+  const [xp, setXp] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  const [content, setContent] = useState("");
+  const [exerciseForm, setExerciseForm] = useState<(string | number)[]>([]);
+
+  const { data } = useInfoCreateExerciseQuery();
 
   const handleChangeMarkdownEditor = useCallback(
     (val: string) => {
-      setMarkdown(val);
+      setContent(val);
     },
-    [setMarkdown]
+    [setContent]
   );
 
   return (
@@ -26,24 +33,81 @@ function CreateExercisePage() {
         <form className="space-y-4">
           <div className="flex flex-row items-center space-x-4">
             <Input
-              label="Name exercise"
-              value={name}
-              onChange={(val) => setName(val)}
+              label="Title"
+              value={title}
+              onChange={(val) => setTitle(val)}
             />
             <Input
-              label="Source exercise"
-              value={source}
-              onChange={(val) => setSource(val)}
+              label="File input"
+              value={fileInput}
+              onChange={(val) => setFileInput(val)}
+              className="w-40"
+            />
+            <Input
+              label="File output"
+              value={fileOutput}
+              onChange={(val) => setFileOutput(val)}
+              className="w-40"
+            />
+            <Input
+              label="Time (s)"
+              value={time}
+              onChange={(val) => setTime(val)}
+              className="w-24"
             />
           </div>
+          <div className="inline-flex flex-row items-center space-x-4">
+            <div className="z-20 w-40">
+              <span>Point: </span>
+              <Selection
+                defaultValue={{ label: "5", value: 5 }}
+                options={[{ label: "5", value: 5 }]}
+                onChange={(op) => {
+                  setXp(op.value.toString());
+                }}
+              />
+            </div>
+            <div className="z-20 w-40">
+              <span>Difficulty: </span>
+              <Selection
+                defaultValue={{ label: "easy", value: 1 }}
+                options={[{ label: "easy", value: 1 }]}
+                onChange={(op) => {
+                  setDifficulty(op.value.toString());
+                }}
+              />
+            </div>
+            <div className="z-20 w-40">
+              <span>Thể loại: </span>
+              <Selection
+                options={
+                  data?.infoCreateExercise.categories?.map((i) => ({
+                    label: i.name,
+                    value: i.id,
+                  })) || []
+                }
+                onChange={(op) => {
+                  setDifficulty(op.value.toString());
+                }}
+              />
+            </div>
+          </div>
           <MultiSelection
-            options={[]}
-            onChange={(val) => setCategories(val)}
-            placeholder="Select categories"
-            className="z-10"
+            options={
+              data?.infoCreateExercise.exercises_form?.map((i) => ({
+                label: i.name_vi,
+                value: i.id,
+              })) || []
+            }
+            onChange={(op) => {
+              const values = op.map((it) => it.value);
+              setExerciseForm(values);
+            }}
+            placeholder="Form"
+            className="z-10 w-full"
           />
           <MarkdownEditor
-            value={markdown}
+            value={content}
             onChange={handleChangeMarkdownEditor}
             placeholder="Aa"
           />

@@ -1,7 +1,0 @@
-fragment blogInfo on Blog {
-  id
-  title
-  text
-  createdAt
-  updatedAt
-}

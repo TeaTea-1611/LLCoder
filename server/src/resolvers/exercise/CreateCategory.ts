@@ -1,20 +1,18 @@
-import { ExerciseCategory } from "../../entities/ExerciseCategory";
+import { Category } from "../../entities/Exercise";
 import { Arg, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { checkAuth } from "../../middlewares/auth";
-import { CategoryMutationResponse } from "../../types/category/CategoryMutationResponse";
-import { CreateCategoryInput } from "../../types/category/CreateCategoryInput";
+import { CategoryMutationResponse } from "../../types/exercise/CategoryMutationResponse";
 
 @Resolver()
 export class CreateCategoryResolver {
   @UseMiddleware(checkAuth)
   @Mutation(() => CategoryMutationResponse)
   async createCategory(
-    @Arg("data") data: CreateCategoryInput
+    @Arg("name") name: string
   ): Promise<CategoryMutationResponse> {
     try {
-      const { nameVi, nameEn } = data;
-      const check = await ExerciseCategory.findOne({
-        where: [{ nameEn }, { nameVi }],
+      const check = await Category.findOne({
+        where: { name },
       });
       if (check)
         return {
@@ -22,9 +20,8 @@ export class CreateCategoryResolver {
           success: false,
           message: "category already exist",
         };
-      const category = await ExerciseCategory.create({
-        nameVi,
-        nameEn,
+      const category = await Category.create({
+        name,
       }).save();
 
       return {

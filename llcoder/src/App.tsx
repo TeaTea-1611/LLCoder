@@ -1,21 +1,10 @@
-import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import DefaultLayout from "./components/Layouts";
-import { ThemeType, useMeQuery } from "./generated/graphql";
-import PrivatePage from "./pages/PrivatePage";
+import AuthPage from "./pages/AuthPage";
 import { pageRoutes } from "./routes";
 
 function App() {
-  const { data } = useMeQuery();
-
-  useEffect(() => {
-    if (data?.me?.theme === ThemeType.Dark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [data?.me?.theme]);
   return (
     <>
       <Router>
@@ -28,10 +17,10 @@ function App() {
                 path={route.path}
                 element={
                   <DefaultLayout>
-                    {route.private ? (
-                      <PrivatePage>
+                    {!!route.auth ? (
+                      <AuthPage auth={route.auth}>
                         <Page />
-                      </PrivatePage>
+                      </AuthPage>
                     ) : (
                       <Page />
                     )}

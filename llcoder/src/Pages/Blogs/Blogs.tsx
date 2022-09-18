@@ -1,6 +1,5 @@
 import { NetworkStatus } from "@apollo/client";
 import { Button } from "../../components/UI";
-import { usePagtinatedBlogsQuery } from "../../generated/graphql";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
@@ -11,20 +10,6 @@ import { FiMoreHorizontal } from "react-icons/fi";
 const limit = 5;
 
 function Blogs() {
-  const { data, fetchMore, networkStatus } = usePagtinatedBlogsQuery({
-    variables: { limit },
-    notifyOnNetworkStatusChange: true,
-  });
-
-  const loadingMore = networkStatus === NetworkStatus.fetchMore;
-
-  const loadMoreBlogs = () =>
-    fetchMore({
-      variables: {
-        cursor: data?.pagtinatedBlogs.cursor,
-      },
-    });
-
   return (
     <>
       <header className="">
@@ -36,7 +21,7 @@ function Blogs() {
           </p>
         </div>
       </header>
-      <div className="space-y-4 mt-6">
+      {/* <div className="space-y-4 mt-6">
         {data?.pagtinatedBlogs.blogs?.map((blog) => (
           <div
             className="p-4 rounded dark:bg-slate-800 space-y-2"
@@ -88,7 +73,7 @@ function Blogs() {
             Load More
           </Button>
         </div>
-      )}
+      )} */}
     </>
   );
 }

@@ -1,0 +1,13 @@
+query infoCreateExercise {
+  infoCreateExercise {
+    exercises_form {
+      id
+      name_vi
+      name_en
+    }
+    categories {
+      id
+      name
+    }
+  }
+}

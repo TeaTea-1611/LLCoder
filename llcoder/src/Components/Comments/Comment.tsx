@@ -1,10 +1,8 @@
 import moment from "moment";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
-import { CommentTypeFragment } from "../../generated/graphql";
 import Image from "../Image";
 import { useState } from "react";
 import { LoadingSpinner } from "../Loading";
-import { mapReactionsComment } from "../../utils/helpers/mapReactionsComment";
 import reactionIcons from "../../assets/icons/reactionIcons";
 
 function Comment({
@@ -12,8 +10,8 @@ function Comment({
   replies,
   onLoadingRelies,
 }: {
-  comment: CommentTypeFragment;
-  replies: (cmt: CommentTypeFragment) => CommentTypeFragment[];
+  comment: any;
+  replies: (cmt: any) => any[];
   onLoadingRelies?: (parentId: string | number) => any;
 }) {
   const [isHiddenReplies, setIsHiddenReplies] = useState(true);

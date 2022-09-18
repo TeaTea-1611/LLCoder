@@ -9,28 +9,32 @@ export class PagtinatedExercisesResolver {
     @Arg("limit", () => Int, { nullable: true }) limit: number = 15,
     @Arg("page", () => Int, { nullable: true }) page: number = 1
   ): Promise<PagtinatedExercises | null> {
-    const totalCount = await Exercise.count({
-      where: { confirmed: true },
-    });
-
-    const rLimit = Math.min(20, limit);
-
-    if (Math.ceil(totalCount / rLimit) < page)
-      return {
-        totalCount,
-      };
-
-    const exercises = await Exercise.find({
-      where: { confirmed: true },
-      order: { createdAt: "DESC" },
-      take: rLimit,
-      skip: (page - 1) * rLimit,
-      relations: {
-        categories: true,
-      },
-    });
-
     try {
+      const totalCount = await Exercise.count({
+        where: { confirmed: true },
+      });
+
+      const rLimit = Math.min(20, limit);
+
+      if (Math.ceil(totalCount / rLimit) < page)
+        return {
+          totalCount,
+        };
+
+      const exercises = await Exercise.find({
+        where: { confirmed: true },
+        order: { created_at: "DESC" },
+        take: rLimit,
+        skip: (page - 1) * rLimit,
+        relations: {
+          user: true,
+          entity: true,
+          category: true,
+          difficulty: true,
+          form: true,
+        },
+      });
+
       return {
         totalCount: totalCount,
         exercises,
