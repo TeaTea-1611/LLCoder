@@ -55,13 +55,13 @@ function Selection({
         <span className="text-sm pl-2">{label}</span>
         <MdArrowDropDown className="absolute top-1/2 -translate-y-1/2 right-1" />
         {isOpen && (
-          <ul className="absolute w-full top-9 bg-white rounded-lg ring-1 ring-slate-900/10 shadow-lg overflow-hidden py-1 text-slate-700 font-semibold dark:bg-slate-900 dark:ring-0 dark:highlight-white/5 dark:text-slate-300">
+          <ul className="absolute w-full py-1 top-9 bg-white rounded-lg ring-1 ring-slate-900/10 shadow-lg overflow-hidden text-base text-slate-700 font-semibold dark:bg-slate-900 dark:ring-white/5 dark:highlight-white/5 dark:text-slate-300">
             {options.length > 0 ? (
               options.map((item) => (
                 <li
                   key={item.value}
-                  className={`px-4 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer ${
-                    label === item.label && "bg-slate-200 dark:bg-slate-600"
+                  className={`px-4 py-1 hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer ${
+                    label === item.label && "bg-slate-200 dark:bg-slate-800"
                   }`}
                   onClick={() => {
                     setIsOpen(false);

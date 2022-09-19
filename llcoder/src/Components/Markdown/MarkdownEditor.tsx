@@ -17,6 +17,7 @@ import { MdSubscript, MdSuperscript, MdZoomOutMap } from "react-icons/md";
 import { TbHeading, TbMath, TbStrikethrough } from "react-icons/tb";
 import { Modal } from "../Modal";
 import { useUploadImageMarkDownMutation } from "../../generated/graphql";
+import Tippy from "@tippyjs/react/headless";
 
 interface MarkdownEditorProps {
   value: string;
@@ -208,7 +209,7 @@ function MarkdownEditor({
             </li>
           ))}
           <li>
-            <label
+            {/* <label
               className="flex p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
               htmlFor="llcoder-image-markdown"
             >
@@ -219,7 +220,12 @@ function MarkdownEditor({
                 hidden
                 onChange={uploadImage}
               />
-            </label>
+            </label> */}
+            <Tippy>
+              <button >
+              <BsImage />
+              </button>
+            </Tippy>
           </li>
         </ul>
         <ul className="flex space-x-1">

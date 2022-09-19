@@ -56,12 +56,12 @@ function CreateExercisePage() {
               className="w-24"
             />
           </div>
-          <div className="inline-flex flex-row items-center space-x-4">
+          <div className="flex items-center space-x-4">
             <div className="z-20 w-40">
               <span>Point: </span>
               <Selection
-                defaultValue={{ label: "5", value: 5 }}
-                options={[{ label: "5", value: 5 }]}
+                // defaultValue={{ label: "5", value: 5 }}
+                options={[{ label: "5", value: 5 },{ label: "10", value: 10 }]}
                 onChange={(op) => {
                   setXp(op.value.toString());
                 }}
@@ -92,26 +92,37 @@ function CreateExercisePage() {
               />
             </div>
           </div>
-          <MultiSelection
-            options={
-              data?.infoCreateExercise.exercises_form?.map((i) => ({
-                label: i.name_vi,
-                value: i.id,
-              })) || []
-            }
-            onChange={(op) => {
-              const values = op.map((it) => it.value);
-              setExerciseForm(values);
-            }}
-            placeholder="Form"
-            className="z-10 w-full"
-          />
+          <div>
+            <span>Dang bai: </span>
+            <MultiSelection
+              options={
+                data?.infoCreateExercise.exercises_form?.map((i) => ({
+                  label: i.name_vi,
+                  value: i.id,
+                })) || []
+              }
+              onChange={(op) => {
+                const values = op.map((it) => it.value);
+                setExerciseForm(values);
+              }}
+              className="z-10 w-full"
+            />
+          </div>
           <MarkdownEditor
             value={content}
             onChange={handleChangeMarkdownEditor}
             placeholder="Aa"
           />
-          <Testcase />
+          <div className="grid grid-cols-2 gap-2">
+            <div className="relative">
+              <label htmlFor="" className="absolute -top-4 left-2 py-1 px-2 bg-slate-900">Input</label>
+              <textarea className="w-full p-2 rounded resize-y border border-sky-500"/>
+            </div>
+            <div className="relative">
+              <label htmlFor="" className="absolute -top-4 left-2 py-1 px-2 bg-slate-900">Ouput</label>
+              <textarea className="w-full p-2 rounded resize-y border border-sky-500"/>
+            </div>
+          </div>
           <div className="flex">
             <Button type="submit" className="ml-auto">
               Create

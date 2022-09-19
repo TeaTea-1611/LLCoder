@@ -27,7 +27,7 @@ const pageRoutes: IRoute[] = [
   {
     path: config.routes.createExercise,
     component: CreateExercise,
-    auth: "R4",
+    // auth: "R4",
   },
   {
     path: config.routes.exercisesNotConfirmed,
