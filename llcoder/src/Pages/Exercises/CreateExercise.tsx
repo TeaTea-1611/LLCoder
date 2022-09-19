@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { MarkdownEditor } from "../../components/Markdown";
 import { MultiSelection, Selection } from "../../components/Selection";
-import { Button, Input } from "../../components/UI";
+import { Button, Input, Textarea } from "../../components/UI";
 import { useInfoCreateExerciseQuery } from "../../generated/graphql";
 import Testcase from "./Testcase";
 
@@ -61,7 +61,10 @@ function CreateExercisePage() {
               <span>Point: </span>
               <Selection
                 // defaultValue={{ label: "5", value: 5 }}
-                options={[{ label: "5", value: 5 },{ label: "10", value: 10 }]}
+                options={[
+                  { label: "5", value: 5 },
+                  { label: "10", value: 10 },
+                ]}
                 onChange={(op) => {
                   setXp(op.value.toString());
                 }}
@@ -114,14 +117,8 @@ function CreateExercisePage() {
             placeholder="Aa"
           />
           <div className="grid grid-cols-2 gap-2">
-            <div className="relative">
-              <label htmlFor="" className="absolute -top-4 left-2 py-1 px-2 bg-slate-900">Input</label>
-              <textarea className="w-full p-2 rounded resize-y border border-sky-500"/>
-            </div>
-            <div className="relative">
-              <label htmlFor="" className="absolute -top-4 left-2 py-1 px-2 bg-slate-900">Ouput</label>
-              <textarea className="w-full p-2 rounded resize-y border border-sky-500"/>
-            </div>
+            <Textarea label="Input" value="a" onChange={() => {}} />
+            <Textarea label="Output" value="" onChange={() => {}} />
           </div>
           <div className="flex">
             <Button type="submit" className="ml-auto">

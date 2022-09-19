@@ -17,7 +17,7 @@ import { MdSubscript, MdSuperscript, MdZoomOutMap } from "react-icons/md";
 import { TbHeading, TbMath, TbStrikethrough } from "react-icons/tb";
 import { Modal } from "../Modal";
 import { useUploadImageMarkDownMutation } from "../../generated/graphql";
-import Tippy from "@tippyjs/react/headless";
+import { Input } from "../UI";
 
 interface MarkdownEditorProps {
   value: string;
@@ -93,12 +93,33 @@ function MarkdownEditor({
 }: MarkdownEditorProps) {
   const [isZoom, setIsZoom] = useState(false);
   let rcMdEdRef = useRef<HTMLTextAreaElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
   const [uploadImageMarkdown] = useUploadImageMarkDownMutation();
+  const [addImage, setAddImage] = useState({
+    link: "",
+    alt: "",
+  });
+  const [openAddImage, setOpenAddImage] = useState(false);
 
   useEffect(() => {
     if (isZoom) document.body.style.overflowY = "hidden";
     else document.body.style.overflowY = "visible";
   }, [isZoom]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        imageRef.current &&
+        !imageRef.current.contains(event.target as Node)
+      ) {
+        setOpenAddImage(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [imageRef]);
 
   const insertFormating = (
     txtarea: any,
@@ -179,16 +200,17 @@ function MarkdownEditor({
         file.name,
         `](${res.data.uploadImage.url})`
       );
+      setOpenAddImage(false);
     }
   };
 
   const body = (
     <div
-      className={`relative flex flex-col border-2 border-sky-500 ${
+      className={`relative flex flex-col border-2 border-sky-500 dark:border-slate-700 ${
         !isZoom ? "h-[560px]" : "h-full"
       } ${className}`}
     >
-      <div className="flex border-b-2 border-sky-500 p-2">
+      <div className="z-10 flex border-b-2 border-sky-500 dark:border-slate-700 p-2">
         <ul className="flex-1 flex flex-wrap mr-4">
           {options.map((option) => (
             <li key={uuidv4()}>
@@ -208,24 +230,60 @@ function MarkdownEditor({
               </button>
             </li>
           ))}
-          <li>
-            {/* <label
-              className="flex p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
-              htmlFor="llcoder-image-markdown"
+          <li className="relative">
+            <button
+              type="button"
+              className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+              onClick={() => setOpenAddImage(!openAddImage)}
             >
               <BsImage />
-              <input
-                id="llcoder-image-markdown"
-                type="file"
-                hidden
-                onChange={uploadImage}
-              />
-            </label> */}
-            <Tippy>
-              <button >
-              <BsImage />
-              </button>
-            </Tippy>
+            </button>
+            {openAddImage && (
+              <div
+                ref={imageRef}
+                className="absolute left-1/2 -translate-x-1/2 mt-1 z-10 p-4 w-60 dark:bg-slate-900 ring-1 ring-slate-600 rounded space-y-6"
+              >
+                <Input
+                  value={addImage.link}
+                  label="link"
+                  onChange={(val) => setAddImage({ ...addImage, link: val })}
+                />
+                <Input
+                  value={addImage.alt}
+                  label="tiêu đề"
+                  onChange={(val) => setAddImage({ ...addImage, alt: val })}
+                />
+                <div className="flex justify-between">
+                  <label
+                    htmlFor="upload_image_md"
+                    className="py-1 px-2 dark:bg-slate-800 dark:hover:bg-slate-700 rounded cursor-pointer"
+                  >
+                    Tải ảnh
+                  </label>
+                  <input
+                    id="upload_image_md"
+                    type="file"
+                    hidden
+                    onChange={uploadImage}
+                  />
+                  <button
+                    type="button"
+                    className="px-2 dark:bg-slate-800 dark:hover:bg-slate-700 rounded cursor-pointer"
+                    onClick={() => {
+                      insertFormating(
+                        rcMdEdRef.current,
+                        "![",
+                        addImage.alt,
+                        `](${addImage.link})`
+                      );
+                      setOpenAddImage(false);
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            )}
           </li>
         </ul>
         <ul className="flex space-x-1">
@@ -244,7 +302,7 @@ function MarkdownEditor({
       <div className="flex flex-1 overflow-hidden">
         <textarea
           ref={rcMdEdRef}
-          className="h-full w-1/2 border-r-2 border-sky-500 p-2 bg-transparent outline-none focus:outline-none resize-none overflow-y-scroll caret-skyborder-sky-500"
+          className="h-full w-1/2 border-r-2 border-sky-500 dark:border-slate-700 p-2 bg-transparent outline-none focus:outline-none resize-none overflow-y-scroll caret-skyborder-sky-500"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           spellCheck={false}

@@ -93,7 +93,7 @@ function MultiSelection({
       <div className="absolute inset-0">
         <div className="h-full"></div>
         {isOpen && (
-          <ul className="w-full max-h-64 overflow-y-auto mt-2 py-1 rounded ring-1 ring-slate-300 dark:ring-0 bg-white shadow-lg dark:bg-slate-800">
+          <ul className="w-full max-h-64 overflow-y-auto mt-2 py-1 rounded ring-1 ring-slate-300 dark:ring-slate-700 bg-white shadow-lg dark:bg-slate-900">
             {options.length > 0 && options.length !== selected.length ? (
               options.map((item) => {
                 if (
