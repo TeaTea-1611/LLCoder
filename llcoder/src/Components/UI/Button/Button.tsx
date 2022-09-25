@@ -27,8 +27,8 @@ function Button({
     <button
       className={
         className
-          ? `${className} border border-sky-500 py-1 px-2 rounded shadow-lg hover:bg-sky-500 dark:hover:bg-sky-500 hover:text-white dark:hover:text-white dark:bg-slate-800 dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 duration-100`
-          : "border border-sky-500 py-1 px-2 rounded shadow-lg hover:bg-sky-500 dark:hover:bg-sky-500 hover:text-white dark:hover:text-white dark:bg-slate-800 dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 duration-100"
+          ? `${className} border border-sky-500 py-1 px-2 rounded shadow-lg hover:bg-sky-500 dark:hover:bg-sky-500 hover:text-white dark:hover:text-white dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 duration-100`
+          : "border border-sky-500 py-1 px-2 rounded shadow-lg hover:bg-sky-500 dark:hover:bg-sky-500 hover:text-white dark:hover:text-white dark:shadow-none dark:ring-1 dark:ring-inset dark:ring-white/10 duration-100"
       }
       onClick={() => {
         if (to) navigate(to);
@@ -48,7 +48,7 @@ function Button({
       placement="top"
       render={(attrs) => (
         <div
-          className="bg-white rounded ring-1 ring-slate-900/10 shadow-lg overflow-hidden py-1 px-2 text-sm text-slate-700 font-semibold dark:bg-slate-800 dark:ring-0 dark:highlight-white/5 dark:text-slate-300"
+          className="bg-white rounded ring-1 ring-slate-900/10 shadow-lg overflow-hidden py-1 px-2 text-sm text-slate-700 font-semibold dark:bg-slate-900 dark:ring-slate-700 dark:highlight-white/5 dark:text-slate-300"
           tabIndex={-1}
           {...attrs}
         >

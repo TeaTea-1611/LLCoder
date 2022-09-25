@@ -1,11 +1,12 @@
 import { User } from "../../../types";
+import Image from "../../Image";
 
 function MessageChatAll({ message, user }: { message: string; user: User }) {
   return (
     <div className="flex">
       <div className="flex flex-col justify-end px-2">
         <div className="w-8 h-8">
-          <img
+          <Image
             className="w-full h-full object-cover rounded-full"
             src={user.avatar}
             alt={user.nickname}

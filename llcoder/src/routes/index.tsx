@@ -12,6 +12,7 @@ import {
   BlogsNotConfirmed,
   Blog,
   PageNotFound,
+  Exercise,
 } from "../pages";
 import config from "../config";
 
@@ -24,6 +25,7 @@ interface IRoute {
 const pageRoutes: IRoute[] = [
   { path: config.routes.home, component: Home },
   { path: config.routes.exercises, component: Exercises },
+  { path: config.routes.exercise, component: Exercise },
   {
     path: config.routes.createExercise,
     component: CreateExercise,

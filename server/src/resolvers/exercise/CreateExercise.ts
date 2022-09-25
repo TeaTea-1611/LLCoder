@@ -17,6 +17,7 @@ import {
 import { Category, Exercise, ExerciseForm } from "../../entities/Exercise";
 import { User } from "../../entities/User";
 import { In } from "typeorm";
+import { Testcase } from "../../entities/Testcase";
 
 @Resolver()
 export class CreateExerciseResolver {
@@ -29,7 +30,7 @@ export class CreateExerciseResolver {
     return await connection.transaction(
       async (transactionEntityManage): Promise<ExerciseMutationResponse> => {
         const user = await transactionEntityManage.findOne(User, {
-          where: { id: req.session.uid },
+          where: { id: req.userId },
         });
         if (!user)
           return {
@@ -42,12 +43,16 @@ export class CreateExerciseResolver {
           difficulty_id,
           xp,
           category_id,
+          file_input,
+          file_output,
           form = [],
+          testcase = [],
         } = data;
 
         const existsExercise = await transactionEntityManage.findOne(Exercise, {
           where: { title },
         });
+
         if (existsExercise)
           return {
             code: 409,
@@ -72,16 +77,27 @@ export class CreateExerciseResolver {
           content,
           difficulty_id,
           xp,
+          file_input,
+          file_output,
           category_id,
           form: exerciseForm,
         });
-
         await transactionEntityManage.save(exercise);
+
+        testcase.forEach(async (value) => {
+          const newTestcase = transactionEntityManage.create(Testcase, {
+            exercise_id: exercise.id,
+            input: value.input,
+            output: value.output,
+          });
+
+          await transactionEntityManage.save(newTestcase);
+        });
 
         return {
           code: 200,
           success: true,
-          exercise,
+          message: "create new exercise success!",
         };
       }
     );

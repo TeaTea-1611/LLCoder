@@ -41,10 +41,10 @@ export class AllowedSettingValue extends BaseEntity {
   setting: Setting;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   value: string;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   caption: string;
 }

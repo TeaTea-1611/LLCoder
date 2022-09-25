@@ -25,11 +25,11 @@ export class Testcase extends BaseEntity {
   @JoinColumn({ name: "exercise_id", referencedColumnName: "id" })
   exercise: Exercise;
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   input: string;
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   output: string;
 }

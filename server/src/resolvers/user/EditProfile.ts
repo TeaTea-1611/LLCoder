@@ -2,20 +2,22 @@ import { createWriteStream } from "fs";
 import { GraphQLUpload } from "graphql-upload";
 import { UpdateUserInput } from "../../types/user/UpdateUserInput";
 import { UserMutationResponse } from "../../types/user/UserMutationResponse";
-import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { User } from "../../entities/User";
 import { Context } from "../../types/Context";
 import { Upload } from "../../types/upload/Upload";
+import { checkAuth } from "../../middlewares/auth";
 
 @Resolver()
 export class EditProfileResolver {
+  @UseMiddleware(checkAuth)
   @Mutation(() => UserMutationResponse)
   async editProfile(
     @Arg("data") data: UpdateUserInput,
     @Ctx() { req }: Context
   ): Promise<UserMutationResponse> {
     try {
-      const user = await User.findOne({ where: { id: req.session.uid } });
+      const user = await User.findOne({ where: { id: req.userId } });
       if (!user)
         return {
           code: 400,
@@ -41,6 +43,7 @@ export class EditProfileResolver {
     }
   }
 
+  @UseMiddleware(checkAuth)
   @Mutation(() => UserMutationResponse)
   async updateAvatar(
     @Arg("avatar", () => GraphQLUpload)
@@ -51,7 +54,7 @@ export class EditProfileResolver {
       const filenameArr = filename.split(".");
       const extension = filenameArr[filenameArr.length - 1];
       const newFilename = `${Date.now()}.${extension}`;
-      const user = await User.findOne({ where: { id: req.session.uid } });
+      const user = await User.findOne({ where: { id: req.userId } });
       if (!user)
         return { code: 400, success: false, message: "User not found" };
 

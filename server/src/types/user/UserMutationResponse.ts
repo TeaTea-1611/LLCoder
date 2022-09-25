@@ -24,3 +24,12 @@ export class PagtinatedMember {
   @Field(() => [User], { nullable: true })
   members?: User[];
 }
+
+@ObjectType()
+export class UserSettings {
+  @Field({ nullable: true })
+  theme?: string;
+
+  @Field({ nullable: true })
+  language?: string;
+}

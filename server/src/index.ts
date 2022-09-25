@@ -4,14 +4,15 @@ import express from "express";
 import { createConnection } from "typeorm";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import session from "express-session";
-import { COOKIES_NAME, __prod__ } from "./constans/constans";
 import { Context } from "./types/Context";
-import connectRedis from "connect-redis";
-import { redis } from "./redis";
 import cors from "cors";
 import { graphqlUploadExpress } from "graphql-upload";
 import { createSchema } from "./utils/createSchema";
+import cookieParser from "cookie-parser";
+import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "./constans/constans";
+import { verify } from "jsonwebtoken";
+import { User } from "./entities/User";
+import { createTokens } from "./utils/auth";
 
 (async () => {
   const connection = await createConnection({
@@ -28,9 +29,7 @@ import { createSchema } from "./utils/createSchema";
 
   app.use(graphqlUploadExpress());
   app.use(express.static("public"));
-
-  const RedisStore = connectRedis(session);
-
+  app.use(cookieParser());
   app.use(
     cors({
       credentials: true,
@@ -38,23 +37,45 @@ import { createSchema } from "./utils/createSchema";
     })
   );
 
-  app.use(
-    session({
-      name: COOKIES_NAME,
-      store: new RedisStore({
-        client: redis,
-      }),
-      cookie: {
-        maxAge: 1000 * 60 * 60, // 1 hour
-        httpOnly: true,
-        secure: __prod__,
-        sameSite: "lax",
-      },
-      secret: process.env.SESSION_SECRET as string,
-      saveUninitialized: false,
-      resave: false,
-    })
-  );
+  app.use(async (req: any, res, next) => {
+    const accessToken = req.cookies["access-token"];
+    const refreshToken = req.cookies["refresh-token"];
+    if (!accessToken && !refreshToken) return next();
+
+    let data;
+
+    try {
+      data = verify(accessToken, ACCESS_TOKEN_SECRET) as any;
+      req.userId = data.userId;
+      return next();
+    } catch {}
+
+    if (!refreshToken) return next();
+
+    try {
+      data = verify(refreshToken, REFRESH_TOKEN_SECRET) as any;
+    } catch {
+      return next();
+    }
+
+    const user = await User.findOne({ where: { id: data.userId } });
+    if (!user) return next();
+
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+      createTokens(user.id);
+
+    res.cookie("access-token", newAccessToken, {
+      maxAge: 1000 * 60,
+      httpOnly: true,
+    });
+    res.cookie("refresh-token", newRefreshToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+    });
+    req.userId = user.id;
+
+    return next();
+  });
 
   const schema = await createSchema();
 

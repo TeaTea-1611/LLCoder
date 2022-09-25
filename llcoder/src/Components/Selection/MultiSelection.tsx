@@ -87,7 +87,7 @@ function MultiSelection({
       ) : (
         <span className="text-sm pl-2">{placeholder}</span>
       )}
-      <div className="absolute top-1/2 -translate-y-1/2 right-2 h-full pl-2 border-l border-slate-400 flex items-center">
+      <div className="absolute top-1/2 -translate-y-1/2 right-2 h-full pl-2 border-l border-slate-100 dark:border-slate-700 flex items-center">
         <MdArrowDropDown />
       </div>
       <div className="absolute inset-0">

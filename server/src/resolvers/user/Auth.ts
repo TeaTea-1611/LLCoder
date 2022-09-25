@@ -1,21 +1,21 @@
+import bcrypt from "bcryptjs";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { User } from "../../entities/User";
 import { Context } from "../../types/Context";
-import { validateLogin, validateRegister } from "../../utils/validate";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import bcrypt from "bcryptjs";
-import { COOKIES_NAME } from "../../constans/constans";
+import { LoginInput, RegisterInput } from "../../types/user/LoginInput";
+import { UserMutationResponse } from "../../types/user/UserMutationResponse";
+import { createTokens } from "../../utils/auth";
 import { createConfirmationUrl } from "../../utils/createConfirmationUrl";
 import { sendEmail } from "../../utils/sendEmail";
-import { UserMutationResponse } from "../../types/user/UserMutationResponse";
-import { LoginInput, RegisterInput } from "../../types/user/LoginInput";
+import { validateLogin, validateRegister } from "../../utils/validate";
 
 @Resolver(User)
-export class LoginResolver {
+export class AuthResolver {
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req }: Context): Promise<User | null> {
-    if (!req.session.uid) return null;
+    if (!req.userId) return null;
     return await User.findOne({
-      where: { id: req.session.uid },
+      where: { id: req.userId },
       relations: {
         role: true,
         xp_level: true,
@@ -85,7 +85,7 @@ export class LoginResolver {
   @Mutation(() => UserMutationResponse)
   async login(
     @Arg("data") loginInput: LoginInput,
-    @Ctx() { req }: Context
+    @Ctx() { res }: Context
   ): Promise<UserMutationResponse> {
     const errors = validateLogin(loginInput);
     if (errors.length > 0) return { code: 400, success: false, errors };
@@ -135,7 +135,16 @@ export class LoginResolver {
           ],
         };
 
-      req.session.uid = user.id;
+      const { accessToken, refreshToken } = createTokens(user.id);
+
+      res.cookie("access-token", accessToken, {
+        maxAge: 1000 * 60,
+        httpOnly: true,
+      });
+      res.cookie("refresh-token", refreshToken, {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true,
+      });
 
       return {
         code: 200,
@@ -153,23 +162,9 @@ export class LoginResolver {
   }
 
   @Mutation(() => Boolean)
-  async logout(@Ctx() { req, res }: Context): Promise<Boolean> {
-    return new Promise((resolve) => {
-      User.update({ id: req.session.uid }, { last_login: new Date() })
-        .then(() => {
-          res.clearCookie(COOKIES_NAME);
-          req.session.destroy((err) => {
-            if (err) throw err;
-            resolve(true);
-          });
-        })
-        .catch(() => {
-          res.clearCookie(COOKIES_NAME);
-          req.session.destroy((err) => {
-            if (err) throw err;
-            resolve(true);
-          });
-        });
-    });
+  async logout(@Ctx() { res }: Context): Promise<Boolean> {
+    res.clearCookie("access-token");
+    res.clearCookie("refresh-token");
+    return true;
   }
 }

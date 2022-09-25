@@ -77,7 +77,13 @@ interface InputProps {
   className?: string;
 }
 
-export function Input({ className, onChange, value, label }: InputProps) {
+export function Input({
+  className,
+  onChange,
+  value,
+  label,
+  placeholder,
+}: InputProps) {
   const id = useId();
   return (
     <div
@@ -94,12 +100,13 @@ export function Input({ className, onChange, value, label }: InputProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         spellCheck={false}
+        placeholder={placeholder}
       />
       <label
         htmlFor={id}
         className={`absolute rounded-none text-slate-400 duration-300 transform ${
           value.length > 0 ? "-translate-y-10" : "-translate-y-1/2"
-        } scale-75 top-1/2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-500 peer-focus:dark:text-sky-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-10`}
+        } scale-75 top-1/2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-500 peer-focus:dark:text-sky-500 peer-placeholder-shown:-translate-y-10 peer-focus:scale-75 peer-focus:-translate-y-10`}
       >
         {label}
       </label>

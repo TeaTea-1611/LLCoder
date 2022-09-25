@@ -90,6 +90,14 @@ export class Exercise extends BaseEntity {
   @Column({ default: 5 })
   xp: number;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  file_input: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  file_output: string;
+
   @Column({ nullable: true })
   category_id: number;
 

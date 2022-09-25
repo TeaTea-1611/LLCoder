@@ -16,7 +16,7 @@ export class UploadImageMarkdownResolver {
     @Ctx() { req }: Context
   ): Promise<UploadImageResponse | null> {
     try {
-      const user = await User.findOne({ where: { id: req.session.uid } });
+      const user = await User.findOne({ where: { id: req.userId } });
       if (!user) throw new AuthenticationError("Not authentication");
       const filenameArr = filename.split(".");
       const extension = filenameArr[filenameArr.length - 1];

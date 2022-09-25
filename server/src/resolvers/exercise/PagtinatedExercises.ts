@@ -27,7 +27,6 @@ export class PagtinatedExercisesResolver {
         take: rLimit,
         skip: (page - 1) * rLimit,
         relations: {
-          user: true,
           entity: true,
           category: true,
           difficulty: true,

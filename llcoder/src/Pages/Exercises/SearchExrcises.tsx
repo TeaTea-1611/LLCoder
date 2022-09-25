@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModalForm } from "../../components/Modal";
 import { Selection } from "../../components/Selection";
-import { Button, InputSearch } from "../../components/UI";
+import { Button, Input } from "../../components/UI";
 
 function Search({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [searchValue, setSearchValue] = useState({
@@ -12,21 +12,19 @@ function Search({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   return (
     <ModalForm isOpen={isOpen} onClose={onClose} title="Search Exercises">
       <form className="mt-8 w-100 space-y-4">
-        <div className="flex flex-row space-x-2">
-          <InputSearch
-            placeholder="Name"
+        <div className="grid grid-cols-2 gap-x-2 gap-y-6">
+          <Input
+            label="Tên bài tập"
             className="w-full"
             value={searchValue.name}
             onChange={(val) => setSearchValue({ ...searchValue, name: val })}
           />
-          <InputSearch
-            placeholder="Author"
+          <Input
+            label="Tác giả"
             className="w-full"
             value={searchValue.author}
             onChange={(val) => setSearchValue({ ...searchValue, author: val })}
           />
-        </div>
-        <div className="flex flex-row space-x-2">
           <Selection
             options={[
               { value: "Arithmetic", label: "Arithmetic" },
@@ -46,8 +44,6 @@ function Search({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
             placeholder="Difficulty"
             onChange={(value) => console.log(value)}
           />
-        </div>
-        <div className="flex flex-row space-x-2">
           <Selection
             options={[
               { value: "Arithmetic", label: "Arithmetic" },

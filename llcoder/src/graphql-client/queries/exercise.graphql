@@ -1,0 +1,31 @@
+query Exercise($id: Int!) {
+  exercise(id: $id) {
+    id
+    user {
+      nickname
+      avatar
+    }
+    entity {
+      id
+      entity_type
+      comments_count
+      reactions_count
+    }
+    title
+    content
+    xp
+    difficulty {
+      name_vi
+      name_en
+    }
+    category {
+      name
+    }
+    form {
+      name_vi
+      name_en
+    }
+    created_at
+    updated_at
+  }
+}

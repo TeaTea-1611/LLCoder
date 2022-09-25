@@ -19,7 +19,7 @@ export class CreateBlogResolver {
     return await connection.transaction(
       async (transactionEntityManage): Promise<BlogMutationResponse> => {
         const user = await transactionEntityManage.findOne(User, {
-          where: { id: req.session.uid },
+          where: { id: req.userId },
         });
         if (!user)
           return {
